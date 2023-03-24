@@ -15,3 +15,6 @@ The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](htt
 ### Movement
 - Change game speed
 - Fly mode
+
+## Hotkeys
+![alt text](https://github.com/Baromir19/MGR-RedTrainer/blob/master/readme/hotkeys.png)
