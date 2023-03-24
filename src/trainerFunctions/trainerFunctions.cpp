@@ -2,6 +2,10 @@
 #include "base.h"
 #include "trainerFunctions.h"
 
+bool RedTrainer::isFirstFly = true;
+
+float posX = 0.0f, posY = 0.0f, posZ = 0.0f;
+
 uintptr_t RedTrainer::moduleBase = 0;
 
 void RedTrainer::setText (bool bActive) 
@@ -50,6 +54,12 @@ void RedTrainer::setHealth(int healthValue)
 {
 	uintptr_t healthAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x870 });
 	mem::in::write((BYTE*)healthAddress, (BYTE*)&healthValue, sizeof(healthValue));
+}
+
+void RedTrainer::setMoney(int moneyValue)
+{
+	uintptr_t moneyAddress = mem::in::find_DMA(moduleBase + 0x17EA100, { 0xDC });
+	mem::in::write((BYTE*)moneyAddress, (BYTE*)&moneyValue, sizeof(moneyValue));
 }
 
 void RedTrainer::setPlayerType(int playerTypeId)
@@ -112,7 +122,6 @@ void RedTrainer::setPlayerBody(int playerBodyId)
 	}
 }
 
-//TODO
 void RedTrainer::setPlayerHair(int playerHairId)
 {
 	bool bPlayerHair = true;
@@ -131,6 +140,73 @@ void RedTrainer::setPlayerHair(int playerHairId)
 	}
 }
 
+void RedTrainer::setSpeed(float speedValue)
+{
+	mem::in::write((BYTE*)(moduleBase + 0x17E93EC), (BYTE*)&speedValue, sizeof(speedValue));
+}
+
+void RedTrainer::setFly() //NOT OPTIMIZED!!!
+{
+	memcpy(&posX, (BYTE*)(moduleBase + 0x19C1490), sizeof(posX));
+
+	if (posX == NULL)
+	{
+		//setSpeed(1.0f);
+		return;
+	}
+	
+	if (isFirstFly) {
+		setSpeed(0.0f);
+		isFirstFly = false;
+	}
+
+	uintptr_t posAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x50 });
+	memcpy(&posX, (BYTE*)posAddress, sizeof(posX));
+	memcpy(&posY, (BYTE*)posAddress + 4, sizeof(posY));
+	memcpy(&posZ, (BYTE*)posAddress + 8, sizeof(posZ));
+	/*
+	mem::in::read((BYTE*)&posX, (BYTE*)posAddress, sizeof(posX));
+	mem::in::read((BYTE*)&posY, (BYTE*)posAddress + 4, sizeof(posX));
+	mem::in::read((BYTE*)&posZ, (BYTE*)posAddress + 8, sizeof(posX));*/
+
+	if (GetAsyncKeyState(VK_NUMPAD2) && 0x8000)
+	{
+		posX -= 0.5f;
+		mem::in::write((BYTE*)posAddress, (BYTE*)&posX, sizeof(posX));
+	}
+
+	if (GetAsyncKeyState(VK_NUMPAD8) && 0x8000)
+	{
+		posX += 0.5f;
+		mem::in::write((BYTE*)posAddress, (BYTE*)&posX, sizeof(posX));
+	}
+
+	if (GetAsyncKeyState(VK_NUMPAD4) && 0x8000)
+	{
+		posZ -= 0.5f;
+		mem::in::write((BYTE*)(posAddress + 8), (BYTE*)&posZ, sizeof(posZ));
+	}
+
+	if (GetAsyncKeyState(VK_NUMPAD6) && 0x8000)
+	{
+		posZ += 0.5f;
+		mem::in::write((BYTE*)(posAddress + 8), (BYTE*)&posZ, sizeof(posZ));
+	}
+
+	if (GetAsyncKeyState(VK_NUMPAD1) && 0x8000)
+	{
+		posY -= 0.5f;
+		mem::in::write((BYTE*)(posAddress + 4), (BYTE*)&posY, sizeof(posY));
+	}
+
+	if (GetAsyncKeyState(VK_NUMPAD7) && 0x8000)
+	{
+		posY += 0.5f;
+		mem::in::write((BYTE*)(posAddress + 4), (BYTE*)&posY, sizeof(posY));
+	}
+
+}
+
 /*void RedTrainer::spawnEnemy()
 {
 	positionAddress = mem::FindDMAAddy(moduleBase + 0x19C1490, { 0x50 });
@@ -141,16 +217,4 @@ void RedTrainer::setPlayerHair(int playerHairId)
 	//DWORD workThread = GetThreadByNum(procId, -2);
 
 	CreateEnemy(0x20140, 2, 0, 0, pos);
-}*/
-
-/*uintptr_t* localPlayerPtr = (uintptr_t*)(moduleBase + 0x19C1490);
-
-if (localPlayerPtr)
-{
-	if (bHealth) {
-		uintptr_t healthAddress = mem::FindDMAAddy(moduleBase + 0x19C1490, { 0x870 });
-		mem::Patch((BYTE*)healthAddress, (BYTE*)&healthValue, sizeof(healthValue));
-		std::cout << "Health value = " << std::dec << healthValue << std::endl;
-		bHealth = false;
-	}
 }*/

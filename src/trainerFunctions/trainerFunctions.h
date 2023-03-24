@@ -1,6 +1,7 @@
 namespace RedTrainer {
 
 	extern uintptr_t moduleBase;
+	extern bool isFirstFly;
 
 	void setText(bool bActive);
 
@@ -10,14 +11,19 @@ namespace RedTrainer {
 
 	void setHealth(int healthValue);
 
+	void setMoney(int moneyValue);
+
 	void setPlayerType(int playerTypeId);
 
 	void setPlayerSword(int playerSwordId);
 
 	void setPlayerBody(int playerBodyId);
 
-	//TODO
 	void setPlayerHair(int playerHairId);
+
+	void setSpeed(float speedValue);
+
+	void setFly();
 
 	//void spawnEnemy(); //
 }

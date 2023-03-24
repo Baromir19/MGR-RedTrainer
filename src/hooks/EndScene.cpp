@@ -6,7 +6,9 @@
 #include "../assets/fonts.h"
 
 bool isKeyPressed = false,
-	 isKeyPressed2 = false;
+	 isKeyPressed2 = false,
+	 isKeyPressed3 = false,
+	 isFly = false;
 int currentButtonIndex = 0;
 
 HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
@@ -51,7 +53,30 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	{
 		Data::ShowMenu2 = false;
 		Data::ShowMenu3 = false;
+		Data::ShowMenu4 = false;
+		Data::ShowMenu5 = false;
+		Data::ShowMenu6 = false;
 		isKeyPressed2 = false;
+	}
+
+	if (GetAsyncKeyState(VK_NUMPAD5) & 0x8000)
+	{
+		isKeyPressed3 = true;
+	}
+	else if (!(GetAsyncKeyState(VK_NUMPAD5) & 0x8000) && isKeyPressed3)
+	{
+		isKeyPressed3 = false;
+		RtGui::bFly = !RtGui::bFly;
+	}
+
+	if (RtGui::bFly) 
+	{
+		RedTrainer::setFly();
+	}
+	else if (!RtGui::bFly)
+	{
+		RedTrainer::setSpeed(1.0f);
+		RedTrainer::isFirstFly = true;
 	}
 
 	if (Data::ShowMenu)
@@ -69,6 +94,21 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	if (Data::ShowMenu3)
 	{
 		RtGui::customizationWindow();
+	}
+
+	if (Data::ShowMenu4)
+	{
+		RtGui::movementWindow();
+	}
+
+	if (Data::ShowMenu5)
+	{
+		RtGui::missionWindow();
+	}
+
+	if (Data::ShowMenu6)
+	{
+		RtGui::otherWindow();
 	}
 
 	ImGui::EndFrame();

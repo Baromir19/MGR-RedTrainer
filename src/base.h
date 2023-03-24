@@ -41,6 +41,9 @@ namespace Base
 		extern bool              ShowMenu;
 		extern bool              ShowMenu2;
 		extern bool              ShowMenu3;
+		extern bool              ShowMenu4;
+		extern bool              ShowMenu5;
+		extern bool              ShowMenu6;
 
 		namespace Keys
 		{

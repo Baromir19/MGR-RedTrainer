@@ -20,6 +20,9 @@ bool              Base::Data::ToDetach   = false;
 bool              Base::Data::ShowMenu   = false;
 bool              Base::Data::ShowMenu2  = false;
 bool              Base::Data::ShowMenu3  = false;
+bool              Base::Data::ShowMenu4  = false;
+bool              Base::Data::ShowMenu5  = false;
+bool              Base::Data::ShowMenu6  = false;
 bool              Base::Data::InitImGui  = false;
 
 

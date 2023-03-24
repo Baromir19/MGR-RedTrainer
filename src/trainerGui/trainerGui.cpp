@@ -4,12 +4,18 @@
 #include "trainerFunctions/trainerFunctions.h"
 
 bool bInvicibility = false,
-bEnergy = false;
+bEnergy = false,
+RtGui::bFly = false;
+
 int healthValue = 1600,
+moneyValue = 0,
 playerType = 5,
 swordType = 12,
 bodyType = 16,
 hairType = 4;
+
+float speedValue = 0.0f;
+
 const char* cPlayerTypes[] = { "Raiden", "First Raiden", "Camera mode", "Sam", "BladeWolf", "Disabled" };
 const char* cSwordTypes[] = { "HF Blade", "Stun Blade", "Armor Breaker", "Long Sword", "Wooden Sword", "Murasama",
 							"Fox Blade", "HF Machete", "First Blade", "Sam's Murasama", "Chainsaw", "Invisible", "Disabled" };
@@ -39,6 +45,8 @@ void RtGui::mainWindow()
 		Base::Data::ShowMenu2 = !Base::Data::ShowMenu2;
 	if (ImGui::Button("CUSTOMIZATION", ImVec2(150, 20)))
 		Base::Data::ShowMenu3 = !Base::Data::ShowMenu3;
+	if (ImGui::Button("MOVEMENT", ImVec2(150, 20)))
+		Base::Data::ShowMenu4 = !Base::Data::ShowMenu4;
 
 	ImGui::PopStyleColor(5);
 	ImGui::PopStyleVar();
@@ -76,6 +84,11 @@ void RtGui::statsWindow()
 		RedTrainer::setHealth(healthValue);
 	ImGui::SameLine();
 	ImGui::InputScalar(" ", ImGuiDataType_S32, &healthValue);
+
+	if (ImGui::Button("MONEY", ImVec2(150, 20)))
+		RedTrainer::setMoney(moneyValue);
+	ImGui::SameLine();
+	ImGui::InputScalar("      ", ImGuiDataType_S32, &moneyValue);
 
 	ImGui::PopStyleColor(5);
 	ImGui::PopStyleVar();
@@ -175,5 +188,49 @@ void RtGui::customizationWindow()
 	ImGui::PopStyleVar();
 	ImGui::End();
 	ImGui::PopStyleColor();
+}
+
+void RtGui::movementWindow()
+{
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	ImGui::Begin("MoveWindow", NULL, ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_AlwaysAutoResize);
+	//ImGui::GetStyle().WindowRounding = 0.0f;
+
+	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
+
+	ImGui::Text("MOVEMENT");
+
+	if (ImGui::Button("GAME SPEED", ImVec2(150, 20)))
+		RedTrainer::setSpeed(speedValue);
+	ImGui::SameLine();
+	ImGui::InputScalar("      ", ImGuiDataType_Float, &speedValue);
+
+	if (ImGui::Button("FLY HACK", ImVec2(150, 20)))
+		bFly = !bFly;
+	RedTrainer::setText(bFly);
+
+	ImGui::PopStyleColor(6);
+	ImGui::PopStyleVar();
+	ImGui::End();
+	ImGui::PopStyleColor();
+}
+
+void RtGui::missionWindow()
+{
+
+}
+
+void RtGui::otherWindow() 
+{
+
 }
 
