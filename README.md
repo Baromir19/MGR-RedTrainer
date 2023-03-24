@@ -17,7 +17,6 @@ The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](htt
 - Fly mode
 
 ## Hotkeys
-![alt text](https://github.com/Baromir19/MGR-RedTrainer/blob/master/readme/hotkeys.png)
 - Show/hide menu (Num+)
 - Show/hide additional menus (Num-)
 - Activate FlyMode (Num5)
@@ -27,3 +26,5 @@ The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](htt
 - FlyMode right (Num6)
 - FlyMode up (Num7)
 - FlyMode down (Num1)
+
+![alt text](https://github.com/Baromir19/MGR-RedTrainer/blob/master/readme/hotkeys.png)
