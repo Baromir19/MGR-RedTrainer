@@ -1,0 +1,1788 @@
+<?xml version="1.0" ?>
+<PhaseInfoRoot>
+	<InfoList>
+		<Phase name="p001">
+			<SubPhase>
+				<Name Save="1">p001_Nakama</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p002">
+			<SubPhase>
+				<Name>p002_test</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p003">
+			<SubPhase>
+				<Name>sakTEST</Name>
+				<Name>sakEND</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p004">
+			<SubPhase>
+				<Name Save="1">start</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p00f">
+			<SubPhase>
+				<Name>test01</Name>
+				<Name>test02</Name>
+				<Name>test03</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p016">
+			<SubPhase>
+				<Name>p016_sub</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p023">
+			<SubPhase>
+				<Name>P023_BreakTest</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p040">
+			<SubPhase>
+				<Name Save="1">start</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p050">
+			<SubPhase>
+				<Name Save="1">p050_test</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p070">
+			<SubPhase>
+				<Name>P070_START</Name>
+				<Name>P070_CYBORG</Name>
+				<Name>P070_MASTIFF</Name>
+				<Name>P070_MASTIFF_PASS</Name>
+				<Name>P070_SLIDER</Name>
+				<Name>P070_WOLF</Name>
+				<Name>P070_DEAD_LINE</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p071">
+			<SubPhase>
+				<Name Save="1">P071_CAM_FOCUS</Name>
+				<Name Save="1">P071_CAM_DIST</Name>
+				<Name Save="1">P071_CAM_ANG</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p072">
+			<SubPhase>
+				<Name Save="1">P072_START</Name>
+				<Name Save="1">P072_SET</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p073">
+			<SubPhase/>
+		</Phase>
+		<Phase name="p080">
+			<SubPhase>
+				<Name>P080_TEST</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p090">
+			<SubPhase>
+				<Name>p090_M_1</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p091">
+			<SubPhase>
+				<Name Save="1">AUGMENT_TEST</Name>
+				<Name>start</Name>
+				<Name>enemy_test</Name>
+				<Name>end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p092">
+			<SubPhase>
+				<Name Save="1">start</Name>
+				<Name Save="1">start_2</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p093">
+			<SubPhase>
+				<Name Save="1">P093_TEST</Name>
+				<Name Save="1">KOGEKKO_PLAYER_TEST</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p094">
+			<SubPhase>
+				<Name Save="1">P094_TEST</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0a0">
+			<SubPhase>
+				<Name>P0A0_START</Name>
+				<Name Save="1">P0A0_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0a1">
+			<SubPhase>
+				<Name>P0A1_START</Name>
+				<Name Save="1">P0A1_WOLF</Name>
+				<Name>P0A1_LIFT</Name>
+				<Name>P0A1_LIFT_END</Name>
+				<Name>P0A1_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0a2">
+			<SubPhase>
+				<Name>P0A2_START</Name>
+				<Name>P0A2_SET</Name>
+				<Name>P0A2_PASS</Name>
+				<Name>P0A2_TEST</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0a3">
+			<SubPhase>
+				<Name>P0A3_START</Name>
+				<Name>P0A3_IN</Name>
+				<Name>P0A3_OUT</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0a4">
+			<SubPhase>
+				<Name>P0A4_START</Name>
+				<Name>P0A4_SET</Name>
+				<Name>P0A4_IN</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0a5">
+			<SubPhase/>
+		</Phase>
+		<Phase name="p0b0">
+			<SubPhase>
+				<Name>P0B0_START</Name>
+				<Name>P0B0_TEST</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0b1">
+			<SubPhase>
+				<Name>P0B1_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0b2">
+			<SubPhase>
+				<Name>P0B2_START</Name>
+				<Name>P0B2_START2</Name>
+				<Name>P0B2_SET</Name>
+				<Name>P0B2_TEST</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0b3">
+			<SubPhase>
+				<Name>P0B3_START</Name>
+				<Name>P0B3_SET</Name>
+				<Name>P0B3_TEST</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0b4">
+			<SubPhase>
+				<Name>P0B4_START</Name>
+				<Name>P0B4_IN</Name>
+				<Name>P0B4_SET</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0b5">
+			<SubPhase>
+				<Name>P0B5_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0f0">
+			<SubPhase>
+				<Name Save="1">START</Name>
+				<Name>PLAZA</Name>
+				<Name>TEST</Name>
+				<Name>AREA</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p0f1">
+			<SubPhase>
+				<Name>start</Name>
+				<Name>end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p118">
+			<SubPhase>
+				<Name>P118_START</Name>
+				<Name Save="1">P118_BEACH</Name>
+				<Name Save="1">P118_BTL</Name>
+				<Name>P118_BTL_IN</Name>
+				<Name>P118_BTL_END</Name>
+				<Name>P118_CYB_EVENT</Name>
+				<Name>P118_TUTORIAL</Name>
+				<Name>P118_EVENT_END</Name>
+				<Name Save="1">P118_DOOR_OPEN</Name>
+				<Name Save="1">P118_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p128">
+			<SubPhase>
+				<Name>P128_START</Name>
+				<Name Save="1">P128_GATE</Name>
+				<Name>P128_GATE_2F</Name>
+				<Name>P128_GATE2</Name>
+				<Name Save="1">P128_STREET</Name>
+				<Name>P128_LOAD</Name>
+				<Name Save="1">P128_STREET_RESTART</Name>
+				<Name Save="1">P128_BTL</Name>
+				<Name>P128_BTL_START</Name>
+				<Name>P128_BTL_ADD</Name>
+				<Name>P128_BTL_END</Name>
+				<Name Save="1">P128_STREET2</Name>
+				<Name Save="1">P128_EVENT</Name>
+				<Name>P128_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p138">
+			<SubPhase>
+				<Name>P138_START</Name>
+				<Name>P138_MOVIE</Name>
+				<Name Save="1">P138_WOLF</Name>
+				<Name>P138_WOLF_SHOW</Name>
+				<Name>P138_WOLF_FADE</Name>
+				<Name Save="1">P138_IN</Name>
+				<Name Save="1">P138_RE_START</Name>
+				<Name>P138_BREAKDOWN_1</Name>
+				<Name>P138_BREAKDOWN_2</Name>
+				<Name Save="1">P138_HELI01_START</Name>
+				<Name>P138_HELI01</Name>
+				<Name>P138_HELI01_END</Name>
+				<Name>P138_SET</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p140">
+			<SubPhase>
+				<Name Save="1">P140_START</Name>
+				<Name>P140_IN</Name>
+				<Name>P140_DOOR_CHECK</Name>
+				<Name Save="1">P140_ADD_SET</Name>
+				<Name Save="1">P140_DOGTAG_GET</Name>
+				<Name>P140_DOGTAG_OUT</Name>
+				<Name Save="1">P140_GOOD_OPEN</Name>
+				<Name Save="1">P140_BAD_OPEN</Name>
+				<Name>P140_HOTEL_BTL</Name>
+				<Name Save="1">P140_HOTEL_BTL_END</Name>
+				<Name Save="1">P140_HOTEL_IN</Name>
+				<Name Save="1">P140_EVENT</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p150">
+			<SubPhase>
+				<Name>P150_START</Name>
+				<Name Save="1">P150_RESTART</Name>
+				<Name Save="1">P150_BTL</Name>
+				<Name>P150_BTL_SET</Name>
+				<Name>P150_BTL_END</Name>
+				<Name Save="1">P150_HELI</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p168">
+			<SubPhase>
+				<Name>P168_START</Name>
+				<Name Save="1">P168_FACTORY</Name>
+				<Name Save="1">P168_BTL_END</Name>
+				<Name Save="1">P168_IN</Name>
+				<Name>P168_FLOOR</Name>
+				<Name>P168_FLOOR2</Name>
+				<Name Save="1">P168_FLOOR3</Name>
+				<Name Save="1">P168_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p170">
+			<SubPhase>
+				<Name>P170_START</Name>
+				<Name>P170_MOVIE</Name>
+				<Name Save="1">P170_MISTRAL</Name>
+				<Name>P170_MISTRAL01</Name>
+				<Name Save="1">P170_MISTRAL02</Name>
+				<Name Save="1">P170_MISTRAL03</Name>
+				<Name>P170_MIST_RESULT</Name>
+				<Name>P170_MIST_DEAD</Name>
+				<Name>P170_END</Name>
+				<Name>P170_TEST</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p210">
+			<SubPhase>
+				<Name>P210_SEWER_START</Name>
+				<Name>P210_SEWER_MOVIE</Name>
+				<Name Save="1">P210_SEWER_START_RADIO</Name>
+				<Name Save="1">P210_SEWER</Name>
+				<Name>P210_MASTIFF_EV</Name>
+				<Name Save="1">P210_MASTIFF</Name>
+				<Name Save="1">P210_SEWER_2</Name>
+				<Name Save="1">P210_SEWER_BURAN</Name>
+				<Name>P210_EVENT</Name>
+				<Name>P210_SEWER_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p220">
+			<SubPhase>
+				<Name>P220_START</Name>
+				<Name>P220_MOVIE</Name>
+				<Name Save="1">P220_RAPTOR</Name>
+				<Name>P220_GEORGE_EVENT</Name>
+				<Name>P220_GEORGE_EV_ED</Name>
+				<Name>P220_GEORGE_EV_MOVIE</Name>
+				<Name>P220_RADIO</Name>
+				<Name Save="1">P220_SEWER_3</Name>
+				<Name Save="1">P220_SEWER_4</Name>
+				<Name>P220_SUB_BTL_1</Name>
+				<Name Save="1">P220_SEWER_4_AFTER</Name>
+				<Name Save="1">P220_SEARCH_GATE</Name>
+				<Name Save="1">P220_SEARCH_GATE_2</Name>
+				<Name>P220_SEARCH_GATE_3</Name>
+				<Name>P220_FIND_GATE</Name>
+				<Name>P220_BURAN_CLEAR</Name>
+				<Name>P220_RABO</Name>
+				<Name Save="1">P220_RABO_2</Name>
+				<Name>P220_RABO_SIGNAL</Name>
+				<Name Save="1">P220_RABO_BTL_END</Name>
+				<Name>P220_BRAIN_EVENT</Name>
+				<Name>P220_BRAIN_EV_ED</Name>
+				<Name>P220_BRAIN_EV_MOVIE</Name>
+				<Name>P220_END</Name>
+				<Name Save="1">P220_BTL_2</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p230">
+			<SubPhase>
+				<Name>P230_RADIO</Name>
+				<Name Save="1">P230_RADIO_ED</Name>
+				<Name>P230_KOGECKO_SEARCH</Name>
+				<Name>P230_KOGECKO_ST</Name>
+				<Name Save="1">P230_KOGECKO</Name>
+				<Name>P230_KOGECKO_ED</Name>
+				<Name>P230_EVENT</Name>
+				<Name>P230_END</Name>
+				<Name>P230_KEVIN_RADIO</Name>
+				<Name Save="1">P230_KEVIN_RADIO_ED</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p2d0">
+			<SubPhase>
+				<Name>P2D0_GEOGE_RADIO</Name>
+				<Name Save="1">P2D0_GEOGE_RADIO_END</Name>
+				<Name>P2D0_START_EVENT</Name>
+				<Name Save="1">P2D0_BOX_START</Name>
+				<Name>P2D0_EVENT</Name>
+				<Name Save="1">P2D0_ROBO_START</Name>
+				<Name Save="1">P2D0_BOSS_END</Name>
+				<Name Save="1">P2D0_CODEC_END</Name>
+				<Name Save="1">P2D0_PASSAGE</Name>
+				<Name>P2D0_LIFE_RADIO</Name>
+				<Name>P2D0_EVENT2</Name>
+				<Name Save="1">P2D0_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p310">
+			<SubPhase>
+				<Name>P310_START</Name>
+				<Name>P310_BTL1</Name>
+				<Name Save="1">P310_RESTART</Name>
+				<Name Save="1">P310_STREET</Name>
+				<Name>P310_BTL1_2</Name>
+				<Name>P310_WOLF</Name>
+				<Name Save="1">P310_BTL2_START</Name>
+				<Name>P310_BTL2</Name>
+				<Name>P310_BTL2_LOAD</Name>
+				<Name Save="1">P310_BTL2_OFF</Name>
+				<Name Save="1">P310_STREET2</Name>
+				<Name Save="1">P310_STREET2_END</Name>
+				<Name>P310_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p320">
+			<SubPhase>
+				<Name>P320_START</Name>
+				<Name Save="1">P320_ENTER</Name>
+				<Name Save="1">P320_BTL</Name>
+				<Name>P320_BTL_END</Name>
+				<Name Save="1">P320_OFFICE</Name>
+				<Name>P320_ELV</Name>
+				<Name>P320_ELV_END</Name>
+				<Name>P320_ELV_IN</Name>
+				<Name>P320_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p330">
+			<SubPhase>
+				<Name>P330_START</Name>
+				<Name>P330_LOAD</Name>
+				<Name Save="1">P330_IN</Name>
+				<Name Save="1">P330_2ND</Name>
+				<Name Save="1">P330_BTL</Name>
+				<Name>P330_BTL_IN</Name>
+				<Name>P330_BTL_END</Name>
+				<Name Save="1">P330_3RD</Name>
+				<Name Save="1">P330_4TH</Name>
+				<Name Save="1">P330_ELV</Name>
+				<Name>P330_FALL</Name>
+				<Name>P330_FALL2</Name>
+				<Name>P330_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p340">
+			<SubPhase>
+				<Name>P340_START</Name>
+				<Name Save="1">P340_IN</Name>
+				<Name>P340_SUBWAY</Name>
+				<Name Save="1">P340_SUBWAY2</Name>
+				<Name Save="1">P340_SUBWAY3</Name>
+				<Name>P340_FREE_BTL</Name>
+				<Name>P340_FREE_BTL_1</Name>
+				<Name>P340_FREE_BTL_2</Name>
+				<Name>P340_FREE_END</Name>
+				<Name Save="1">P340_RESULT_END</Name>
+				<Name>P340_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p350">
+			<SubPhase>
+				<Name>P350_START</Name>
+				<Name Save="1">P350_IN</Name>
+				<Name>P350_STREET</Name>
+				<Name>P350_STREET_DOWN</Name>
+				<Name Save="1">P350_STREET2</Name>
+				<Name>P350_STREET2_BTL</Name>
+				<Name Save="1">P350_MALL</Name>
+				<Name>P350_MALL_WOLF</Name>
+				<Name>P350_MALL_BTL</Name>
+				<Name Save="1">P350_HOLOGRAM</Name>
+				<Name>P350_SAM</Name>
+				<Name>P350_SAM_CODEC</Name>
+				<Name>P350_SAM2</Name>
+				<Name>P350_SAM_CHANGE</Name>
+				<Name>P350_SAM_DELETE</Name>
+				<Name>P350_PLAZA_BTL</Name>
+				<Name Save="1">P350_PLAZA_RE</Name>
+				<Name>P350_PLAZA_END</Name>
+				<Name>P350_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p360">
+			<SubPhase>
+				<Name>P360_START</Name>
+				<Name Save="1">P360_RESTART</Name>
+				<Name Save="1">P360_IN</Name>
+				<Name Save="1">P360_BUILD</Name>
+				<Name>P360_BUILD_BTL</Name>
+				<Name>P360_SAM_TALK</Name>
+				<Name>P360_MON</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p370">
+			<SubPhase>
+				<Name>P370_TALK</Name>
+				<Name Save="1">P370_RESTART</Name>
+				<Name>P370_IN</Name>
+				<Name Save="1">P370_EVENT</Name>
+				<Name>P370_TEST</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p380">
+			<SubPhase>
+				<Name>P380_START</Name>
+				<Name>P380_MOVIE</Name>
+				<Name Save="1">P380_MONSOON</Name>
+				<Name Save="1">P380_FINISH_QTE</Name>
+				<Name>P380_MON_RESULT</Name>
+				<Name>P380_MON_DEAD</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p410">
+			<SubPhase>
+				<Name Save="1">P410_START</Name>
+				<Name>P410_IN</Name>
+				<Name Save="1">P410_CODEC_END</Name>
+				<Name>P410_BTL</Name>
+				<Name>P410_BTL_TUTO</Name>
+				<Name Save="1">P410_BTL_END</Name>
+				<Name Save="1">P410_DEFENSE</Name>
+				<Name>P410_DEFENSE_01</Name>
+				<Name>P410_ELV</Name>
+				<Name Save="1">P410_DEFENSE_END</Name>
+				<Name>P410_ELV_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p420">
+			<SubPhase>
+				<Name>P420_START</Name>
+				<Name Save="1">P420_IN</Name>
+				<Name>P420_ENM_ON</Name>
+				<Name>P420_GATE</Name>
+				<Name>P420_IN2</Name>
+				<Name>P420_GATE_2</Name>
+				<Name>P420_IN3</Name>
+				<Name>P420_GATE_3</Name>
+				<Name>P420_GATE_OPEN</Name>
+				<Name>P420_GATE_OPEN2</Name>
+				<Name>P420_GATE_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p430">
+			<SubPhase>
+				<Name>P430_RUN_INIT</Name>
+				<Name Save="1">P430_RUN_FIRST_HALF</Name>
+				<Name Save="1">P430_RUN_SECOND_HALF</Name>
+				<Name Save="1">P430_SLIDER_RUN_INIT</Name>
+				<Name>P430_SLIDER_RUN</Name>
+				<Name Save="1">P430_OUTER_WALL_RESTART</Name>
+				<Name>P430_OUTER_WALL</Name>
+				<Name>P430_END</Name>
+				<Name Save="1">P430_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p440">
+			<SubPhase>
+				<Name>P440_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p448">
+			<SubPhase>
+				<Name>P448_START</Name>
+				<Name>P448_LOAD</Name>
+				<Name Save="1">P448_CODEC_END</Name>
+				<Name Save="1">P448_IN</Name>
+				<Name>P448_AREA_CLEAR</Name>
+				<Name>P448_CLEAR_ENM</Name>
+				<Name Save="1">P448_IN2</Name>
+				<Name Save="1">P448_IN_ROOF</Name>
+				<Name Save="1">P448_IN3</Name>
+				<Name>P448_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p458">
+			<SubPhase>
+				<Name>P458_START</Name>
+				<Name>P458_CODEC_END</Name>
+				<Name Save="1">P458_IN</Name>
+				<Name>P458_LIFT_01_UP</Name>
+				<Name>P458_LIFT_00_UP</Name>
+				<Name Save="1">P458_BTL_01</Name>
+				<Name Save="1">P458_LIFT_01_DOWN</Name>
+				<Name>P458_BTL_02</Name>
+				<Name>P458_RPG</Name>
+				<Name Save="1">P458_BOMB</Name>
+				<Name>P458_KOGEKKO</Name>
+				<Name>P458_DEAD</Name>
+				<Name>P458_KOGE_CLEAR</Name>
+				<Name Save="1">P458_RIDE</Name>
+				<Name>P458_RIDE_SET</Name>
+				<Name>P458_BTL_03</Name>
+				<Name>P458_LAST</Name>
+				<Name>P458_BTL_END</Name>
+				<Name>P458_LAST_SET</Name>
+				<Name Save="1">P458_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p468">
+			<SubPhase>
+				<Name>P468_START</Name>
+				<Name>P468_SET</Name>
+				<Name Save="1">P468_IN</Name>
+				<Name Save="1">P468_BTL</Name>
+				<Name>P468_MIST</Name>
+				<Name>P468_MIST_DEAD</Name>
+				<Name>P468_MON</Name>
+				<Name>P468_BTL_END</Name>
+				<Name Save="1">P468_RESTART</Name>
+				<Name>P468_EVENT</Name>
+				<Name>P468_EV_END</Name>
+				<Name Save="1">P468_EV_END_RE</Name>
+				<Name Save="1">P468_FREE_END</Name>
+				<Name>P468_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p470">
+			<SubPhase>
+				<Name>P470_START</Name>
+				<Name>P470_MOVIE</Name>
+				<Name Save="1">P470_SUNDOWNER</Name>
+				<Name Save="1">P470_SUNDOWNER_2</Name>
+				<Name Save="1">P470_QTE</Name>
+				<Name>P470_QTE_DEAD</Name>
+				<Name>P470_SUN_RESULT</Name>
+				<Name>P470_SUN_DEAD</Name>
+				<Name>P470_EVENT</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p510">
+			<SubPhase>
+				<Name>P510_START</Name>
+				<Name Save="1">P510_IN</Name>
+				<Name>P510_BTL</Name>
+				<Name>P510_BTL_END</Name>
+				<Name Save="1">P510_MOVE</Name>
+				<Name Save="1">P510_BTL2</Name>
+				<Name>P510_BTL2_IN</Name>
+				<Name>P510_BTL2_SET</Name>
+				<Name>P510_BTL2_END</Name>
+				<Name>P510_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p520">
+			<SubPhase>
+				<Name>P520_START</Name>
+				<Name Save="1">P520_IN</Name>
+				<Name Save="1">P520_BTL</Name>
+				<Name>P520_BTL_IN</Name>
+				<Name>P520_BTL_END</Name>
+				<Name>P520_RUN</Name>
+				<Name Save="1">P520_RUN_SAVE</Name>
+				<Name Save="1">P520_STREET</Name>
+				<Name>P520_SUB</Name>
+				<Name>P520_SUB_BTL</Name>
+				<Name Save="1">P520_SUB_END</Name>
+				<Name>P520_EVENT</Name>
+				<Name>P520_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p610">
+			<SubPhase>
+				<Name>P610_START</Name>
+				<Name>P610_MOVIE</Name>
+				<Name Save="1">P610_BOSS</Name>
+				<Name>P610_BOSS_END</Name>
+				<Name>P610_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p710">
+			<SubPhase>
+				<Name>P710_START</Name>
+				<Name>P710_IN</Name>
+				<Name Save="1">P710_RESTART</Name>
+				<Name>P710_BTL</Name>
+				<Name>P710_CODEC</Name>
+				<Name Save="1">P710_BASE</Name>
+				<Name>P710_HANGAR</Name>
+				<Name>P710_RUNWAY</Name>
+				<Name>P710_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p720">
+			<SubPhase>
+				<Name>P720_START</Name>
+				<Name>P720_MOVIE</Name>
+				<Name Save="1">P720_EXCELSUS</Name>
+				<Name>P720_LEG_1</Name>
+				<Name Save="1">P720_EXCELSUS_2</Name>
+				<Name>P720_LEG_2</Name>
+				<Name Save="1">P720_QTE</Name>
+				<Name>P720_RESULT</Name>
+				<Name Save="1">P720_BOSS</Name>
+				<Name>P720_EVENT</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p730">
+			<SubPhase>
+				<Name>P730_START</Name>
+				<Name>P730_MOVIE</Name>
+				<Name Save="1">P730_ARMSTRONG</Name>
+				<Name>P730_EVENT</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p740">
+			<SubPhase>
+				<Name>P740_START</Name>
+				<Name>P740_MOVIE</Name>
+				<Name Save="1">P740_ARMSTRONG</Name>
+				<Name Save="1">P740_QTE</Name>
+				<Name>P740_EVENT</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="p750">
+			<SubPhase>
+				<Name>P750_START</Name>
+				<Name>P750_MOVIE</Name>
+				<Name Save="1">P750_ARMSTRONG</Name>
+				<Name>P750_QTE</Name>
+				<Name>P750_EVENT</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pa10">
+			<SubPhase>
+				<Name>start</Name>
+				<Name>btl_01_start</Name>
+				<Name Save="1">btl_01</Name>
+				<Name>btl_01_end</Name>
+				<Name Save="1">road_start</Name>
+				<Name>road</Name>
+				<Name>road_end</Name>
+				<Name>end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pa15">
+			<SubPhase>
+				<Name>start</Name>
+				<Name>btl_ray01_movie</Name>
+				<Name Save="1">btl_ray01</Name>
+				<Name>btl_ray_ev</Name>
+				<Name>btl_ray01_end</Name>
+				<Name Save="1">city_start</Name>
+				<Name>city</Name>
+				<Name>city_2</Name>
+				<Name>city_end</Name>
+				<Name Save="1">waterway_start</Name>
+				<Name>waterway_start_readpark</Name>
+				<Name>waterway_start_readray</Name>
+				<Name>waterway</Name>
+				<Name>waterway_end</Name>
+				<Name Save="1">btl_ray02_1_start</Name>
+				<Name>btl_ray02_0</Name>
+				<Name>btl_ray02_1</Name>
+				<Name>btl_ray02_1_end</Name>
+				<Name Save="1">btl_ray02_2_start</Name>
+				<Name>btl_ray02_2</Name>
+				<Name>btl_ray02_2_end</Name>
+				<Name Save="1">btl_ray02_3_start</Name>
+				<Name>btl_ray02_3</Name>
+				<Name>btl_ray02_3_end</Name>
+				<Name>end</Name>
+				<Name Save="1">test00</Name>
+				<Name>E3_ray_bt_start</Name>
+				<Name>E3_ray_bt</Name>
+				<Name>E3_ray_bt_end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pa50">
+			<SubPhase>
+				<Name>start</Name>
+				<Name>btl_sam_movie</Name>
+				<Name Save="1">btl_sam</Name>
+				<Name>btl_sam_end</Name>
+				<Name Save="1">btl_sam_2_start</Name>
+				<Name>btl_sam_2</Name>
+				<Name>btl_sam_2_end</Name>
+				<Name>btl_sam_3_start</Name>
+				<Name Save="1">btl_sam_3</Name>
+				<Name>btl_sam_3_end</Name>
+				<Name>end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pa70">
+			<SubPhase>
+				<Name>start</Name>
+				<Name>train_start</Name>
+				<Name Save="1">train</Name>
+				<Name>train_end</Name>
+				<Name>end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pa80">
+			<SubPhase>
+				<Name Save="1">start</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc08">
+			<SubPhase>
+				<Name Save="1">PC08_START</Name>
+				<Name>PC08_GAME</Name>
+				<Name>PC08_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc09">
+			<SubPhase>
+				<Name Save="1">PC09_START</Name>
+				<Name>PC09_BTL1</Name>
+				<Name>PC09_FADE</Name>
+				<Name>PC09_BTL2</Name>
+				<Name>PC09_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc10">
+			<SubPhase>
+				<Name>PC10_START</Name>
+				<Name>PC10_START2</Name>
+				<Name>PC10_MOVIE</Name>
+				<Name Save="1">PC10_SAM</Name>
+				<Name Save="1">PC10_SEWER</Name>
+				<Name Save="1">PC10_ROOM</Name>
+				<Name Save="1">PC10_ROOM_END</Name>
+				<Name>PC10_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc20">
+			<SubPhase>
+				<Name>PC20_START</Name>
+				<Name>PC20_MOVIE</Name>
+				<Name Save="1">PC20_WOLF</Name>
+				<Name>PC20_WOLF_DEAD</Name>
+				<Name Save="1">PC20_WOLF_END</Name>
+				<Name Save="1">PC20_IN</Name>
+				<Name>PC20_LIFT_LOAD</Name>
+				<Name Save="1">PC20_LIFT_ROOM</Name>
+				<Name Save="1">PC20_BTL_END</Name>
+				<Name>PC20_LIFT_UP</Name>
+				<Name Save="1">PC20_LIFT_STOP</Name>
+				<Name>PC20_LIFT_BTL</Name>
+				<Name Save="1">PC20_LIFT_END</Name>
+				<Name Save="1">PC20_TOP</Name>
+				<Name>PC20_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc30">
+			<SubPhase>
+				<Name>PC30_START</Name>
+				<Name>PC30_MOVIE</Name>
+				<Name Save="1">PC30_RAY</Name>
+				<Name>PC30_RAY_HEAD</Name>
+				<Name>PC30_RAY_DEAD</Name>
+				<Name>PC30_RAY_RESULT</Name>
+				<Name>PC30_RAY_END</Name>
+				<Name Save="1">PC30_2ND</Name>
+				<Name Save="1">PC30_PASS</Name>
+				<Name Save="1">PC30_PASS_RES</Name>
+				<Name>PC30_PASS_END</Name>
+				<Name Save="1">PC30_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc40">
+			<SubPhase>
+				<Name>PC40_START</Name>
+				<Name Save="1">PC40_CODEC_END</Name>
+				<Name Save="1">PC40_IN</Name>
+				<Name Save="1">PC40_IN_FREE</Name>
+				<Name Save="1">PC40_CENTER</Name>
+				<Name Save="1">PC40_CENTER_FREE</Name>
+				<Name>PC40_IKE_BTL</Name>
+				<Name Save="1">PC40_IKE</Name>
+				<Name Save="1">PC40_IKE_FREE</Name>
+				<Name Save="1">PC40_PASS</Name>
+				<Name Save="1">PC40_ELV</Name>
+				<Name>PC40_ELV_BTL</Name>
+				<Name Save="1">PC40_ELV_END</Name>
+				<Name>PC40_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc50">
+			<SubPhase>
+				<Name>PC50_START</Name>
+				<Name Save="1">PC50_CODEC_END</Name>
+				<Name Save="1">PC50_ROOM</Name>
+				<Name Save="1">PC50_DOOR_ROCK</Name>
+				<Name Save="1">PC50_KEY_GET</Name>
+				<Name Save="1">PC50_KEY_GET2</Name>
+				<Name Save="1">PC50_DOOR_OPEN</Name>
+				<Name Save="1">PC50_PASS</Name>
+				<Name Save="1">PC50_ROOF</Name>
+				<Name>PC50_ROOF_BTL</Name>
+				<Name Save="1">PC50_ROOF_END</Name>
+				<Name Save="1">PC50_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc60">
+			<SubPhase>
+				<Name>PC60_START</Name>
+				<Name>PC60_MOVIE</Name>
+				<Name Save="1">PC60_ARMSTRONG</Name>
+				<Name Save="1">PC60_ARMSTRONG2</Name>
+				<Name Save="1">PC60_QTE</Name>
+				<Name>PC60_ARM_RESULT</Name>
+				<Name>PC60_ARM_END</Name>
+				<Name>PC60_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc71">
+			<SubPhase>
+				<Name>PC71_START</Name>
+				<Name>PC71_GAME</Name>
+				<Name>PC71_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc72">
+			<SubPhase>
+				<Name>PC72_START</Name>
+				<Name>PC72_GAME</Name>
+				<Name>PC72_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc73">
+			<SubPhase>
+				<Name>PC73_START</Name>
+				<Name>PC73_GAME</Name>
+				<Name>PC73_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc74">
+			<SubPhase>
+				<Name>PC74_START</Name>
+				<Name>PC74_GAME</Name>
+				<Name>PC74_GAME1</Name>
+				<Name>PC74_GAME2</Name>
+				<Name>PC74_GAME3</Name>
+				<Name>PC74_GAME4</Name>
+				<Name>PC74_GAME_LOAD</Name>
+				<Name>PC74_GAME5</Name>
+				<Name>PC74_GAME6</Name>
+				<Name>PC74_GAME7</Name>
+				<Name>PC74_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pc75">
+			<SubPhase>
+				<Name>PC75_START</Name>
+				<Name>PC75_GAME</Name>
+				<Name>PC75_GAME2</Name>
+				<Name>PC75_GAME3</Name>
+				<Name>PC75_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pce0">
+			<SubPhase>
+				<Name>PCE0_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pcf0">
+			<SubPhase>
+				<Name>PCF0_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pcf1">
+			<SubPhase>
+				<Name>PCF1_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd10">
+			<SubPhase>
+				<Name Save="1">PD10_START</Name>
+				<Name Save="1">PD10_CODEC_END</Name>
+				<Name Save="1">PD10_TERGET</Name>
+				<Name>PD10_NMANI</Name>
+				<Name>PD10_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd20">
+			<SubPhase>
+				<Name>PD20_START</Name>
+				<Name>PD20_MOVIE</Name>
+				<Name Save="1">PD20_EVE</Name>
+				<Name>PD20_EVE2</Name>
+				<Name>PD20_VR</Name>
+				<Name>PD20_VR_01</Name>
+				<Name>PD20_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd21">
+			<SubPhase>
+				<Name Save="1">PD21_START</Name>
+				<Name>PD21_GAME1</Name>
+				<Name>PD21_GAME2</Name>
+				<Name>PD21_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd30">
+			<SubPhase>
+				<Name>PD30_START</Name>
+				<Name>PD30_MOVIE</Name>
+				<Name Save="1">PD30_MISSION1</Name>
+				<Name Save="1">PD30_M1_ON</Name>
+				<Name>PD30_M1_RESULT</Name>
+				<Name Save="1">PD30_MISSION2</Name>
+				<Name Save="1">PD30_M2_ON</Name>
+				<Name>PD30_M2_RESULT</Name>
+				<Name Save="1">PD30_M2_CLEAR</Name>
+				<Name Save="1">PD30_M2_CLEAR2</Name>
+				<Name>PD30_M2_BTL</Name>
+				<Name Save="1">PD30_M2_END</Name>
+				<Name Save="1">PD30_MISSION3</Name>
+				<Name Save="1">PD30_M3_ON</Name>
+				<Name Save="1">PD30_MISSION3_2</Name>
+				<Name Save="1">PD30_MISSION3_3</Name>
+				<Name>PD30_M3_RESULT</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd40">
+			<SubPhase>
+				<Name>PD40_START</Name>
+				<Name>PD40_MOVIE</Name>
+				<Name Save="1">PD40_WOLF</Name>
+				<Name Save="1">PD40_WOLF2</Name>
+				<Name Save="1">PD40_WOLF_END</Name>
+				<Name Save="1">PD40_WOLF_END2</Name>
+				<Name Save="1">PD40_CITY</Name>
+				<Name Save="1">PD40_CITY2</Name>
+				<Name Save="1">PD40_CITY_END</Name>
+				<Name Save="1">PD40_CITY_END2</Name>
+				<Name Save="1">PD40_HELI</Name>
+				<Name>PD40_HELI_BTL</Name>
+				<Name>PD40_HELI_LOAD</Name>
+				<Name Save="1">PD40_HELI_END</Name>
+				<Name Save="1">PD40_BRIDGE</Name>
+				<Name Save="1">PD40_BRIDGE_END</Name>
+				<Name>PD40_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd50">
+			<SubPhase>
+				<Name>PD50_START</Name>
+				<Name>PD50_LOAD</Name>
+				<Name Save="1">PD50_CODEC_END</Name>
+				<Name>PD50_BTL</Name>
+				<Name>PD50_SET</Name>
+				<Name>PD50_SET_LOAD</Name>
+				<Name>PD50_SET_LOAD2</Name>
+				<Name Save="1">PD50_SET_CODEC</Name>
+				<Name Save="1">PD50_SET_END</Name>
+				<Name>PD50_STREET</Name>
+				<Name>PD50_STREET0</Name>
+				<Name Save="1">PD50_STREET1</Name>
+				<Name Save="1">PD50_STREET2</Name>
+				<Name Save="1">PD50_STREET_END</Name>
+				<Name Save="1">PD50_GATE</Name>
+				<Name Save="1">PD50_GATE_IN</Name>
+				<Name Save="1">PD50_GATE_END</Name>
+				<Name>PD50_STOP</Name>
+				<Name>PD50_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd60">
+			<SubPhase>
+				<Name>PD60_START</Name>
+				<Name>PD60_MOVIE</Name>
+				<Name Save="1">PD60_KHAMSIN</Name>
+				<Name>PD60_RESULT</Name>
+				<Name>PD60_KHAM_DEAD</Name>
+				<Name>PD60_CODEC</Name>
+				<Name>PD60_BOMB</Name>
+				<Name>PD60_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd71">
+			<SubPhase>
+				<Name>PD71_START</Name>
+				<Name>PD71_GAME</Name>
+				<Name>PD71_GAME2</Name>
+				<Name>PD71_END</Name>
+				<Name>PD71_END2</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd72">
+			<SubPhase>
+				<Name>PD72_START</Name>
+				<Name>PD72_GAME</Name>
+				<Name>PD72_END</Name>
+				<Name>PD72_END2</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd73">
+			<SubPhase>
+				<Name>PD73_START</Name>
+				<Name>PD73_GAME</Name>
+				<Name>PD73_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd74">
+			<SubPhase>
+				<Name>PD74_START</Name>
+				<Name>PD74_1F</Name>
+				<Name>PD74_2F</Name>
+				<Name>PD74_3F</Name>
+				<Name>PD74_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pd75">
+			<SubPhase>
+				<Name>PD75_START</Name>
+				<Name>PD75_GAME</Name>
+				<Name>PD75_GAME1</Name>
+				<Name>PD75_VERTICAL</Name>
+				<Name>PD75_VERTICAL_E</Name>
+				<Name>PD75_SIDE</Name>
+				<Name>PD75_SIDE1</Name>
+				<Name>PD75_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pde0">
+			<SubPhase>
+				<Name>PDE0_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pdf0">
+			<SubPhase>
+				<Name>PDF0_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pdf1">
+			<SubPhase>
+				<Name>PDF1_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pdf2">
+			<SubPhase>
+				<Name Save="1">PDF2_RAPTOR</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pdf3">
+			<SubPhase>
+				<Name Save="1">PDF3_KOGEKKO</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pdf4">
+			<SubPhase>
+				<Name Save="1">PDF4_WOLF</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe00">
+			<SubPhase>
+				<Name>start</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe01">
+			<SubPhase>
+				<Name Save="1">PE01_START</Name>
+				<Name>PE01_GAME</Name>
+				<Name>PE01_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe02">
+			<SubPhase>
+				<Name Save="1">PE02_START</Name>
+				<Name>PE02_GAME</Name>
+				<Name>PE02_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe03">
+			<SubPhase>
+				<Name Save="1">PE03_START</Name>
+				<Name>PE03_GAME</Name>
+				<Name>PE03_GAME2</Name>
+				<Name>PE03_GAME3</Name>
+				<Name>PE03_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe04">
+			<SubPhase>
+				<Name Save="1">PE04_START</Name>
+				<Name>PE04_GAME</Name>
+				<Name>PE04_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe05">
+			<SubPhase>
+				<Name Save="1">PE05_START</Name>
+				<Name>PE05_GAME</Name>
+				<Name>PE05_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe06">
+			<SubPhase>
+				<Name Save="1">PE06_START</Name>
+				<Name>PE06_GAME</Name>
+				<Name>PE06_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe07">
+			<SubPhase>
+				<Name Save="1">PE07_START</Name>
+				<Name>PE07_GAME</Name>
+				<Name>PE07_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe08">
+			<SubPhase>
+				<Name Save="1">PE08_START</Name>
+				<Name>PE08_GAME</Name>
+				<Name>PE08_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe09">
+			<SubPhase>
+				<Name Save="1">PE09_START</Name>
+				<Name>PE09_GAME</Name>
+				<Name>PE09_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe10">
+			<SubPhase>
+				<Name Save="1">PE10_START</Name>
+				<Name>PE10_GAME</Name>
+				<Name>PE10_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe11">
+			<SubPhase>
+				<Name Save="1">PE11_START</Name>
+				<Name>PE11_1F</Name>
+				<Name>PE11_2F</Name>
+				<Name>PE11_3F</Name>
+				<Name>PE11_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe12">
+			<SubPhase>
+				<Name Save="1">PE12_START</Name>
+				<Name>PE12_GAME</Name>
+				<Name>PE12_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe13">
+			<SubPhase>
+				<Name Save="1">PE13_START</Name>
+				<Name>PE13_GAME</Name>
+				<Name>PE13_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe14">
+			<SubPhase>
+				<Name Save="1">PE14_START</Name>
+				<Name>PE14_GAME</Name>
+				<Name>PE14_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe15">
+			<SubPhase>
+				<Name Save="1">PE15_START</Name>
+				<Name>PE15_GAME</Name>
+				<Name>PE15_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe16">
+			<SubPhase>
+				<Name Save="1">PE16_START</Name>
+				<Name>PE16_GAME</Name>
+				<Name>PE16_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe17">
+			<SubPhase>
+				<Name Save="1">PE17_START</Name>
+				<Name>PE17_GAME</Name>
+				<Name>PE17_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe18">
+			<SubPhase>
+				<Name Save="1">PE18_START</Name>
+				<Name>PE18_GAME</Name>
+				<Name>PE18_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe19">
+			<SubPhase>
+				<Name Save="1">PE19_START</Name>
+				<Name>PE19_GAME</Name>
+				<Name>PE19_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe20">
+			<SubPhase>
+				<Name Save="1">PE20_START</Name>
+				<Name>PE20_BT01</Name>
+				<Name>PE20_BT02</Name>
+				<Name>PE20_BT03</Name>
+				<Name>PE20_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe21">
+			<SubPhase>
+				<Name Save="1">PE21_START</Name>
+				<Name>PE21_01</Name>
+				<Name>PE21_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe22">
+			<SubPhase>
+				<Name Save="1">PE22_START</Name>
+				<Name>PE22_GAME</Name>
+				<Name>PE22_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe23">
+			<SubPhase>
+				<Name Save="1">PE23_START</Name>
+				<Name>PE23_LINE1</Name>
+				<Name>PE23_LINE2</Name>
+				<Name>PE23_STREET</Name>
+				<Name>PE23_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe24">
+			<SubPhase>
+				<Name Save="1">PE24_START</Name>
+				<Name>PE24_GAME</Name>
+				<Name>PE24_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe25">
+			<SubPhase>
+				<Name Save="1">PE25_START</Name>
+				<Name>PE25_GAME</Name>
+				<Name>PE25_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe26">
+			<SubPhase>
+				<Name Save="1">PE26_START</Name>
+				<Name>PE26_GAME</Name>
+				<Name>PE26_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe27">
+			<SubPhase>
+				<Name Save="1">PE27_START</Name>
+				<Name>PE27_GAME</Name>
+				<Name>PE27_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe28">
+			<SubPhase>
+				<Name Save="1">PE28_START</Name>
+				<Name>PE28_GAME</Name>
+				<Name>PE28_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe29">
+			<SubPhase>
+				<Name Save="1">PE29_START</Name>
+				<Name>PE29_GAME</Name>
+				<Name>PE29_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe30">
+			<SubPhase>
+				<Name Save="1">PE30_START</Name>
+				<Name>PE30_GAME</Name>
+				<Name>PE30_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe31">
+			<SubPhase>
+				<Name Save="1">PE31_START</Name>
+				<Name>PE31_GAME</Name>
+				<Name>PE31_RAY</Name>
+				<Name>PE31_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe32">
+			<SubPhase>
+				<Name Save="1">PE32_START</Name>
+				<Name>PE32_GAME</Name>
+				<Name>PE32_GAME2</Name>
+				<Name>PE32_GAME3</Name>
+				<Name>PE32_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe33">
+			<SubPhase>
+				<Name Save="1">PE33_START</Name>
+				<Name>PE33_GAME</Name>
+				<Name>PE33_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe34">
+			<SubPhase>
+				<Name Save="1">PE34_START</Name>
+				<Name>PE34_GAME</Name>
+				<Name>PE34_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe35">
+			<SubPhase>
+				<Name Save="1">PE35_START</Name>
+				<Name>PE35_GAME</Name>
+				<Name>PE35_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe36">
+			<SubPhase>
+				<Name Save="1">PE36_START</Name>
+				<Name>PE36_BT1</Name>
+				<Name>PE36_BT2</Name>
+				<Name>PE36_BT3</Name>
+				<Name>PE36_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe37">
+			<SubPhase>
+				<Name Save="1">PE37_START</Name>
+				<Name>PE37_GAME</Name>
+				<Name>PE37_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe38">
+			<SubPhase>
+				<Name Save="1">PE38_START</Name>
+				<Name>PE38_GAME</Name>
+				<Name>PE38_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe39">
+			<SubPhase>
+				<Name Save="1">PE39_START</Name>
+				<Name>PE39_BTL_01</Name>
+				<Name>PE39_CLEAR_01</Name>
+				<Name>PE39_KG_01</Name>
+				<Name>PE39_BTL_02</Name>
+				<Name>PE39_CLEAR_02</Name>
+				<Name>PE39_KG_02</Name>
+				<Name>PE39_BTL_03</Name>
+				<Name>PE39_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe40">
+			<SubPhase>
+				<Name Save="1">PE40_START</Name>
+				<Name>PE40_GAME</Name>
+				<Name>PE40_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe41">
+			<SubPhase>
+				<Name Save="1">PE41_START</Name>
+				<Name>PE41_GAME</Name>
+				<Name>PE41_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe42">
+			<SubPhase>
+				<Name Save="1">PE42_START</Name>
+				<Name>PE42_GAME</Name>
+				<Name>PE42_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe43">
+			<SubPhase>
+				<Name Save="1">PE43_START</Name>
+				<Name>PE43_GAME</Name>
+				<Name>PE43_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe44">
+			<SubPhase>
+				<Name Save="1">PE44_START</Name>
+				<Name>PE44_GAME</Name>
+				<Name>PE44_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe45">
+			<SubPhase>
+				<Name Save="1">PE45_START</Name>
+				<Name>PE45_GAME</Name>
+				<Name>PE45_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe46">
+			<SubPhase>
+				<Name Save="1">PE46_START</Name>
+				<Name>PE46_GAME</Name>
+				<Name>PE46_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe47">
+			<SubPhase>
+				<Name Save="1">PE47_START</Name>
+				<Name>PE47_GAME</Name>
+				<Name>PE47_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe48">
+			<SubPhase>
+				<Name Save="1">PE48_START</Name>
+				<Name>PE48_GAME</Name>
+				<Name>PE48_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe49">
+			<SubPhase>
+				<Name Save="1">PE49_START</Name>
+				<Name>PE49_GAME</Name>
+				<Name>PE49_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe50">
+			<SubPhase>
+				<Name Save="1">PE50_START</Name>
+				<Name>PE50_GAME</Name>
+				<Name>PE50_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pe51">
+			<SubPhase>
+				<Name Save="1">PE51_START</Name>
+				<Name>PE51_GAME</Name>
+				<Name>PE51_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pef1">
+			<SubPhase>
+				<Name Save="1">PEF1_START</Name>
+				<Name>PEF1_GAME</Name>
+				<Name>PEF1_END</Name>
+				<Name>PEF1_GAME2</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pef2">
+			<SubPhase>
+				<Name>PEF2_START</Name>
+				<Name>PEF2_GAME</Name>
+				<Name>PEF2_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pef3">
+			<SubPhase>
+				<Name Save="1">PEF3_START</Name>
+				<Name>PEF3_GAME</Name>
+				<Name>PEF3_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pef4">
+			<SubPhase>
+				<Name Save="1">PEF4_START</Name>
+				<Name>PEF4_BT1</Name>
+				<Name>PEF4_BT2</Name>
+				<Name>PEF4_BT3</Name>
+				<Name>PEF4_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pef5">
+			<SubPhase>
+				<Name Save="1">PEF5_START</Name>
+				<Name>PEF5_BTL1</Name>
+				<Name>PEF5_BTL2</Name>
+				<Name>PEF5_BTL3</Name>
+				<Name>PEF5_KILL</Name>
+				<Name>PEF5_AUG</Name>
+				<Name>PEF5_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pef6">
+			<SubPhase>
+				<Name Save="1">PEF6_START</Name>
+				<Name>PEF6_BTL1</Name>
+				<Name>PEF6_BTL2</Name>
+				<Name>PEF6_BTL3</Name>
+				<Name>PEF6_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pef7">
+			<SubPhase>
+				<Name Save="1">PEF7_START</Name>
+				<Name>PEF7_BTL1</Name>
+				<Name>PEF7_BTL2</Name>
+				<Name>PEF7_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="peff">
+			<SubPhase>
+				<Name>PEF1_GAME2</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf01">
+			<SubPhase>
+				<Name>PF01_START</Name>
+				<Name>EV6030</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf02">
+			<SubPhase>
+				<Name>PF02_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf04">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf05">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf06">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf07">
+			<SubPhase>
+				<Name>START</Name>
+				<Name>EV6030</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf08">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf09">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf0a">
+			<SubPhase>
+				<Name>PF0A_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf0b">
+			<SubPhase>
+				<Name>PF0B_START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf10">
+			<SubPhase>
+				<Name>START</Name>
+				<Name Save="1">beach_start</Name>
+				<Name>beach</Name>
+				<Name>beach_end</Name>
+				<Name Save="1">street01_start</Name>
+				<Name>street01</Name>
+				<Name>street01_end</Name>
+				<Name Save="1">slash_test_start</Name>
+				<Name>slash_test</Name>
+				<Name>slash_test_end</Name>
+				<Name>breakdown_start</Name>
+				<Name>breakdown_0</Name>
+				<Name Save="1">breakdown_re_start</Name>
+				<Name>breakdown_1</Name>
+				<Name>breakdown_2</Name>
+				<Name Save="1">heli01_start</Name>
+				<Name>heli01</Name>
+				<Name>heli01_end</Name>
+				<Name>gate_start</Name>
+				<Name>gate</Name>
+				<Name>gate_end</Name>
+				<Name>END</Name>
+				<Name Save="1">heli02_start</Name>
+				<Name>heli02</Name>
+				<Name>heli02_end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf11">
+			<SubPhase>
+				<Name Save="1">E3_s_shot_start</Name>
+				<Name>E3_s_shot</Name>
+				<Name>E3_s_shot_end</Name>
+				<Name Save="1">E3_cyborg_start</Name>
+				<Name>E3_cyborg</Name>
+				<Name>E3_cyborg_end</Name>
+				<Name Save="1">E3_cyborg_bt_start</Name>
+				<Name>E3_cyborg_bt</Name>
+				<Name>E3_cyborg_bt_end</Name>
+				<Name Save="1">E3_gekko_start</Name>
+				<Name>E3_gekko</Name>
+				<Name>E3_gekko_end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf12">
+			<SubPhase>
+				<Name Save="1">slash_test_start</Name>
+				<Name>slash_test</Name>
+				<Name>slash_test_end</Name>
+				<Name Save="1">test_start</Name>
+				<Name>test</Name>
+				<Name>test_end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf13">
+			<SubPhase>
+				<Name>cyborg_bt_start</Name>
+				<Name>cyborg_bt_tutorial</Name>
+				<Name Save="1">cyborg_bt</Name>
+				<Name>cyborg_bt_end</Name>
+				<Name Save="1">gekko_bt_start</Name>
+				<Name>gekko_bt</Name>
+				<Name>gekko_bt_end</Name>
+				<Name Save="1">test_start</Name>
+				<Name>test</Name>
+				<Name>test_end</Name>
+				<Name Save="1">test2_start</Name>
+				<Name>test2</Name>
+				<Name>test2_end</Name>
+				<Name>test3_start</Name>
+				<Name>test3</Name>
+				<Name>test3_end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf14">
+			<SubPhase>
+				<Name>E3_ray_bt_start</Name>
+				<Name>E3_ray_bt</Name>
+				<Name>E3_ray_bt_end</Name>
+				<Name>end_slate</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf15">
+			<SubPhase>
+				<Name>PF15_SYNOPSIS</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf20">
+			<SubPhase>
+				<Name Save="1">cyborg_bt_start</Name>
+				<Name>cyborg_bt</Name>
+				<Name>cyborg_bt_end</Name>
+				<Name Save="1">mastiff_bt_start</Name>
+				<Name>mastiff_bt</Name>
+				<Name>mastiff_bt_end</Name>
+				<Name Save="1">gekko_bt_start</Name>
+				<Name>gekko_bt</Name>
+				<Name>gekko_bt_end</Name>
+				<Name Save="1">slash_test_start</Name>
+				<Name>slash_test</Name>
+				<Name>slash_test_end</Name>
+				<Name Save="1">E3_bt1_start</Name>
+				<Name>E3_bt1</Name>
+				<Name>E3_bt1_end</Name>
+				<Name Save="1">E3_bt2_start</Name>
+				<Name>E3_bt2</Name>
+				<Name>E3_bt2_end</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf30">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf31">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf32">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf33">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf34">
+			<SubPhase>
+				<Name>START</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf40">
+			<SubPhase/>
+		</Phase>
+		<Phase name="pf41">
+			<SubPhase>
+				<Name>test</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf42">
+			<SubPhase>
+				<Name>test</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf43">
+			<SubPhase>
+				<Name Save="1">PE12_START</Name>
+				<Name>PE12_GAME</Name>
+				<Name>PE12_END</Name>
+			</SubPhase>
+		</Phase>
+		<Phase name="pf44">
+			<SubPhase>
+				<Name Save="1">PE17_START</Name>
+				<Name>PE17_GAME</Name>
+				<Name>PE17_END</Name>
+			</SubPhase>
+		</Phase>
+	</InfoList>
+</PhaseInfoRoot>
