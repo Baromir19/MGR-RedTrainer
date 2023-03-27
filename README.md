@@ -15,6 +15,14 @@ The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](htt
 ### Movement
 - Change game speed
 - Fly mode
+### Mission
+- Change mission
+- No damage
+- No killed and no alert (now doesnt works)
+- Change mission timer
+- Change mission battlepoints
+- Change max combo
+- Change kills and zandzutsu
 
 ## Hotkeys
 - Show/hide menu (Num+)
