@@ -25,5 +25,23 @@ namespace RedTrainer {
 
 	void setFly();
 
+	void setMission(short missionId, char missionName[]);
+
+	void setNoDamage(bool &bNoDamage);
+
+	void setNoKilled(bool &bNoKilled);
+
+	void setNoAlert(bool &bNoAlert);
+
+	void setBattleTimer(float timerValue);
+
+	void setBattlePoints(int battlePointsValue);
+
+	void setMaxCombo(int maxComboValue);
+
+	void setKills(int killsValue);
+
+	void setZandzutsuKills(int zandzutsuKillsValue);
+
 	//void spawnEnemy(); //
 }

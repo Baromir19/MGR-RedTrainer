@@ -41,6 +41,7 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	}
 	else if (!(GetAsyncKeyState(VK_ADD) & 0x8000) && isKeyPressed)
 	{
+		RtGui::hideSecondWindow();
 		Data::ShowMenu = !Data::ShowMenu;
 		isKeyPressed = false;
 	}
@@ -51,11 +52,7 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	}
 	else if (!(GetAsyncKeyState(VK_SUBTRACT) & 0x8000) && isKeyPressed2)
 	{
-		Data::ShowMenu2 = false;
-		Data::ShowMenu3 = false;
-		Data::ShowMenu4 = false;
-		Data::ShowMenu5 = false;
-		Data::ShowMenu6 = false;
+		RtGui::hideSecondWindow();
 		isKeyPressed2 = false;
 	}
 
@@ -67,6 +64,7 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	{
 		isKeyPressed3 = false;
 		RtGui::bFly = !RtGui::bFly;
+		RedTrainer::setSpeed(1.0f);
 	}
 
 	if (RtGui::bFly) 
@@ -75,7 +73,6 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	}
 	else if (!RtGui::bFly)
 	{
-		RedTrainer::setSpeed(1.0f);
 		RedTrainer::isFirstFly = true;
 	}
 

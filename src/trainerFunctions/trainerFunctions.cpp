@@ -151,7 +151,6 @@ void RedTrainer::setFly() //NOT OPTIMIZED!!!
 
 	if (posX == NULL)
 	{
-		//setSpeed(1.0f);
 		return;
 	}
 	
@@ -164,10 +163,6 @@ void RedTrainer::setFly() //NOT OPTIMIZED!!!
 	memcpy(&posX, (BYTE*)posAddress, sizeof(posX));
 	memcpy(&posY, (BYTE*)posAddress + 4, sizeof(posY));
 	memcpy(&posZ, (BYTE*)posAddress + 8, sizeof(posZ));
-	/*
-	mem::in::read((BYTE*)&posX, (BYTE*)posAddress, sizeof(posX));
-	mem::in::read((BYTE*)&posY, (BYTE*)posAddress + 4, sizeof(posX));
-	mem::in::read((BYTE*)&posZ, (BYTE*)posAddress + 8, sizeof(posX));*/
 
 	if (GetAsyncKeyState(VK_NUMPAD2) && 0x8000)
 	{
@@ -205,6 +200,81 @@ void RedTrainer::setFly() //NOT OPTIMIZED!!!
 		mem::in::write((BYTE*)(posAddress + 4), (BYTE*)&posY, sizeof(posY));
 	}
 
+}
+
+void RedTrainer::setMission(short missionId, char missionName[]) 
+{
+	if (missionName == NULL)
+		return;
+	mem::in::write((BYTE*)(moduleBase + 0x1764670), (BYTE*)&missionId, sizeof(missionId));
+	mem::in::write((BYTE*)(moduleBase + 0x1764674), (BYTE*)&missionName[0], 0x20);
+}
+
+void RedTrainer::setNoDamage(bool &bNoDamage)
+{
+	bNoDamage = !bNoDamage;
+	if (bNoDamage)
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x81B488), (BYTE*)"\xEB\x05", 2);
+		mem::in::write((BYTE*)(moduleBase + 0x1776218), (BYTE*)"\x00", 1);
+	}
+	else
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x81B488), (BYTE*)"\x74\x05", 2);
+	}
+}
+
+void RedTrainer::setNoKilled(bool &bNoKilled) //doesnt work
+{
+	bNoKilled = !bNoKilled;
+	if (bNoKilled)
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x81B494), (BYTE*)"\xEB\x05", 2);
+		mem::in::write((BYTE*)(moduleBase + 0x177621C), (BYTE*)"\x00\x00\x00\x00", 4);
+	}
+	else
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x81B494), (BYTE*)"\x74\x05", 2);
+	}
+}
+
+void RedTrainer::setNoAlert(bool &bNoAlert) //doesnt work
+{
+	bNoAlert = !bNoAlert;
+	if (bNoAlert)
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x82C417), (BYTE*)"\x90\x90\x90\x90\x90\x90", 6);
+		mem::in::write((BYTE*)(moduleBase + 0x1776174), (BYTE*)"\x00\x00\x00\x00", 4);
+	}
+	else
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x82C417), (BYTE*)"\x01\x05\x74\x61\x30\x02", 6);
+	}
+}
+
+void RedTrainer::setBattleTimer(float timerValue)
+{
+	mem::in::write((BYTE*)(moduleBase + 0x1776204), (BYTE*)&timerValue, sizeof(timerValue));
+}
+
+void RedTrainer::setBattlePoints(int battlePointsValue)
+{
+	mem::in::write((BYTE*)(moduleBase + 0x1776208), (BYTE*)&battlePointsValue, sizeof(battlePointsValue));
+}
+
+void RedTrainer::setMaxCombo(int maxComboValue)
+{
+	mem::in::write((BYTE*)(moduleBase + 0x1776210), (BYTE*)&maxComboValue, sizeof(maxComboValue));
+}
+
+void RedTrainer::setKills(int killsValue)
+{
+	mem::in::write((BYTE*)(moduleBase + 0x1776214), (BYTE*)&killsValue, sizeof(killsValue));
+}
+
+void RedTrainer::setZandzutsuKills(int zandzutsuKillsValue)
+{
+	mem::in::write((BYTE*)(moduleBase + 0x177620C), (BYTE*)&zandzutsuKillsValue, sizeof(zandzutsuKillsValue));
 }
 
 /*void RedTrainer::spawnEnemy()

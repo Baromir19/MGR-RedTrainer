@@ -14,4 +14,6 @@ namespace RtGui {
 
 	void otherWindow();
 
+	void hideSecondWindow();
+
 }
