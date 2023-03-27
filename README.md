@@ -27,6 +27,8 @@ The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](htt
 ## Hotkeys
 - Show/hide menu (Num+)
 - Show/hide additional menus (Num-)
+- Keyboard control (Home)
+- Deatach trainer (End)
 - Activate FlyMode (Num5)
 - FlyMode forward (Num8)
 - FlyMode back (Num2)
