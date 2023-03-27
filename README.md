@@ -38,3 +38,7 @@ The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](htt
 - FlyMode down (Num1)
 
 ![alt text](https://github.com/Baromir19/MGR-RedTrainer/blob/master/readme/hotkeys.png)
+
+##Installation
+Download Compiled.zip from releases, after you need to open the archive and unpack it into a folder with Metal Gear Rising
+![alt text](https://github.com/Baromir19/MGR-RedTrainer/blob/master/readme/Installation.png)
