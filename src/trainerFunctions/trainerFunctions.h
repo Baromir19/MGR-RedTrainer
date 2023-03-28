@@ -13,6 +13,10 @@ namespace RedTrainer {
 
 	void setMoney(int moneyValue);
 
+	void setBodyShop(int bodyShopId, short bodyShopType);
+
+	void setSwordShop(int swordShopId, short swordShopType);
+
 	void setPlayerType(int playerTypeId);
 
 	void setPlayerSword(int playerSwordId);
@@ -26,6 +30,8 @@ namespace RedTrainer {
 	void setFly();
 
 	void setMission(short missionId, char missionName[]);
+
+	void setDifficulty(char difficultyValue);
 
 	void setNoDamage(bool &bNoDamage);
 
@@ -42,6 +48,8 @@ namespace RedTrainer {
 	void setKills(int killsValue);
 
 	void setZandzutsuKills(int zandzutsuKillsValue);
+
+	void setFilter(float filterValue, char filterOffset);
 
 	//void spawnEnemy(); //
 }

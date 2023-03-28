@@ -3,6 +3,7 @@
 #include "trainerFunctions.h"
 
 bool RedTrainer::isFirstFly = true;
+int currentMissionCheck = 0;
 
 float posX = 0.0f, posY = 0.0f, posZ = 0.0f;
 
@@ -23,6 +24,8 @@ void RedTrainer::setText (bool bActive)
 	}
 	ImGui::PopStyleColor();
 }
+
+//STATS
 
 void RedTrainer::setInvincibility(bool &bInvincibility)
 {
@@ -61,6 +64,53 @@ void RedTrainer::setMoney(int moneyValue)
 	uintptr_t moneyAddress = mem::in::find_DMA(moduleBase + 0x17EA100, { 0xDC });
 	mem::in::write((BYTE*)moneyAddress, (BYTE*)&moneyValue, sizeof(moneyValue));
 }
+
+//ITEMS
+
+void RedTrainer::setBodyShop(int bodyShopId, short bodyShopType)
+{
+	switch (bodyShopId)
+	{
+	case 1:
+		bodyShopId = 2;
+		break;
+	case 2:
+		bodyShopId = 1;
+		break;
+	default:
+		break;
+	}
+
+	if (bodyShopType == 4) {
+		bodyShopType = 0x103;
+	}
+
+	mem::in::write((BYTE*)(moduleBase + 0x1773860 + bodyShopId * 0x20), (BYTE*)&bodyShopType, sizeof(bodyShopType));
+}
+
+void RedTrainer::setSwordShop(int swordShopId, short swordShopType)
+{
+	switch (swordShopId)
+	{
+	case 6:
+		swordShopId = 7;
+		break;
+	case 7:
+		swordShopId = 6;
+		break;
+	default:
+		break;
+	}
+
+	if (swordShopType == 4) {
+		swordShopType = 0x103;
+	}
+
+	mem::in::write((BYTE*)(moduleBase + 0x1773A00 + swordShopId * 0x20), (BYTE*)&swordShopType, sizeof(swordShopType));
+
+}
+
+//CUSTOMIZATION
 
 void RedTrainer::setPlayerType(int playerTypeId)
 {
@@ -140,6 +190,8 @@ void RedTrainer::setPlayerHair(int playerHairId)
 	}
 }
 
+//MOVEMENT
+
 void RedTrainer::setSpeed(float speedValue)
 {
 	mem::in::write((BYTE*)(moduleBase + 0x17E93EC), (BYTE*)&speedValue, sizeof(speedValue));
@@ -202,12 +254,32 @@ void RedTrainer::setFly() //NOT OPTIMIZED!!!
 
 }
 
+//MISSION
+
 void RedTrainer::setMission(short missionId, char missionName[]) 
 {
 	if (missionName == NULL)
 		return;
-	mem::in::write((BYTE*)(moduleBase + 0x1764670), (BYTE*)&missionId, sizeof(missionId));
-	mem::in::write((BYTE*)(moduleBase + 0x1764674), (BYTE*)&missionName[0], 0x20);
+
+	mem::in::read((BYTE*)(moduleBase + 0x1764670), (BYTE*)&currentMissionCheck, sizeof(currentMissionCheck));
+
+	if (currentMissionCheck) 
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x1764670), (BYTE*)&missionId, sizeof(missionId));
+		mem::in::write((BYTE*)(moduleBase + 0x1764674), (BYTE*)&missionName[0], 0x20);
+	}
+	else
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x1766004), (BYTE*)&missionId, sizeof(missionId));
+		mem::in::write((BYTE*)(moduleBase + 0x1766008), (BYTE*)&missionName[0], 0x20);
+	}
+
+	currentMissionCheck = 0;
+}
+
+void RedTrainer::setDifficulty(char difficultyValue)
+{
+	mem::in::write((BYTE*)(moduleBase + 0x1764430), (BYTE*)&difficultyValue, sizeof(difficultyValue));
 }
 
 void RedTrainer::setNoDamage(bool &bNoDamage)
@@ -275,6 +347,13 @@ void RedTrainer::setKills(int killsValue)
 void RedTrainer::setZandzutsuKills(int zandzutsuKillsValue)
 {
 	mem::in::write((BYTE*)(moduleBase + 0x177620C), (BYTE*)&zandzutsuKillsValue, sizeof(zandzutsuKillsValue));
+}
+
+//OTHER
+
+void RedTrainer::setFilter(float filterValue, char filterOffset)
+{
+	mem::in::write((BYTE*)(moduleBase + 0x1ADD604 + filterOffset), (BYTE*)&filterValue, sizeof(filterValue));
 }
 
 /*void RedTrainer::spawnEnemy()

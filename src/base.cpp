@@ -23,6 +23,8 @@ bool              Base::Data::ShowMenu3  = false;
 bool              Base::Data::ShowMenu4  = false;
 bool              Base::Data::ShowMenu5  = false;
 bool              Base::Data::ShowMenu6  = false;
+bool              Base::Data::ShowMenu7  = false;
+bool              Base::Data::ShowMenu8  = false;
 bool              Base::Data::InitImGui  = false;
 
 

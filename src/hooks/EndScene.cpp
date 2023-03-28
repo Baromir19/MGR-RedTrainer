@@ -90,20 +90,30 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 
 	if (Data::ShowMenu3)
 	{
-		RtGui::customizationWindow();
+		RtGui::itemsWindow();
 	}
 
 	if (Data::ShowMenu4)
 	{
-		RtGui::movementWindow();
+		RtGui::customizationWindow();
 	}
 
 	if (Data::ShowMenu5)
 	{
-		RtGui::missionWindow();
+		RtGui::movementWindow();
 	}
 
 	if (Data::ShowMenu6)
+	{
+		RtGui::missionWindow();
+	}
+
+	if (Data::ShowMenu7)
+	{
+		RtGui::raidenFlagsWindow();
+	}
+
+	if (Data::ShowMenu8)
 	{
 		RtGui::otherWindow();
 	}

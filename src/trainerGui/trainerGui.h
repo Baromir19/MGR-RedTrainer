@@ -6,11 +6,15 @@ namespace RtGui {
 
 	void statsWindow();
 
+	void itemsWindow();
+
 	void customizationWindow();
 
 	void movementWindow();
 
 	void missionWindow();
+
+	void raidenFlagsWindow();
 
 	void otherWindow();
 
