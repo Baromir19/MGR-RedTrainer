@@ -43,3 +43,7 @@ The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](htt
 Download Compiled.zip from releases, after you need to open the archive and unpack it into a folder with Metal Gear Rising
 
 ![alt text](https://github.com/Baromir19/MGR-RedTrainer/blob/master/readme/Installation.png)
+
+## Screenshots
+![alt text](https://github.com/Baromir19/MGR-RedTrainer/blob/master/readme/Screen1.png)
+![alt text](https://github.com/Baromir19/MGR-RedTrainer/blob/master/readme/Screen2.png)
