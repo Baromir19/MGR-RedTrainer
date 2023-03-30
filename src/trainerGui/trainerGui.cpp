@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "base.h"
 #include "trainerGui.h"
 #include "trainerFunctions/trainerFunctions.h"
@@ -8,6 +8,7 @@ bool bInvicibility   = false,
 	 bNoDamage		 = false,
 	 bNoKilled		 = false,
 	 bNoAlert		 = false,
+	 bInfAddWeapon   = false,
 	 RtGui::bFly	 = false;
 
 char missionName[0x20] = { 0 },
@@ -18,19 +19,17 @@ short missionId			= 0,
 	  cSwordShop		= 0,
 	  cUniqueWeaponShop = 0,
 	  cWigShop			= 0,
-	  cLifeShop			= 0,
-	  cFuelShop			= 0,
+	  cLifeFuelShop		= 0,
 	  cSkillShop		= 0;
 
 int healthValue			= 1600,
 	moneyValue			= 0,
 	bodyTypeShop		= 1,
 	swordTypeShop		= 0,
-	UniqueWeaponTypeShop = 0,
-	WigTypeShop			= 0,
-	LifeTypeShop		= 0,
-	FuelTypeShop		= 0,
-	SkillTypeShop		= 0,
+	uniqueWeaponTypeShop = 1,
+	wigTypeShop			= 1,
+	lifeFuelTypeShop	= 0,
+	skillTypeShop		= 0,
 	playerType			= 5,
 	swordType			= 12,
 	bodyType			= 16,
@@ -55,8 +54,10 @@ const char* cBodyTypes[]   = { "Default", "Blue Body", "Red Body", "Yellow Body"
 							 "Raiden", "First Body", "Sam :)", "Disabled" };
 const char* cHairTypes[]   = { "Default", "Wig A", "Wig B", "Wig C", "Disabled" };
 
-const char* cLifeUpgrades[] = { "Life 1", "Life 2", "Life 3", "Life 4" };
-const char* cFuelUpgrades[] = { "Fuel 1", "Fuel 2", "Fuel 3", "Fuel 4", "Fuel 5" };
+const char* cLifeFuelUpgrades[] = { "Life 1", "Life 2", "Life 3", "Life 4", "Fuel 1", "Fuel 2", "Fuel 3", "Fuel 4", "Fuel 5" };
+const char* cSkillTypes[] = { "Aerial Parry", "Defensive Offense", "Sky High", "Sweep Kick", "Thunder Strike", "Falling Lightning", 
+							  "Quick Draw", "Lightning Strike", "Stormbringer", "Marches du ciel", "Lumière du ciel", 
+							  "Cercle de l'ange", "Turbuience", "Down Burst"};
 const char* cShopItemTypes[] = { "Hidden", "New", "To buy", "Buyed", "Selected" };
 
 void RtGui::mainWindow() 
@@ -147,7 +148,7 @@ void RtGui::statsWindow()
 		RedTrainer::setInvincibility(bInvicibility);
 	RedTrainer::setText(bInvicibility);
 
-	if (ImGui::Button("INFINITY ENERGY", ImVec2(150, 20)))
+	if (ImGui::Button("INFINITE ENERGY", ImVec2(150, 20)))
 		RedTrainer::setInfinityEnergy(bEnergy);
 	RedTrainer::setText(bEnergy);
 
@@ -186,10 +187,14 @@ void RtGui::itemsWindow()
 
 	ImGui::Text("ITEMS");
 
+	if (ImGui::Button("INFINITE UTILITY", ImVec2(150, 20)))
+		RedTrainer::setInfinityAddWeapons(bInfAddWeapon);
+	RedTrainer::setText(bInfAddWeapon);
+
 	if (ImGui::Button("BODY SHOP", ImVec2(150, 20)))
 		RedTrainer::setBodyShop(bodyTypeShop, cBodyShop);
 	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
-	if (ImGui::BeginCombo(" ", cBodyTypes[bodyTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	if (ImGui::BeginCombo("a", cBodyTypes[bodyTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cBodyTypes) - 4; i++) {
 			bool is_selected = (bodyTypeShop == i);
@@ -203,7 +208,7 @@ void RtGui::itemsWindow()
 		ImGui::EndCombo();
 	}
 	ImGui::SameLine();
-	if (ImGui::BeginCombo("  ", cShopItemTypes[cBodyShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	if (ImGui::BeginCombo("1", cShopItemTypes[cBodyShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
 			bool is_selected = (cBodyShop == i);
@@ -220,7 +225,7 @@ void RtGui::itemsWindow()
 	if (ImGui::Button("SWORD SHOP", ImVec2(150, 20)))
 		RedTrainer::setSwordShop(swordTypeShop, cSwordShop);
 	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
-	if (ImGui::BeginCombo("   ", cSwordTypes[swordTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	if (ImGui::BeginCombo("b", cSwordTypes[swordTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cSwordTypes) - 5; i++) {
 			bool is_selected = (swordTypeShop == i);
@@ -234,12 +239,136 @@ void RtGui::itemsWindow()
 		ImGui::EndCombo();
 	}
 	ImGui::SameLine();
-	if (ImGui::BeginCombo("    ", cShopItemTypes[cSwordShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	if (ImGui::BeginCombo("2", cShopItemTypes[cSwordShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
 			bool is_selected = (cSwordShop == i);
 			if (ImGui::Selectable(cShopItemTypes[i], is_selected)) {
 				cSwordShop = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (ImGui::Button("UNIQUE SHOP", ImVec2(150, 20)))
+		RedTrainer::setUniqueShop(uniqueWeaponTypeShop, cUniqueWeaponShop);
+	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(150, 15));
+	if (ImGui::BeginCombo("c", cUniqueWeaponsTypes[uniqueWeaponTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cUniqueWeaponsTypes) - 2; i++) {
+			bool is_selected = (uniqueWeaponTypeShop == i + 1);
+			if (ImGui::Selectable(cUniqueWeaponsTypes[i + 1], is_selected)) {
+				uniqueWeaponTypeShop = i + 1;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::SameLine();
+	if (ImGui::BeginCombo("3", cShopItemTypes[cUniqueWeaponShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
+			bool is_selected = (cUniqueWeaponShop == i);
+			if (ImGui::Selectable(cShopItemTypes[i], is_selected)) {
+				cUniqueWeaponShop = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (ImGui::Button("WIG SHOP", ImVec2(150, 20)))
+		RedTrainer::setWigShop(wigTypeShop, cWigShop);
+	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	if (ImGui::BeginCombo("d", cHairTypes[wigTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cHairTypes) - 2; i++) {
+			bool is_selected = (wigTypeShop == i + 1);
+			if (ImGui::Selectable(cHairTypes[i + 1], is_selected)) {
+				wigTypeShop = i + 1;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::SameLine();
+	if (ImGui::BeginCombo("4", cShopItemTypes[cWigShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
+			bool is_selected = (cWigShop == i);
+			if (ImGui::Selectable(cShopItemTypes[i], is_selected)) {
+				cWigShop = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (ImGui::Button("INDICATORS SHOP", ImVec2(150, 20)))
+		RedTrainer::setLifeFuelShop(lifeFuelTypeShop, cLifeFuelShop);
+	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	if (ImGui::BeginCombo("e", cLifeFuelUpgrades[lifeFuelTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cLifeFuelUpgrades); i++) {
+			bool is_selected = (lifeFuelTypeShop == i);
+			if (ImGui::Selectable(cLifeFuelUpgrades[i], is_selected)) {
+				lifeFuelTypeShop = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::SameLine();
+	if (ImGui::BeginCombo("5", cShopItemTypes[cLifeFuelShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
+			bool is_selected = (cLifeFuelShop == i);
+			if (ImGui::Selectable(cShopItemTypes[i], is_selected)) {
+				cLifeFuelShop = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (ImGui::Button("SKILLS SHOP", ImVec2(150, 20)))
+		RedTrainer::setSkillsShop(skillTypeShop, cSkillShop);
+	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	if (ImGui::BeginCombo("f", cSkillTypes[skillTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cSkillTypes); i++) {
+			bool is_selected = (skillTypeShop == i);
+			if (ImGui::Selectable(cSkillTypes[i], is_selected)) {
+				skillTypeShop = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::SameLine();
+	if (ImGui::BeginCombo("6", cShopItemTypes[cSkillShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
+			bool is_selected = (cSkillShop == i);
+			if (ImGui::Selectable(cShopItemTypes[i], is_selected)) {
+				cSkillShop = i;
 			}
 			if (is_selected) {
 				ImGui::SetItemDefaultFocus();

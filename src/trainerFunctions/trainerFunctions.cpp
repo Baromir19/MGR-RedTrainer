@@ -67,6 +67,21 @@ void RedTrainer::setMoney(int moneyValue)
 
 //ITEMS
 
+void RedTrainer::setInfinityAddWeapons(bool &bInfAddWeapon)
+{
+	bInfAddWeapon = !bInfAddWeapon;
+	if (bInfAddWeapon)
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x54D8D0), (BYTE*)"\x90\x90\x90", 3);
+		mem::in::write((BYTE*)(moduleBase + 0x5499F6), (BYTE*)"\x90\x90\x90", 3);
+	}
+	else
+	{
+		mem::in::write((BYTE*)(moduleBase + 0x54D8D0), (BYTE*)"\xFF\x49\x54", 3);
+		mem::in::write((BYTE*)(moduleBase + 0x5499F6), (BYTE*)"\x89\x51\x5C", 3);
+	}
+}
+
 void RedTrainer::setBodyShop(int bodyShopId, short bodyShopType)
 {
 	switch (bodyShopId)
@@ -108,6 +123,46 @@ void RedTrainer::setSwordShop(int swordShopId, short swordShopType)
 
 	mem::in::write((BYTE*)(moduleBase + 0x1773A00 + swordShopId * 0x20), (BYTE*)&swordShopType, sizeof(swordShopType));
 
+}
+
+void RedTrainer::setUniqueShop(int uniqueShopId, short uniqueShopType)
+{
+	if (uniqueShopType == 4) {
+		uniqueShopType = 0x103;
+	}
+
+	uniqueShopId--;
+
+	mem::in::write((BYTE*)(moduleBase + 0x1773B20 + uniqueShopId * 0x20), (BYTE*)&uniqueShopType, sizeof(uniqueShopType));
+}
+
+void RedTrainer::setWigShop(int wigShopId, short wigShopType)
+{
+	if (wigShopType == 4) {
+		wigShopType = 0x103;
+	}
+
+	wigShopId--;
+
+	mem::in::write((BYTE*)(moduleBase + 0x1773B80 + wigShopId * 0x20), (BYTE*)&wigShopType, sizeof(wigShopType));
+}
+
+void RedTrainer::setLifeFuelShop(int lfShopId, short lfShopType)
+{
+	if (lfShopType == 4) {
+		lfShopType = 0x103;
+	}
+
+	mem::in::write((BYTE*)(moduleBase + 0x1773BE0 + lfShopId * 0x20), (BYTE*)&lfShopType, sizeof(lfShopType));
+}
+
+void RedTrainer::setSkillsShop(int skillShopId, short skillShopType)
+{
+	if (skillShopType == 4) {
+		skillShopType = 0x103;
+	}
+
+	mem::in::write((BYTE*)(moduleBase + 0x1773D00 + skillShopId * 0x20), (BYTE*)&skillShopType, sizeof(skillShopType));
 }
 
 //CUSTOMIZATION

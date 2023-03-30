@@ -13,9 +13,19 @@ namespace RedTrainer {
 
 	void setMoney(int moneyValue);
 
+	void setInfinityAddWeapons(bool &bInfAddWeapon);
+
 	void setBodyShop(int bodyShopId, short bodyShopType);
 
 	void setSwordShop(int swordShopId, short swordShopType);
+
+	void setUniqueShop(int uniqueShopId, short uniqueShopType);
+
+	void setWigShop(int wigShopId, short wigShopType);
+
+	void setLifeFuelShop(int lfShopId, short lfShopType);
+
+	void setSkillsShop(int skillShopId, short skillShopType);
 
 	void setPlayerType(int playerTypeId);
 
