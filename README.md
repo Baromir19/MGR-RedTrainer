@@ -7,6 +7,9 @@ The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](htt
 - Change money
 - Invincibility
 - Infinite energy
+### Items
+- Infinite additional weapons
+- Shop items changer
 ### Customization
 - Change character
 - Change body
@@ -23,7 +26,10 @@ The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](htt
 - Change mission battlepoints
 - Change max combo
 - Change kills and zandzutsu
-
+### Other
+- Camera filter
+### Enemy
+- Enemy changer
 ## Hotkeys
 - Show/hide menu (Num+)
 - Show/hide additional menus (Num-)
