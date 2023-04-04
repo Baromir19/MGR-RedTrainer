@@ -475,6 +475,7 @@ namespace mem
 		inline bool_t    write(voidptr_t dst, type_t src){ return write(dst, &src, sizeof(src)); }
 		bool_t           set(voidptr_t src, byte_t byte, size_t size);
 		uintptr_t		 find_DMA(uintptr_t ptr, std::vector<unsigned int> offsets);
+		uintptr_t		 set_nop(voidptr_t dst, size_t size);
 		voidptr_t        scan(data_t data, voidptr_t start, voidptr_t stop);
 		voidptr_t        pattern_scan(data_t pattern, string_t mask, voidptr_t start, voidptr_t stop);
 		voidptr_t        pattern_scan(data_t pattern, string_t mask, module_t mod);

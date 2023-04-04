@@ -118,6 +118,11 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 		RtGui::otherWindow();
 	}
 
+	if (Data::ShowMenu9)
+	{
+		RtGui::enemyWindow();
+	}
+
 	ImGui::EndFrame();
 	ImGui::Render();
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());

@@ -1262,6 +1262,15 @@ mem::uintptr_t mem::in::find_DMA(uintptr_t ptr, std::vector<unsigned int> offset
 	return addr;
 }
 
+mem::uintptr_t mem::in::set_nop(voidptr_t dst, size_t size)
+{
+	DWORD oldprotect;
+	VirtualProtect(dst, size, PAGE_EXECUTE_READWRITE, &oldprotect);
+	memset(dst, 0x90, size);
+	VirtualProtect(dst, size, oldprotect, &oldprotect);
+	return true;
+}
+
 mem::voidptr_t mem::in::scan(data_t data, voidptr_t start, voidptr_t stop)
 {
 	voidptr_t ret = (voidptr_t)MEM_BAD;

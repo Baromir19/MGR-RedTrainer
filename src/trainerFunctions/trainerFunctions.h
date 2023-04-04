@@ -5,6 +5,10 @@ namespace RedTrainer {
 
 	void setText(bool bActive);
 
+	unsigned int reverseBytes(unsigned int value);
+
+	///STATS
+
 	void setInvincibility(bool &Invincibility);
 
 	void setInfinityEnergy(bool &bEnergy);
@@ -12,6 +16,8 @@ namespace RedTrainer {
 	void setHealth(int healthValue);
 
 	void setMoney(int moneyValue);
+
+	///ITEMS
 
 	void setInfinityAddWeapons(bool &bInfAddWeapon);
 
@@ -27,6 +33,8 @@ namespace RedTrainer {
 
 	void setSkillsShop(int skillShopId, short skillShopType);
 
+	///CUSTOMIZATION
+
 	void setPlayerType(int playerTypeId);
 
 	void setPlayerSword(int playerSwordId);
@@ -35,9 +43,13 @@ namespace RedTrainer {
 
 	void setPlayerHair(int playerHairId);
 
+	///MOVEMENT
+
 	void setSpeed(float speedValue);
 
 	void setFly();
+
+	///MISSION
 
 	void setMission(short missionId, char missionName[]);
 
@@ -59,7 +71,13 @@ namespace RedTrainer {
 
 	void setZandzutsuKills(int zandzutsuKillsValue);
 
+	///OTHER
+
 	void setFilter(float filterValue, char filterOffset);
 
-	//void spawnEnemy(); //
+	///ENEMY
+
+	void setAllEnemies(bool bEnemyActive, unsigned int enemyId = 0, unsigned int enemyType = 0, unsigned int enemySetType = 0, unsigned int enemyFlag = 0);
+
+	//void spawnEnemy(int enemyId, int setType, int type, int flag);
 }

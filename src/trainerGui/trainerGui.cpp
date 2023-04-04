@@ -39,6 +39,11 @@ int healthValue			= 1600,
 	killsValue			= 0,
 	zandzutsuKillsValue = 0;
 
+unsigned int enemyId		= 0x00020140,
+			 enemyTypeId	= 0x00000000,
+			 enemySetTypeId = 0x00000000,
+			 enemyFlagId	= 0x00000000;
+
 float speedValue  = 0.0f,
 	  battleTimer = 0.0f,
 	  rFilter	  = 1.0f,
@@ -56,7 +61,7 @@ const char* cHairTypes[]   = { "Default", "Wig A", "Wig B", "Wig C", "Disabled" 
 
 const char* cLifeFuelUpgrades[] = { "Life 1", "Life 2", "Life 3", "Life 4", "Fuel 1", "Fuel 2", "Fuel 3", "Fuel 4", "Fuel 5" };
 const char* cSkillTypes[] = { "Aerial Parry", "Defensive Offense", "Sky High", "Sweep Kick", "Thunder Strike", "Falling Lightning", 
-							  "Quick Draw", "Lightning Strike", "Stormbringer", "Marches du ciel", "Lumière du ciel", 
+							  "Quick Draw", "Lightning Strike", "Stormbringer", "Marches du ciel", "Lumiere du ciel", 
 							  "Cercle de l'ange", "Turbuience", "Down Burst"};
 const char* cShopItemTypes[] = { "Hidden", "New", "To buy", "Buyed", "Selected" };
 
@@ -118,6 +123,12 @@ void RtGui::mainWindow()
 	{
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu8 = !Base::Data::ShowMenu8;
+	}
+
+	if (ImGui::Button("ENEMY", ImVec2(150, 20)))
+	{
+		RtGui::hideSecondWindow();
+		Base::Data::ShowMenu9 = !Base::Data::ShowMenu9;
 	}
 
 	ImGui::PopStyleColor(5);
@@ -628,6 +639,9 @@ void RtGui::otherWindow()
 
 	ImGui::Text("OTHER");
 
+	//if (ImGui::Button("CREATE ENEMY?", ImVec2(150, 20)))
+		//RedTrainer::spawnEnemy(0x20140, 0, 0, 0);
+
 	if (ImGui::Button("RED FILTER", ImVec2(150, 20)))
 		RedTrainer::setFilter(rFilter, 0);
 	ImGui::SameLine();
@@ -649,6 +663,60 @@ void RtGui::otherWindow()
 	ImGui::PopStyleColor();
 }
 
+void RtGui::enemyWindow()
+{
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	ImGui::Begin("EnemyWindow", NULL, ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_AlwaysAutoResize);
+
+	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
+
+	ImGui::Text("ENEMY");
+
+	if (ImGui::Button("SET ALL ENEMIES", ImVec2(200, 20)))
+		RedTrainer::setAllEnemies(1, enemyId, enemyTypeId, enemySetTypeId, enemyFlagId);
+
+	ImGui::Text("ENEMY ID");
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar(" ", ImGuiDataType_U32, &enemyId, NULL, NULL, "%X");
+	ImGui::Unindent(150);
+
+	ImGui::Text("ENEMY TYPE");
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar("  ", ImGuiDataType_U32, &enemyTypeId, NULL, NULL, "%X");
+	ImGui::Unindent(150);
+
+	ImGui::Text("ENEMY STYPE");
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar("   ", ImGuiDataType_U32, &enemySetTypeId, NULL, NULL, "%X");
+	ImGui::Unindent(150);
+
+	ImGui::Text("ENEMY FLAG");
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar("    ", ImGuiDataType_U32, &enemyFlagId, NULL, NULL, "%X");
+	ImGui::Unindent(150);
+
+	if (ImGui::Button("RESET", ImVec2(200, 20)))
+		RedTrainer::setAllEnemies(0);
+
+	ImGui::PopStyleColor(6);
+	ImGui::PopStyleVar();
+	ImGui::End();
+	ImGui::PopStyleColor();
+}
+
 void RtGui::hideSecondWindow()
 {
 	Base::Data::ShowMenu2 = false;
@@ -658,4 +726,5 @@ void RtGui::hideSecondWindow()
 	Base::Data::ShowMenu6 = false;
 	Base::Data::ShowMenu7 = false;
 	Base::Data::ShowMenu8 = false;
+	Base::Data::ShowMenu9 = false;
 }
