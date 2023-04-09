@@ -71,7 +71,15 @@ namespace RedTrainer {
 
 	void setZandzutsuKills(int zandzutsuKillsValue);
 
+	///RAIDEN FLAG
+
+	void setFlag(char raidenFlag);
+
+	void setRender(unsigned int renderType);
+
 	///OTHER
+
+	void setSize(float sizeValue, char sizeOffset);
 
 	void setFilter(float filterValue, char filterOffset);
 

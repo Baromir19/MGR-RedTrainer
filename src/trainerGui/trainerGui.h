@@ -22,4 +22,5 @@ namespace RtGui {
 
 	void hideSecondWindow();
 
+	void renderStyle(bool isPush);
 }

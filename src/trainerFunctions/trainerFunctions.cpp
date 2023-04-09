@@ -66,13 +66,25 @@ void RedTrainer::setInfinityEnergy(bool &bEnergy)
 
 void RedTrainer::setHealth(int healthValue)
 {
-	uintptr_t healthAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x870 });
+	uintptr_t healthAddress;
+	memcpy(&healthAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(healthAddress));
+	if (healthAddress == NULL)
+	{
+		return;
+	}
+	healthAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x870 });
 	mem::in::write((BYTE*)healthAddress, (BYTE*)&healthValue, sizeof(healthValue));
 }
 
 void RedTrainer::setMoney(int moneyValue)
 {
-	uintptr_t moneyAddress = mem::in::find_DMA(moduleBase + 0x17EA100, { 0xDC });
+	uintptr_t moneyAddress;
+	memcpy(&moneyAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(moneyAddress));
+	if (moneyAddress == NULL)
+	{
+		return;
+	}
+	moneyAddress = mem::in::find_DMA(moduleBase + 0x17EA100, { 0xDC });
 	mem::in::write((BYTE*)moneyAddress, (BYTE*)&moneyValue, sizeof(moneyValue));
 }
 
@@ -415,12 +427,75 @@ void RedTrainer::setZandzutsuKills(int zandzutsuKillsValue)
 	mem::in::write((BYTE*)(moduleBase + 0x177620C), (BYTE*)&zandzutsuKillsValue, sizeof(zandzutsuKillsValue));
 }
 
+///RAIDEN FLAGS
+
+void RedTrainer::setFlag(char raidenFlag)
+{
+	bool isSizeOver = false;
+	int setBitsFromFlag = 0;
+	int memoryBuffer = 0;
+
+	if (raidenFlag > 0x1F)
+	{
+		isSizeOver = !isSizeOver;
+
+		if (raidenFlag > 0x40)
+		{
+			return;
+		}
+	}
+
+	if (raidenFlag > 0x35)
+	{
+		raidenFlag += 3;
+		if (raidenFlag > 0x3A)
+		{
+			raidenFlag += 2;
+		}
+	}
+
+	if (!isSizeOver)
+	{
+		raidenFlag = 0x1F - raidenFlag;
+		setBitsFromFlag = 1 << raidenFlag;
+		mem::in::read((BYTE*)(moduleBase + 0x17EA090), (BYTE*)&memoryBuffer, sizeof(memoryBuffer));
+		memoryBuffer = memoryBuffer ^ setBitsFromFlag;
+		mem::in::write((BYTE*)(moduleBase + 0x17EA090), (BYTE*)&memoryBuffer, sizeof(memoryBuffer));
+	}
+	else
+	{
+		raidenFlag -= 0x20;
+		raidenFlag = 0x1F - raidenFlag;
+		setBitsFromFlag = 1 << raidenFlag;
+		mem::in::read((BYTE*)(moduleBase + 0x17EA094), (BYTE*)&memoryBuffer, sizeof(memoryBuffer));
+		memoryBuffer = memoryBuffer ^ setBitsFromFlag;
+		mem::in::write((BYTE*)(moduleBase + 0x17EA094), (BYTE*)&memoryBuffer, sizeof(memoryBuffer));
+	}
+}
+
+void RedTrainer::setRender(unsigned int renderType)
+{
+	mem::in::write((BYTE*)(moduleBase + 0x17EA09C), (BYTE*)&renderType, sizeof(renderType));
+}
+
 ///OTHER
 
 void RedTrainer::setFilter(float filterValue, char filterOffset)
 {
 	mem::in::write((BYTE*)(moduleBase + 0x1ADD604 + filterOffset), (BYTE*)&filterValue, sizeof(filterValue));
 }
+
+void RedTrainer::setSize(float sizeValue, char sizeOffset)
+{
+	uintptr_t sizeAddress;
+	memcpy(&sizeAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(sizeAddress));
+	if (sizeAddress == NULL)
+	{
+		return;
+	}
+	sizeAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x70 + (unsigned int)sizeOffset });
+	mem::in::write((BYTE*)(sizeAddress), (BYTE*)&sizeValue, sizeof(sizeValue));
+};
 
 ///ENEMY
 

@@ -11,44 +11,49 @@ bool bInvicibility   = false,
 	 bInfAddWeapon   = false,
 	 RtGui::bFly	 = false;
 
-char missionName[0x20] = { 0 },
-	 difficultyValue   = 0;
+char missionName[0x20] = "Subphase",
+	 difficultyValue = 0,
+	 cRaidenType = 0;
 
-short missionId			= 0,
-	  cBodyShop			= 0,
-	  cSwordShop		= 0,
+short missionId	= 0x1d,
+	  cBodyShop	= 0,
+	  cSwordShop = 0,
 	  cUniqueWeaponShop = 0,
-	  cWigShop			= 0,
-	  cLifeFuelShop		= 0,
-	  cSkillShop		= 0;
+	  cWigShop = 0,
+	  cLifeFuelShop = 0,
+	  cSkillShop = 0;
 
-int healthValue			= 1600,
-	moneyValue			= 0,
-	bodyTypeShop		= 1,
-	swordTypeShop		= 0,
+int healthValue	= 1600,
+	moneyValue = 0,
+	bodyTypeShop = 1,
+	swordTypeShop = 0,
 	uniqueWeaponTypeShop = 1,
-	wigTypeShop			= 1,
-	lifeFuelTypeShop	= 0,
-	skillTypeShop		= 0,
-	playerType			= 5,
-	swordType			= 12,
-	bodyType			= 16,
-	hairType			= 4,
-	battlePointsValue	= 0,
-	maxComboValue		= 0,
-	killsValue			= 0,
+	wigTypeShop	= 1,
+	lifeFuelTypeShop = 0,
+	skillTypeShop = 0,
+	playerType = 5,
+	swordType = 12,
+	bodyType = 16,
+	hairType = 4,
+	battlePointsValue = 0,
+	maxComboValue = 0,
+	killsValue 	= 0,
 	zandzutsuKillsValue = 0;
 
-unsigned int enemyId		= 0x00020140,
-			 enemyTypeId	= 0x00000000,
+unsigned int enemyId = 0x00020140,
+			 enemyTypeId = 0x00000000,
 			 enemySetTypeId = 0x00000000,
-			 enemyFlagId	= 0x00000000;
+			 enemyFlagId = 0x00000000,
+			 renderType = 0x00000000;
 
 float speedValue  = 0.0f,
 	  battleTimer = 0.0f,
 	  rFilter	  = 1.0f,
 	  gFilter	  = 1.0f, 
-	  bFilter	  = 1.0f;
+	  bFilter	  = 1.0f,
+	  xSize		  = 1.0f,
+	  ySize		  = 1.0f, 
+	  zSize		  = 1.0f;
 
 const char* cPlayerTypes[] = { "Raiden", "First Raiden", "Camera mode", "Sam", "BladeWolf", "Disabled" };
 const char* cSwordTypes[]  = { "HF Blade", "Stun Blade", "Armor Breaker", "Long Sword", "Wooden Sword", "Murasama",
@@ -64,22 +69,27 @@ const char* cSkillTypes[] = { "Aerial Parry", "Defensive Offense", "Sky High", "
 							  "Quick Draw", "Lightning Strike", "Stormbringer", "Marches du ciel", "Lumiere du ciel", 
 							  "Cercle de l'ange", "Turbuience", "Down Burst"};
 const char* cShopItemTypes[] = { "Hidden", "New", "To buy", "Buyed", "Selected" };
+const char* cDifficultyValues[] = { "Easy", "Normal", "Hard", "Very hard", "Revengeance" };
+const char* cRaidenFlags[] = {
+"UI", "Answer a call", "Zangeki mode", "Auto HPup", "Battle end demo", "Battle emotioned end", "Missile ninja run",
+"Walk only", "Attack off", "Ignore low parkour", "Ignore cliff parkour", "Ignore wall parkour", "Ignore sliding parkour",
+"L1 attack off", "Active Y pound", "Active B push", "Zangeki off", "Ninjarun off", "Guard off", "Gecko trail", "Datsu off",
+"Jump off", "Map auto load off", "Player no die", "No overheat", "Navigation on", "Rippermode off",
+"Onehand", "Oneshot off", "OS Bottmode", "Inf zangeki", "QTE UI disable", "No XA", "No move", "No divekill",
+"Off battlecollision", "Display result", "End UI disable", "Item no drop", "No exp add", "Reverse X camera", "Reverse Y camera", 
+"Camdir in zangeki", "CODEC point view", "Slider ninjarun", "Weapon select", "Kogekko play", "Soldier monologue", "Depression Raiden",
+"HP1 Raiden", "No attack", "Gun manipulate", "Set ripper", "Player no lockon", "Set mask", "Disable zangeki", "Story tutorial", "XY Attack off", "TGS Mode"
+};
 
 void RtGui::mainWindow() 
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	renderStyle(1);
+
 	ImGui::Begin("RedTrainer", NULL, ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_AlwaysAutoResize);
 	//ImGui::GetStyle().WindowRounding = 0.0f;
-
-	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	ImGui::Text("MAIN MENU");
 
@@ -131,27 +141,19 @@ void RtGui::mainWindow()
 		Base::Data::ShowMenu9 = !Base::Data::ShowMenu9;
 	}
 
-	ImGui::PopStyleColor(5);
-	ImGui::PopStyleVar();
 	ImGui::End();
-	ImGui::PopStyleColor();
+	renderStyle(0);
 }
 
 void RtGui::statsWindow()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	renderStyle(1);
+
 	ImGui::Begin("StatsWindow", NULL, ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_AlwaysAutoResize);
 	//ImGui::GetStyle().WindowRounding = 0.0f;
-
-	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 
 	ImGui::Text("STATS");
 
@@ -173,28 +175,19 @@ void RtGui::statsWindow()
 	ImGui::SameLine();
 	ImGui::InputScalar("      ", ImGuiDataType_S32, &moneyValue);
 
-	ImGui::PopStyleColor(5);
-	ImGui::PopStyleVar();
 	ImGui::End();
-	ImGui::PopStyleColor();
+	renderStyle(0);
 }
 
 void RtGui::itemsWindow()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	renderStyle(1);
+
 	ImGui::Begin("ItemsWindow", NULL, ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_AlwaysAutoResize);
 	//ImGui::GetStyle().WindowRounding = 0.0f;
-
-	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
 
 	ImGui::Text("ITEMS");
 
@@ -388,28 +381,19 @@ void RtGui::itemsWindow()
 		ImGui::EndCombo();
 	}
 
-	ImGui::PopStyleColor(6);
-	ImGui::PopStyleVar();
 	ImGui::End();
-	ImGui::PopStyleColor();
+	renderStyle(0);
 }
 
 void RtGui::customizationWindow()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	renderStyle(1);
+
 	ImGui::Begin("CustWindow", NULL, ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_AlwaysAutoResize);
 	//ImGui::GetStyle().WindowRounding = 0.0f;
-
-	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
 
 	ImGui::Text("CUSTOMIZATION");
 
@@ -482,28 +466,19 @@ void RtGui::customizationWindow()
 		ImGui::EndCombo();
 	}
 
-	ImGui::PopStyleColor(6);
-	ImGui::PopStyleVar();
 	ImGui::End();
-	ImGui::PopStyleColor();
+	renderStyle(0);
 }
 
 void RtGui::movementWindow()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	renderStyle(1);
+
 	ImGui::Begin("MoveWindow", NULL, ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_AlwaysAutoResize);
 	//ImGui::GetStyle().WindowRounding = 0.0f;
-
-	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
 
 	ImGui::Text("MOVEMENT");
 
@@ -516,28 +491,19 @@ void RtGui::movementWindow()
 		bFly = !bFly;
 	RedTrainer::setText(bFly);
 
-	ImGui::PopStyleColor(6);
-	ImGui::PopStyleVar();
 	ImGui::End();
-	ImGui::PopStyleColor();
+	renderStyle(0);
 }
 
 void RtGui::missionWindow()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	renderStyle(1);
+
 	ImGui::Begin("MissionWindow", NULL, ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_AlwaysAutoResize);
 	//ImGui::GetStyle().WindowRounding = 0.0f;
-
-	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
 
 	ImGui::Text("MISSIONS");
 
@@ -545,12 +511,26 @@ void RtGui::missionWindow()
 		RedTrainer::setMission(missionId, missionName);
 	ImGui::InputText(" ", missionName, sizeof(missionName)); //Mission name
 	ImGui::SameLine();
+	ImGui::Indent(150);
 	ImGui::InputScalar("  ", ImGuiDataType_U16, &missionId, NULL, NULL, "%X"); //MissionId
+	ImGui::Unindent(150);
 	
 	if (ImGui::Button("SET DIFFICULTY", ImVec2(150, 20)))
 		RedTrainer::setDifficulty(difficultyValue);
 	ImGui::SameLine();
-	ImGui::InputScalar("        ", ImGuiDataType_U8, &difficultyValue);
+	if (ImGui::BeginCombo("        ", cDifficultyValues[difficultyValue], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cDifficultyValues); i++) {
+			bool is_selected = (difficultyValue == i);
+			if (ImGui::Selectable(cDifficultyValues[i], is_selected)) {
+				difficultyValue = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
 
 	if (ImGui::Button("NO DAMAGE", ImVec2(150, 20)))
 		RedTrainer::setNoDamage(bNoDamage);
@@ -589,53 +569,57 @@ void RtGui::missionWindow()
 	ImGui::SameLine();
 	ImGui::InputScalar("       ", ImGuiDataType_S32, &maxComboValue);
 
-	ImGui::PopStyleColor(6);
-	ImGui::PopStyleVar();
 	ImGui::End();
-	ImGui::PopStyleColor();
+	renderStyle(0);
 }
 
 void RtGui::raidenFlagsWindow()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	renderStyle(1);
+
 	ImGui::Begin("RaidenFlagsWindow", NULL, ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_AlwaysAutoResize);
 	//ImGui::GetStyle().WindowRounding = 0.0f;
 
-	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-
 	ImGui::Text("RAIDEN FLAGS");
 
-	ImGui::PopStyleColor(6);
-	ImGui::PopStyleVar();
+	if (ImGui::Button("SET FLAG", ImVec2(150, 20)))
+		RedTrainer::setFlag(cRaidenType);
+	ImGui::SameLine();
+	if (ImGui::BeginCombo(" ", cRaidenFlags[cRaidenType], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cRaidenFlags); i++) {
+			bool is_selected = (cRaidenType == i);
+			if (ImGui::Selectable(cRaidenFlags[i], is_selected)) {
+				cRaidenType = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (ImGui::Button("RENDER", ImVec2(150, 20)))
+		RedTrainer::setRender(renderType);
+	ImGui::SameLine();
+	ImGui::InputScalar("  ", ImGuiDataType_U32, &renderType, NULL, NULL, "%X");
+
 	ImGui::End();
-	ImGui::PopStyleColor();
+	renderStyle(0);
 }
 
 void RtGui::otherWindow() 
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	renderStyle(1);
+
 	ImGui::Begin("OtherWindow", NULL, ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_AlwaysAutoResize);
 	//ImGui::GetStyle().WindowRounding = 0.0f;
-
-	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
 
 	ImGui::Text("OTHER");
 
@@ -657,27 +641,33 @@ void RtGui::otherWindow()
 	ImGui::SameLine();
 	ImGui::InputScalar("   ", ImGuiDataType_Float, &bFilter);
 
-	ImGui::PopStyleColor(6);
-	ImGui::PopStyleVar();
+	if (ImGui::Button("PLAYER SIZE X", ImVec2(150, 20)))
+		RedTrainer::setSize(xSize, 0);
+	ImGui::SameLine();
+	ImGui::InputScalar("    ", ImGuiDataType_Float, &xSize);
+
+	if (ImGui::Button("PLAYER SIZE Y", ImVec2(150, 20)))
+		RedTrainer::setSize(ySize, 4);
+	ImGui::SameLine();
+	ImGui::InputScalar("     ", ImGuiDataType_Float, &ySize);
+
+	if (ImGui::Button("PLAYER SIZE Z", ImVec2(150, 20)))
+		RedTrainer::setSize(zSize, 8);
+	ImGui::SameLine();
+	ImGui::InputScalar("      ", ImGuiDataType_Float, &zSize);
+
 	ImGui::End();
-	ImGui::PopStyleColor();
+	renderStyle(0);
 }
 
 void RtGui::enemyWindow()
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+	renderStyle(1);
+
 	ImGui::Begin("EnemyWindow", NULL, ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_AlwaysAutoResize);
-
-	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
 
 	ImGui::Text("ENEMY");
 
@@ -696,11 +686,13 @@ void RtGui::enemyWindow()
 	ImGui::InputScalar("  ", ImGuiDataType_U32, &enemyTypeId, NULL, NULL, "%X");
 	ImGui::Unindent(150);
 
+	/*
 	ImGui::Text("ENEMY STYPE");
 	ImGui::SameLine();
 	ImGui::Indent(150);
 	ImGui::InputScalar("   ", ImGuiDataType_U32, &enemySetTypeId, NULL, NULL, "%X");
 	ImGui::Unindent(150);
+	*/
 
 	ImGui::Text("ENEMY FLAG");
 	ImGui::SameLine();
@@ -711,10 +703,8 @@ void RtGui::enemyWindow()
 	if (ImGui::Button("RESET", ImVec2(200, 20)))
 		RedTrainer::setAllEnemies(0);
 
-	ImGui::PopStyleColor(6);
-	ImGui::PopStyleVar();
 	ImGui::End();
-	ImGui::PopStyleColor();
+	renderStyle(0);
 }
 
 void RtGui::hideSecondWindow()
@@ -727,4 +717,25 @@ void RtGui::hideSecondWindow()
 	Base::Data::ShowMenu7 = false;
 	Base::Data::ShowMenu8 = false;
 	Base::Data::ShowMenu9 = false;
+}
+
+void RtGui::renderStyle(bool isPush)
+{
+	if (isPush)
+	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
+	}
+	else
+	{
+		ImGui::PopStyleColor(6);
+		ImGui::PopStyleVar();
+		ImGui::PopStyleColor();
+	}
 }
