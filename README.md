@@ -1,5 +1,5 @@
 # Metal Gear Rising: Revengeance RedTrainer
-The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](https://github.com/rdbo/libmem) 2.14, and [DX9-BaseHook](https://github.com/rdbo/DX9-BaseHook)
+The trainer was based on [ImGUI](https://github.com/ocornut/imgui), [libmem](https://github.com/rdbo/libmem) 2.14, and [DX9-BaseHook](https://github.com/rdbo/DX9-BaseHook). Thanks to [Mr.Beacon00](https://www.youtube.com/@MrBeacon00) for his table.
 
 ## Features
 ### Stats
