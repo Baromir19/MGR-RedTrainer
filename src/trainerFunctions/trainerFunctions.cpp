@@ -188,6 +188,32 @@ void RedTrainer::setSkillsShop(int skillShopId, short skillShopType)
 	mem::in::write((BYTE*)(moduleBase + 0x1773D00 + skillShopId * 0x20), (BYTE*)&skillShopType, sizeof(skillShopType));
 }
 
+void RedTrainer::getWeaponsCount(char &weaponCount)
+{
+	mem::in::read((BYTE*)(moduleBase + 0x1486EA8), (BYTE*)&weaponCount, sizeof(weaponCount));
+}
+
+void RedTrainer::setAddWeapons(char weaponNum, int weaponValue, char weaponCount)
+{
+	uintptr_t weaponAddress;
+	memcpy(&weaponAddress, (BYTE*)(moduleBase + 0x1486EB0 + weaponNum * 4), sizeof(weaponAddress));
+	if (weaponAddress == NULL)
+	{
+		return;
+	}
+	if ((weaponCount == 9 || weaponCount == 11) && (weaponNum == 0 || weaponNum == 1))
+	{
+		weaponAddress = mem::in::find_DMA(moduleBase + 0x1486EB0 + weaponNum * 4, { 0x5C }); ///Rocket launchers
+	}
+	else
+	{
+		weaponAddress = mem::in::find_DMA(moduleBase + 0x1486EB0 + weaponNum * 4, { 0x6 }); ///ItemBlocker
+		mem::in::write((BYTE*)weaponAddress, (BYTE*)"\x00", sizeof("\x00"));
+		weaponAddress += 0x4E; ///Items
+	}
+	mem::in::write((BYTE*)weaponAddress, (BYTE*)&weaponValue, sizeof(weaponValue));
+}
+
 ///CUSTOMIZATION
 
 void RedTrainer::setPlayerType(int playerTypeId)
@@ -496,6 +522,23 @@ void RedTrainer::setSize(float sizeValue, char sizeOffset)
 	sizeAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x70 + (unsigned int)sizeOffset });
 	mem::in::write((BYTE*)(sizeAddress), (BYTE*)&sizeValue, sizeof(sizeValue));
 };
+
+void RedTrainer::setMenuType(char menuType)
+{
+	if (menuType > 2)
+	{
+		++menuType;
+		if (menuType > 4)
+		{
+			++menuType;
+		}
+		if (menuType > 0xD)
+		{
+			++menuType;
+		}
+	}
+	mem::in::write((BYTE*)(moduleBase + 0x17E9F9C), (BYTE*)&menuType, sizeof(menuType));
+}
 
 ///ENEMY
 

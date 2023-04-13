@@ -90,6 +90,7 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 
 	if (Data::ShowMenu3)
 	{
+		ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - 490, 0));
 		RtGui::itemsWindow();
 	}
 

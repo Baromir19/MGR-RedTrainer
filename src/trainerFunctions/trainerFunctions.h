@@ -33,6 +33,10 @@ namespace RedTrainer {
 
 	void setSkillsShop(int skillShopId, short skillShopType);
 
+	void getWeaponsCount(char &weaponCount);
+
+	void setAddWeapons(char weaponNum, int weaponValue, char weaponCount);
+
 	///CUSTOMIZATION
 
 	void setPlayerType(int playerTypeId);
@@ -82,6 +86,8 @@ namespace RedTrainer {
 	void setSize(float sizeValue, char sizeOffset);
 
 	void setFilter(float filterValue, char filterOffset);
+
+	void setMenuType(char menuType);
 
 	///ENEMY
 

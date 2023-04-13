@@ -13,7 +13,10 @@ bool bInvicibility   = false,
 
 char missionName[0x20] = "Subphase",
 	 difficultyValue = 0,
-	 cRaidenType = 0;
+	 cRaidenType = 0,
+	 cMenuType = 0,
+	 addWeaponCount = 0,
+	 addWeaponNum = 0;
 
 short missionId	= 0x1d,
 	  cBodyShop	= 0,
@@ -38,7 +41,8 @@ int healthValue	= 1600,
 	battlePointsValue = 0,
 	maxComboValue = 0,
 	killsValue 	= 0,
-	zandzutsuKillsValue = 0;
+	zandzutsuKillsValue = 0,
+	addWeaponValue = 0;
 
 unsigned int enemyId = 0x00020140,
 			 enemyTypeId = 0x00000000,
@@ -63,6 +67,9 @@ const char* cBodyTypes[]   = { "Default", "Blue Body", "Red Body", "Yellow Body"
 							 "Original Body", "MGS4", "Gray Fox", "White Armor", "Inferno Armor", "Commando Armor", 
 							 "Raiden", "First Body", "Sam :)", "Disabled" };
 const char* cHairTypes[]   = { "Default", "Wig A", "Wig B", "Wig C", "Disabled" };
+const char* cAddWeaponTypesR[] = { "RPG", "Stinger", "Grenade", "Smoke grenade", "Chaff grenade", "EMP grenade", "Freepaper", "Dambole", "Drumcan", "Energy pack", "Life pack" }; ///Raiden
+const char* cAddWeaponTypesS[] = { "RPG", "Stinger", "Grenade", "Smoke grenade", "EMP grenade", "Dambole", "Drumcan", "Energy pack", "Life pack" }; ///Sam
+const char* cAddWeaponTypesB[] = { "Smoke Grenade", "EMP Grenade", "Freepaper", "Energy pack", "Life pack", "Blade knife" }; ///Bladewolf
 
 const char* cLifeFuelUpgrades[] = { "Life 1", "Life 2", "Life 3", "Life 4", "Fuel 1", "Fuel 2", "Fuel 3", "Fuel 4", "Fuel 5" };
 const char* cSkillTypes[] = { "Aerial Parry", "Defensive Offense", "Sky High", "Sweep Kick", "Thunder Strike", "Falling Lightning", 
@@ -80,6 +87,9 @@ const char* cRaidenFlags[] = {
 "Camdir in zangeki", "CODEC point view", "Slider ninjarun", "Weapon select", "Kogekko play", "Soldier monologue", "Depression Raiden",
 "HP1 Raiden", "No attack", "Gun manipulate", "Set ripper", "Player no lockon", "Set mask", "Disable zangeki", "Story tutorial", "XY Attack off", "TGS Mode"
 };
+const char* cMenuTypes[] = { 
+"Lock menu", "Game", "Pause", "CODEC", "Pause cutscene", "Mission failed 3", 
+"Mission failed 2", "Weapon menu", "System settings", "Combo list", "Resume", "Menu", "VR-missions" };
 
 void RtGui::mainWindow() 
 {
@@ -101,6 +111,8 @@ void RtGui::mainWindow()
 
 	if (ImGui::Button("ITEMS", ImVec2(150, 20)))
 	{
+		addWeaponNum = 0;
+		RedTrainer::getWeaponsCount(addWeaponCount);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu3 = !Base::Data::ShowMenu3;
 	}
@@ -195,9 +207,73 @@ void RtGui::itemsWindow()
 		RedTrainer::setInfinityAddWeapons(bInfAddWeapon);
 	RedTrainer::setText(bInfAddWeapon);
 
+	if (ImGui::Button("SET ITEM", ImVec2(150, 20)))
+		RedTrainer::setAddWeapons(addWeaponNum, addWeaponValue, addWeaponCount);
+	ImGui::SameLine();
+	ImGui::Indent(155);
+	if (addWeaponCount == 11) 
+	{
+		if (ImGui::BeginCombo("Raiden", cAddWeaponTypesR[addWeaponNum], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+		{
+			for (int i = 0; i < IM_ARRAYSIZE(cAddWeaponTypesR); i++) {
+				bool is_selected = (addWeaponNum == i);
+				if (ImGui::Selectable(cAddWeaponTypesR[i], is_selected)) {
+					addWeaponNum = i;
+				}
+				if (is_selected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+	}
+	else if (addWeaponCount == 9)
+	{
+		if (ImGui::BeginCombo("Sam", cAddWeaponTypesS[addWeaponNum], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+		{
+			for (int i = 0; i < IM_ARRAYSIZE(cAddWeaponTypesS); i++) {
+				bool is_selected = (addWeaponNum == i);
+				if (ImGui::Selectable(cAddWeaponTypesS[i], is_selected)) {
+					addWeaponNum = i;
+				}
+				if (is_selected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+	}
+	else if (addWeaponCount == 6)
+	{
+		if (ImGui::BeginCombo("BF", cAddWeaponTypesB[addWeaponNum], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+		{
+			for (int i = 0; i < IM_ARRAYSIZE(cAddWeaponTypesB); i++) {
+				bool is_selected = (addWeaponNum == i);
+				if (ImGui::Selectable(cAddWeaponTypesB[i], is_selected)) {
+					addWeaponNum = i;
+				}
+				if (is_selected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+	}
+	else
+	{
+		ImGui::Indent(5);
+		ImGui::Text("Nothing");
+		ImGui::Unindent(5);
+	}
+	ImGui::SameLine();
+	ImGui::Indent(155);
+	ImGui::InputScalar("  ", ImGuiDataType_S32, &addWeaponValue);
+	ImGui::Unindent(310);
+
 	if (ImGui::Button("BODY SHOP", ImVec2(150, 20)))
 		RedTrainer::setBodyShop(bodyTypeShop, cBodyShop);
-	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("a", cBodyTypes[bodyTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cBodyTypes) - 4; i++) {
@@ -212,6 +288,7 @@ void RtGui::itemsWindow()
 		ImGui::EndCombo();
 	}
 	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("1", cShopItemTypes[cBodyShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
@@ -225,10 +302,12 @@ void RtGui::itemsWindow()
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::Unindent(310);
 
 	if (ImGui::Button("SWORD SHOP", ImVec2(150, 20)))
 		RedTrainer::setSwordShop(swordTypeShop, cSwordShop);
-	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("b", cSwordTypes[swordTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cSwordTypes) - 5; i++) {
@@ -243,6 +322,7 @@ void RtGui::itemsWindow()
 		ImGui::EndCombo();
 	}
 	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("2", cShopItemTypes[cSwordShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
@@ -256,10 +336,12 @@ void RtGui::itemsWindow()
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::Unindent(310);
 
 	if (ImGui::Button("UNIQUE SHOP", ImVec2(150, 20)))
 		RedTrainer::setUniqueShop(uniqueWeaponTypeShop, cUniqueWeaponShop);
-	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(150, 15));
+	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("c", cUniqueWeaponsTypes[uniqueWeaponTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cUniqueWeaponsTypes) - 2; i++) {
@@ -274,6 +356,7 @@ void RtGui::itemsWindow()
 		ImGui::EndCombo();
 	}
 	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("3", cShopItemTypes[cUniqueWeaponShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
@@ -287,10 +370,12 @@ void RtGui::itemsWindow()
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::Unindent(310);
 
 	if (ImGui::Button("WIG SHOP", ImVec2(150, 20)))
 		RedTrainer::setWigShop(wigTypeShop, cWigShop);
-	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("d", cHairTypes[wigTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cHairTypes) - 2; i++) {
@@ -305,6 +390,7 @@ void RtGui::itemsWindow()
 		ImGui::EndCombo();
 	}
 	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("4", cShopItemTypes[cWigShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
@@ -318,10 +404,12 @@ void RtGui::itemsWindow()
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::Unindent(310);
 
 	if (ImGui::Button("INDICATORS SHOP", ImVec2(150, 20)))
 		RedTrainer::setLifeFuelShop(lifeFuelTypeShop, cLifeFuelShop);
-	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("e", cLifeFuelUpgrades[lifeFuelTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cLifeFuelUpgrades); i++) {
@@ -336,6 +424,7 @@ void RtGui::itemsWindow()
 		ImGui::EndCombo();
 	}
 	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("5", cShopItemTypes[cLifeFuelShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
@@ -349,10 +438,12 @@ void RtGui::itemsWindow()
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::Unindent(310);
 
 	if (ImGui::Button("SKILLS SHOP", ImVec2(150, 20)))
 		RedTrainer::setSkillsShop(skillTypeShop, cSkillShop);
-	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("f", cSkillTypes[skillTypeShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cSkillTypes); i++) {
@@ -367,6 +458,7 @@ void RtGui::itemsWindow()
 		ImGui::EndCombo();
 	}
 	ImGui::SameLine();
+	ImGui::Indent(155);
 	if (ImGui::BeginCombo("6", cShopItemTypes[cSkillShop], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
 	{
 		for (int i = 0; i < IM_ARRAYSIZE(cShopItemTypes); i++) {
@@ -380,6 +472,7 @@ void RtGui::itemsWindow()
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::Unindent(310);
 
 	ImGui::End();
 	renderStyle(0);
@@ -655,6 +748,23 @@ void RtGui::otherWindow()
 		RedTrainer::setSize(zSize, 8);
 	ImGui::SameLine();
 	ImGui::InputScalar("      ", ImGuiDataType_Float, &zSize);
+
+	if (ImGui::Button("SET MENU", ImVec2(150, 20)))
+		RedTrainer::setMenuType(cMenuType);
+	ImGui::SameLine();
+	if (ImGui::BeginCombo("       ", cMenuTypes[cMenuType], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cMenuTypes); i++) {
+			bool is_selected = (cMenuType == i);
+			if (ImGui::Selectable(cMenuTypes[i], is_selected)) {
+				cMenuType = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
 
 	ImGui::End();
 	renderStyle(0);
