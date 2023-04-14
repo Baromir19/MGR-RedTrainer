@@ -2,12 +2,17 @@
 #include "base.h"
 #include <emmintrin.h>
 #include "trainerFunctions.h"
+#include "trainerGui/trainerGui.h"
 
 int currentMissionCheck = 0;
 float posX = 0.0f, posY = 0.0f, posZ = 0.0f;
 
 bool RedTrainer::isFirstFly = true;
 uintptr_t RedTrainer::moduleBase = 0;
+
+int(*playAnimation)(unsigned int, int, int, int, int); ///playerPtr, animId, animType, aId2, aType2
+int(*getItem)(unsigned int);
+int(*setSound)(int, int);
 
 void RedTrainer::setText (bool bActive) 
 {
@@ -36,11 +41,28 @@ unsigned int  RedTrainer::reverseBytes(unsigned int reverseValue) {
 	return result;
 }
 
+void RedTrainer::playSound(int soundPtr)
+{
+	soundPtr += moduleBase; 
+	int setSeSoundFunc = moduleBase + 0xA5E050;
+	setSound = (int(__cdecl*)(int, int))setSeSoundFunc; ///Play button click
+
+	__asm {
+		push 0
+		push soundPtr
+		call setSound
+		add esp, 8
+	}
+}
+
 ///STATS
 
 void RedTrainer::setInvincibility(bool &bInvincibility)
 {
 	bInvincibility = !bInvincibility;
+	//playSound(0x1256F24); /// change pos
+	//playSound(0x12568D0); /// select item sound...
+	playSound(0x1257100);
 	if (bInvincibility)
 	{
 		mem::in::write((BYTE*)(moduleBase + 0x787847), (BYTE*)"\xEB\x56", 2);
@@ -53,6 +75,7 @@ void RedTrainer::setInvincibility(bool &bInvincibility)
 
 void RedTrainer::setInfinityEnergy(bool &bEnergy)
 {
+	playSound(0x1257100);
 	bEnergy = !bEnergy;
 	if (bEnergy)
 	{
@@ -70,8 +93,10 @@ void RedTrainer::setHealth(int healthValue)
 	memcpy(&healthAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(healthAddress));
 	if (healthAddress == NULL)
 	{
+		playSound(0x12581AC);
 		return;
 	}
+	playSound(0x1257100);
 	healthAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x870 });
 	mem::in::write((BYTE*)healthAddress, (BYTE*)&healthValue, sizeof(healthValue));
 }
@@ -82,16 +107,53 @@ void RedTrainer::setMoney(int moneyValue)
 	memcpy(&moneyAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(moneyAddress));
 	if (moneyAddress == NULL)
 	{
+		playSound(0x12581AC);
 		return;
 	}
+	playSound(0x1257100);
 	moneyAddress = mem::in::find_DMA(moduleBase + 0x17EA100, { 0xDC });
 	mem::in::write((BYTE*)moneyAddress, (BYTE*)&moneyValue, sizeof(moneyValue));
+}
+
+void RedTrainer::setNewItem(char itemId)
+{
+	int playerPtr = 0, itemGetFunc = 0;
+	memcpy(&playerPtr, (BYTE*)(moduleBase + 0x19C1490), sizeof(playerPtr));
+
+	if (playerPtr == NULL)
+	{
+		playSound(0x12581AC);
+		return;
+	}
+	playSound(0x1257100);
+	switch (itemId)
+	{
+	case 0:
+		itemGetFunc = moduleBase + 0x77CA60; ///ADD MAX HEALTH
+		break;
+	case 1:
+		itemGetFunc = moduleBase + 0x7D9F60; ///ADD MAX FUELS
+		break;
+	case 2:
+		itemGetFunc = moduleBase + 0x1E9110; ///SPINE
+		break;
+	default:
+		return;
+	}
+
+	getItem = (int(*)(unsigned int))itemGetFunc;
+
+	__asm {
+		mov ecx, playerPtr
+		call getItem
+	}
 }
 
 ///ITEMS
 
 void RedTrainer::setInfinityAddWeapons(bool &bInfAddWeapon)
 {
+	playSound(0x1257100);
 	bInfAddWeapon = !bInfAddWeapon;
 	if (bInfAddWeapon)
 	{
@@ -107,6 +169,7 @@ void RedTrainer::setInfinityAddWeapons(bool &bInfAddWeapon)
 
 void RedTrainer::setBodyShop(int bodyShopId, short bodyShopType)
 {
+	playSound(0x1257100);
 	switch (bodyShopId)
 	{
 	case 1:
@@ -128,6 +191,7 @@ void RedTrainer::setBodyShop(int bodyShopId, short bodyShopType)
 
 void RedTrainer::setSwordShop(int swordShopId, short swordShopType)
 {
+	playSound(0x1257100);
 	switch (swordShopId)
 	{
 	case 6:
@@ -150,6 +214,7 @@ void RedTrainer::setSwordShop(int swordShopId, short swordShopType)
 
 void RedTrainer::setUniqueShop(int uniqueShopId, short uniqueShopType)
 {
+	playSound(0x1257100);
 	if (uniqueShopType == 4) {
 		uniqueShopType = 0x103;
 	}
@@ -161,6 +226,7 @@ void RedTrainer::setUniqueShop(int uniqueShopId, short uniqueShopType)
 
 void RedTrainer::setWigShop(int wigShopId, short wigShopType)
 {
+	playSound(0x1257100);
 	if (wigShopType == 4) {
 		wigShopType = 0x103;
 	}
@@ -172,6 +238,7 @@ void RedTrainer::setWigShop(int wigShopId, short wigShopType)
 
 void RedTrainer::setLifeFuelShop(int lfShopId, short lfShopType)
 {
+	playSound(0x1257100);
 	if (lfShopType == 4) {
 		lfShopType = 0x103;
 	}
@@ -181,6 +248,7 @@ void RedTrainer::setLifeFuelShop(int lfShopId, short lfShopType)
 
 void RedTrainer::setSkillsShop(int skillShopId, short skillShopType)
 {
+	playSound(0x1257100);
 	if (skillShopType == 4) {
 		skillShopType = 0x103;
 	}
@@ -190,6 +258,7 @@ void RedTrainer::setSkillsShop(int skillShopId, short skillShopType)
 
 void RedTrainer::getWeaponsCount(char &weaponCount)
 {
+	//playSound(0x1257100);
 	mem::in::read((BYTE*)(moduleBase + 0x1486EA8), (BYTE*)&weaponCount, sizeof(weaponCount));
 }
 
@@ -199,8 +268,10 @@ void RedTrainer::setAddWeapons(char weaponNum, int weaponValue, char weaponCount
 	memcpy(&weaponAddress, (BYTE*)(moduleBase + 0x1486EB0 + weaponNum * 4), sizeof(weaponAddress));
 	if (weaponAddress == NULL)
 	{
+		playSound(0x12581AC);
 		return;
 	}
+	playSound(0x1257100);
 	if ((weaponCount == 9 || weaponCount == 11) && (weaponNum == 0 || weaponNum == 1))
 	{
 		weaponAddress = mem::in::find_DMA(moduleBase + 0x1486EB0 + weaponNum * 4, { 0x5C }); ///Rocket launchers
@@ -219,6 +290,7 @@ void RedTrainer::setAddWeapons(char weaponNum, int weaponValue, char weaponCount
 void RedTrainer::setPlayerType(int playerTypeId)
 {
 	bool bPlayerType = true;
+	playSound(0x1257100);
 
 	if (playerTypeId > 2)
 		playerTypeId += 5;
@@ -240,6 +312,7 @@ void RedTrainer::setPlayerType(int playerTypeId)
 void RedTrainer::setPlayerSword(int playerSwordId)
 {
 	bool bPlayerSword = true;
+	playSound(0x1257100);
 
 	if (playerSwordId > 7)
 		playerSwordId++;
@@ -261,6 +334,7 @@ void RedTrainer::setPlayerSword(int playerSwordId)
 void RedTrainer::setPlayerBody(int playerBodyId)
 {
 	bool bPlayerBody = true;
+	playSound(0x1257100);
 
 	if (playerBodyId == 16)
 		bPlayerBody = false;
@@ -279,6 +353,7 @@ void RedTrainer::setPlayerBody(int playerBodyId)
 void RedTrainer::setPlayerHair(int playerHairId)
 {
 	bool bPlayerHair = true;
+	playSound(0x1257100);
 
 	if (playerHairId == 4)
 		bPlayerHair = false;
@@ -298,19 +373,23 @@ void RedTrainer::setPlayerHair(int playerHairId)
 
 void RedTrainer::setSpeed(float speedValue)
 {
+	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x17E93EC), (BYTE*)&speedValue, sizeof(speedValue));
 }
 
-void RedTrainer::setFly() //NOT OPTIMIZED!!!
+void RedTrainer::setFly() ///NOT OPTIMIZED!!!
 {
 	memcpy(&posX, (BYTE*)(moduleBase + 0x19C1490), sizeof(posX));
 
 	if (posX == NULL)
 	{
+		RtGui::bFly = !RtGui::bFly;
+		playSound(0x12581AC);
 		return;
 	}
 	
 	if (isFirstFly) {
+		playSound(0x1257100);
 		setSpeed(0.0f);
 		isFirstFly = false;
 	}
@@ -358,12 +437,438 @@ void RedTrainer::setFly() //NOT OPTIMIZED!!!
 
 }
 
+void RedTrainer::setPlayerAnimation(int animId, int animType, int animIdOld, int animTypeOld, bool isSelectable)
+{
+	int playerPtr = 0;
+	memcpy(&playerPtr, (BYTE*)(moduleBase + 0x19C1490), sizeof(playerPtr));
+
+	if (playerPtr == NULL)
+	{
+		playSound(0x12581AC);
+		return;
+	}
+
+	playSound(0x1257100);
+	int playAnimFuncAddr = moduleBase + 0x68CAF0;
+	playAnimation = (int(*)(unsigned int, int, int, int, int))playAnimFuncAddr;
+
+	if (isSelectable) ///Raiden
+	{
+		switch (animId)
+		{
+		case 0: ///Still
+			animId = 0;
+			break;
+		case 1:
+			animId = 1;
+			break;
+		case 2:
+			animId = 72;
+			break;
+
+		case 3: ///Walk
+			animId = 2;
+			break;
+		case 4:
+			animId = 3;
+			break;
+
+		case 5: ///Landing
+			animId = 11;
+			break;
+		case 6:
+			animId = 91;
+			break;
+
+		case 7: ///Jump
+			animId = 4;
+			break;
+		case 8:
+			animId = 5;
+			break;
+
+		case 9: ///Flip
+			animId = 10;
+			break;
+		case 10:
+			animId = 15;
+			break;
+		case 11:
+			animId = 16;
+			break;
+		case 12:
+			animId = 17;
+			break;
+		case 13:
+			animId = 18;
+			break;
+		case 14:
+			animId = 19;
+			break;
+		case 15:
+			animId = 20;
+			break;
+		case 16:
+			animId = 62;
+			break;
+		case 17:
+			animId = 204;
+			break;
+		case 18:
+			animId = 205;
+			break;
+		case 19:
+			animId = 206;
+			break;
+		case 20:
+			animId = 210;
+			break;
+		case 21:
+			animId = 213;
+			break;
+		case 22:
+			animId = 240;
+			break;
+		case 23:
+			animId = 241;
+			break;
+		case 24:
+			animId = 247;
+			break;
+		case 25:
+			animId = 272;
+			break;
+		case 26:
+			animId = 273;
+			break;
+		case 27:
+			animId = 274;
+			break;
+		case 28:
+			animId = 292;
+			break;
+
+		case 29: ///Sprint
+			animId = 56;
+			break;
+		case 30:
+			animId = 59;
+			break;
+		case 31:
+			animId = 122;
+			break;
+		case 32:
+			animId = 233;
+			break;
+		case 33:
+			animId = 249;
+			break;
+
+		case 34: ///Death
+			animId = 60;
+			break;
+		case 35:
+			animId = 63;
+			break;
+		case 36:
+			animId = 64;
+			break;
+		case 37:
+			animId = 65;
+			break;
+		case 38:
+			animId = 66;
+			break;
+		case 39:
+			animId = 218;
+			break;
+		case 40:
+			animId = 219;
+			break;
+		case 41:
+			animId = 234;
+			break;
+
+		case 42: ///Hit
+			animId = 77;
+			break;
+		case 43:
+			animId = 154;
+			break;
+		case 44:
+			animId = 197;
+			break;
+		case 45:
+			animId = 198;
+			break;
+		case 46:
+			animId = 199;
+			break;
+		case 47:
+			animId = 200;
+			break;
+		case 48:
+			animId = 201;
+			break;
+		case 49:
+			animId = 202;
+			break;
+		case 50:
+			animId = 203;
+			break;
+		case 51:
+			animId = 207;
+			break;
+		case 52:
+			animId = 208;
+			break;
+		case 53:
+			animId = 209;
+			break;
+		case 54:
+			animId = 211;
+			break;
+		case 55:
+			animId = 212;
+			break;
+		case 56:
+			animId = 214;
+			break;
+		case 57:
+			animId = 215;
+			break;
+		case 58:
+			animId = 216;
+			break;
+		case 59:
+			animId = 242;
+			break;
+
+		case 60: ///Hand
+			animId = 23;
+			break;
+		case 61:
+			animId = 51;
+			break;
+		case 62:
+			animId = 83;
+			break;
+		case 63:
+			animId = 83;
+			animType = 1;
+			break;
+		case 64:
+			animId = 97;
+			break;
+		case 65:
+			animId = 99;
+			break;
+		case 66:
+			animId = 100;
+			break;
+		case 67:
+			animId = 101;
+			break;
+		case 68:
+			animId = 102;
+			break;
+		case 69:
+			animId = 108;
+			break;
+		case 70:
+			animId = 109;
+			break;
+		case 71:
+			animId = 110;
+			break;
+		case 72:
+			animId = 111;
+			break;
+		case 73:
+			animId = 112;
+			break;
+		case 74:
+			animId = 116;
+			break;
+		case 75:
+			animId = 123;
+			break;
+		case 76:
+			animId = 217;
+			break;
+		case 77:
+			animId = 255;
+			break;
+
+		case 78: ///Leg
+			animId = 81;
+			break;
+		case 79:
+			animId = 82;
+			break;
+		case 80:
+			animId = 93;
+			break;
+		case 81:
+			animId = 94;
+			break;
+		case 82:
+			animId = 104;
+			break;
+		case 83:
+			animId = 105;
+			break;
+		case 84:
+			animId = 107;
+			break;
+		case 85:
+			animId = 113;
+			break;
+		case 86:
+			animId = 115;
+			break;
+		case 87:
+			animId = 117;
+			break;
+		case 88:
+			animId = 118;
+			break;
+		case 89:
+			animId = 119;
+			break;
+		case 90:
+			animId = 121;
+			break;
+
+		case 91: ///Additional weapon animation
+			animId = 124;
+			break;
+		case 92:
+			animId = 127;
+			break;
+		case 93:
+			animId = 128;
+			break;
+		case 94:
+			animId = 129;
+			break;
+		case 95:
+			animId = 130;
+			break;
+		case 96:
+			animId = 131;
+			break;
+		case 97:
+			animId = 136;
+			break;
+		case 98:
+			animId = 138;
+			break;
+
+		case 99: ///Block animation
+			animId = 180;
+			break;
+		case 100:
+			animId = 183;
+			break;
+		case 101:
+			animId = 185;
+			break;
+		case 102:
+			animId = 193;
+			break;
+		case 103:
+			animId = 194;
+			break;
+		case 104:
+			animId = 195;
+			break;
+		case 105:
+			animId = 191;
+			break;
+		case 106:
+			animId = 192;
+			break;
+
+		case 107: ///Parry
+			animId = 184;
+			break;
+		case 108:
+			animId = 190;
+			break;
+
+		case 109: ///Victory
+			animId = 306;
+			break;
+		case 110:
+			animId = 307;
+			break;
+
+		case 111: ///Hacking
+			animId = 42;
+			break;
+		case 112:
+			animId = 43;
+			break;
+		case 113:
+			animId = 44;
+			break;
+
+		case 114: ///Codec
+			animId = 33;
+			break;
+		case 115:
+			animId = 34;
+			break;
+
+		case 116: ///Other
+			animId = 189;
+			break;
+		case 117:
+			animId = 196;
+			break;
+		case 118:
+			animId = 321;
+			break;
+		case 119:
+			animId = 251;
+			break;
+		case 120:
+			animId = 288;
+			break;
+		case 121:
+			animId = 319;
+			break;
+		case 122:
+			animId = 67;
+			break;
+		case 123:
+			animId = 61;
+			break;
+
+		default:
+			return;
+		}
+	}
+
+	__asm {
+		push animTypeOld
+		push animIdOld
+		push animType
+		push animId
+		mov ecx, playerPtr
+		call playAnimation
+	}
+}
+
 ///MISSION
 
 void RedTrainer::setMission(short missionId, char missionName[]) 
 {
 	if (missionName == NULL)
 		return;
+
+	playSound(0x1257100);
 
 	mem::in::read((BYTE*)(moduleBase + 0x1764670), (BYTE*)&currentMissionCheck, sizeof(currentMissionCheck));
 
@@ -383,11 +888,13 @@ void RedTrainer::setMission(short missionId, char missionName[])
 
 void RedTrainer::setDifficulty(char difficultyValue)
 {
+	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x1764430), (BYTE*)&difficultyValue, sizeof(difficultyValue));
 }
 
 void RedTrainer::setNoDamage(bool &bNoDamage)
 {
+	playSound(0x1257100);
 	bNoDamage = !bNoDamage;
 	if (bNoDamage)
 	{
@@ -402,6 +909,7 @@ void RedTrainer::setNoDamage(bool &bNoDamage)
 
 void RedTrainer::setNoKilled(bool &bNoKilled) //doesnt work
 {
+	playSound(0x1257100);
 	bNoKilled = !bNoKilled;
 	if (bNoKilled)
 	{
@@ -416,6 +924,7 @@ void RedTrainer::setNoKilled(bool &bNoKilled) //doesnt work
 
 void RedTrainer::setNoAlert(bool &bNoAlert) //doesnt work
 {
+	playSound(0x1257100);
 	bNoAlert = !bNoAlert;
 	if (bNoAlert)
 	{
@@ -430,26 +939,31 @@ void RedTrainer::setNoAlert(bool &bNoAlert) //doesnt work
 
 void RedTrainer::setBattleTimer(float timerValue)
 {
+	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x1776204), (BYTE*)&timerValue, sizeof(timerValue));
 }
 
 void RedTrainer::setBattlePoints(int battlePointsValue)
 {
+	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x1776208), (BYTE*)&battlePointsValue, sizeof(battlePointsValue));
 }
 
 void RedTrainer::setMaxCombo(int maxComboValue)
 {
+	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x1776210), (BYTE*)&maxComboValue, sizeof(maxComboValue));
 }
 
 void RedTrainer::setKills(int killsValue)
 {
+	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x1776214), (BYTE*)&killsValue, sizeof(killsValue));
 }
 
 void RedTrainer::setZandzutsuKills(int zandzutsuKillsValue)
 {
+	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x177620C), (BYTE*)&zandzutsuKillsValue, sizeof(zandzutsuKillsValue));
 }
 
@@ -460,6 +974,7 @@ void RedTrainer::setFlag(char raidenFlag)
 	bool isSizeOver = false;
 	int setBitsFromFlag = 0;
 	int memoryBuffer = 0;
+	playSound(0x1257100);
 
 	if (raidenFlag > 0x1F)
 	{
@@ -501,6 +1016,7 @@ void RedTrainer::setFlag(char raidenFlag)
 
 void RedTrainer::setRender(unsigned int renderType)
 {
+	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x17EA09C), (BYTE*)&renderType, sizeof(renderType));
 }
 
@@ -508,6 +1024,7 @@ void RedTrainer::setRender(unsigned int renderType)
 
 void RedTrainer::setFilter(float filterValue, char filterOffset)
 {
+	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x1ADD604 + filterOffset), (BYTE*)&filterValue, sizeof(filterValue));
 }
 
@@ -515,10 +1032,14 @@ void RedTrainer::setSize(float sizeValue, char sizeOffset)
 {
 	uintptr_t sizeAddress;
 	memcpy(&sizeAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(sizeAddress));
+	
 	if (sizeAddress == NULL)
 	{
+		playSound(0x12581AC);
 		return;
 	}
+
+	playSound(0x1257100);
 	sizeAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x70 + (unsigned int)sizeOffset });
 	mem::in::write((BYTE*)(sizeAddress), (BYTE*)&sizeValue, sizeof(sizeValue));
 };
@@ -544,6 +1065,7 @@ void RedTrainer::setMenuType(char menuType)
 
 void RedTrainer::setAllEnemies(bool bEnemyActive, unsigned int enemyId, unsigned int enemyType, unsigned int enemySetType, unsigned int enemyFlag)
 {
+	playSound(0x1257100);
 	if (bEnemyActive) //delete write functions
 	{
 		//enemyId = reverseBytes(enemyId);
@@ -577,6 +1099,10 @@ void RedTrainer::setAllEnemies(bool bEnemyActive, unsigned int enemyId, unsigned
 }
 
 ///TRASH
+
+//itemGetFunc = moduleBase + 0x54ABB0;
+//itemGetFunc = moduleBase + 0x1EA950;
+//itemGetFunc = moduleBase + 0x54C2F0;
 
 /*typedef int(__cdecl *pSetCorpsFunc)(unsigned int*, __m128, int);
 pSetCorpsFunc setCorpsFunc = (pSetCorpsFunc)(0x8A4360 + RedTrainer::moduleBase);

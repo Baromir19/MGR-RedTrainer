@@ -7,6 +7,8 @@ namespace RedTrainer {
 
 	unsigned int reverseBytes(unsigned int value);
 
+	void playSound(int soundPtr);
+
 	///STATS
 
 	void setInvincibility(bool &Invincibility);
@@ -16,6 +18,8 @@ namespace RedTrainer {
 	void setHealth(int healthValue);
 
 	void setMoney(int moneyValue);
+
+	void setNewItem(char itemId);
 
 	///ITEMS
 
@@ -52,6 +56,8 @@ namespace RedTrainer {
 	void setSpeed(float speedValue);
 
 	void setFly();
+
+	void setPlayerAnimation(int animId, int animType, int animIdOld, int animTypeOld, bool isSelectable);
 
 	///MISSION
 

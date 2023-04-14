@@ -35,12 +35,13 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	ImGui::NewFrame();
 	//ImGui::SetNextWindowPos(ImVec2(0, 0));
 
-	if (GetAsyncKeyState(VK_ADD) & 0x8000)
+	if ((GetAsyncKeyState(VK_ADD) || GetAsyncKeyState(VK_F1)) && 0x8000)
 	{
 		isKeyPressed = true;
 	}
-	else if (!(GetAsyncKeyState(VK_ADD) & 0x8000) && isKeyPressed)
+	else if (!((GetAsyncKeyState(VK_ADD) || GetAsyncKeyState(VK_F1)) && 0x8000) && isKeyPressed)
 	{
+		//RedTrainer::playSound(0x12A66C8);
 		RtGui::hideSecondWindow();
 		Data::ShowMenu = !Data::ShowMenu;
 		isKeyPressed = false;

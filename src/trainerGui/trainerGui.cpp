@@ -16,7 +16,8 @@ char missionName[0x20] = "Subphase",
 	 cRaidenType = 0,
 	 cMenuType = 0,
 	 addWeaponCount = 0,
-	 addWeaponNum = 0;
+	 addWeaponNum = 0,
+	 cItemId = 0;
 
 short missionId	= 0x1d,
 	  cBodyShop	= 0,
@@ -42,7 +43,12 @@ int healthValue	= 1600,
 	maxComboValue = 0,
 	killsValue 	= 0,
 	zandzutsuKillsValue = 0,
-	addWeaponValue = 0;
+	addWeaponValue = 0,
+	animationIdSelectable = 0,
+	animationId = 0, ///FOR TEST
+	animationTime = 0,
+	animationIdOld = 0,
+	animationTimeOld = 0;
 
 unsigned int enemyId = 0x00020140,
 			 enemyTypeId = 0x00000000,
@@ -59,6 +65,7 @@ float speedValue  = 0.0f,
 	  ySize		  = 1.0f, 
 	  zSize		  = 1.0f;
 
+const char* cNewItemType[] = { "Max life", "Max fuel", "Spine" };
 const char* cPlayerTypes[] = { "Raiden", "First Raiden", "Camera mode", "Sam", "BladeWolf", "Disabled" };
 const char* cSwordTypes[]  = { "HF Blade", "Stun Blade", "Armor Breaker", "Long Sword", "Wooden Sword", "Murasama",
 							  "Fox Blade", "HF Machete", "First Blade", "Sam's Murasama", "Chainsaw", "Invisible", "Disabled" };
@@ -90,6 +97,31 @@ const char* cRaidenFlags[] = {
 const char* cMenuTypes[] = { 
 "Lock menu", "Game", "Pause", "CODEC", "Pause cutscene", "Mission failed 3", 
 "Mission failed 2", "Weapon menu", "System settings", "Combo list", "Resume", "Menu", "VR-missions" };
+const char* cAnimationTypesRaiden[] = { 
+"Still1", "Still2", "Still3", //0, 1, 72
+"Walk1", "Walk2", //2, 3
+"Landing1", "Landing2", //11, 91
+"Jump1", "Jump2", //4, 5
+"Flip1", "Flip2", "Flip3", "Flip4", "Flip5", "Flip6", "Flip7", //10, 15, 16, 17, 18, 19, 20,
+"Flip8", "Flip9", "Flip10", "Flip11", "Flip12", "Flip13", "Flip14", "Flip15", //62, 204, 205, 206, 210, 213, 240, 241
+"Flip16", "Flip17", "Flip18", "Flip19", "Flip20", //247, 272, 273, 274, 292
+"Sprint1", "Sprint2", "Sprint3", "Sprint4", "Sprint5", //56, 59, 122, 233, 249
+"Death1", "Death2", "Death3", "Death4", "Death5", "Death6", "Death7", "Death8", //60, 63, 64, 65, 66, 218, 219, 234
+"Hit1", "Hit2", "Hit3", "Hit4", "Hit5", "Hit6", "Hit7", "Hit8", "Hit9", //77, 154, 197, 198, 199, 200, 201, 202, 203
+"Hit10", "Hit11", "Hit12", "Hit13", "Hit14", "Hit15", "Hit16", "Hit17", "Hit18", //207, 208, 209, 211, 212, 214, 215, 216, 242
+"Hand1", "Hand2", "Hand3", "Hand4", "Hand5", "Hand6", "Hand7", "Hand8", "Hand9", //23, 51, 83(0), 83(1), 97, 99, 100, 101, 102
+"Hand10", "Hand11", "Hand12", "Hand13", "Hand14", "Hand15", "Hand16", "Hand17", "Hand18",//108, 109, 110, 111, 112, 116, 123, 217, 255
+"Leg1", "Leg2", "Leg3", "Leg4", "Leg5", "Leg6", "Leg7", "Leg8", //81, 82, 93, 94, 104, 105, 107, 113
+"Leg9", "Leg10", "Leg11", "Leg12", "Leg13", //115, 117, 118, 119, 121
+"Add weapon1", "Add weapon2", "Add weapon3", "Add weapon4", "Add weapon5", "Add weapon6", "Add weapon7", "Add weapon8", //124, 127, 128, 129, 130, 131, 136, 138
+"Block1", "Block2", "Block3", "Block4", "Block5", "Block6", "Block7", "Block8", //180, 183, 185, 193, 194, 195, 191, 192
+"Parry1", "Parry2", //184, 190
+"Victory1", "Victory2", //306, 307
+"Hacking1", "Hacking2", "Hacking3", //42, 43, 44
+"Codec1", "Codec2", //33, 34
+"Red eyes", "Get sword", "Lost sword", "Joke", "Wasd", "Monsoon kill", //189, 196, 321, 251, 288, 319
+"MG Ray", "Spying" //67, 61
+};
 
 void RtGui::mainWindow() 
 {
@@ -105,6 +137,7 @@ void RtGui::mainWindow()
 
 	if (ImGui::Button("STATS", ImVec2(150, 20)))
 	{
+		RedTrainer::playSound(0x12570E8);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu2 = !Base::Data::ShowMenu2;
 	}
@@ -112,6 +145,7 @@ void RtGui::mainWindow()
 	if (ImGui::Button("ITEMS", ImVec2(150, 20)))
 	{
 		addWeaponNum = 0;
+		RedTrainer::playSound(0x12570E8);
 		RedTrainer::getWeaponsCount(addWeaponCount);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu3 = !Base::Data::ShowMenu3;
@@ -119,36 +153,42 @@ void RtGui::mainWindow()
 
 	if (ImGui::Button("CUSTOMIZATION", ImVec2(150, 20)))
 	{
+		RedTrainer::playSound(0x12570E8);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu4 = !Base::Data::ShowMenu4;
 	}
 
 	if (ImGui::Button("MOVEMENT", ImVec2(150, 20)))
 	{
+		RedTrainer::playSound(0x12570E8);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu5 = !Base::Data::ShowMenu5;
 	}
 
 	if (ImGui::Button("MISSION", ImVec2(150, 20)))
 	{
+		RedTrainer::playSound(0x12570E8);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu6 = !Base::Data::ShowMenu6;
 	}
 
 	if (ImGui::Button("RAIDEN FLAGS", ImVec2(150, 20)))
 	{
+		RedTrainer::playSound(0x12570E8);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu7 = !Base::Data::ShowMenu7;
 	}
 
 	if (ImGui::Button("OTHER", ImVec2(150, 20)))
 	{
+		RedTrainer::playSound(0x12570E8);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu8 = !Base::Data::ShowMenu8;
 	}
 
 	if (ImGui::Button("ENEMY", ImVec2(150, 20)))
 	{
+		RedTrainer::playSound(0x12570E8);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu9 = !Base::Data::ShowMenu9;
 	}
@@ -185,7 +225,24 @@ void RtGui::statsWindow()
 	if (ImGui::Button("MONEY", ImVec2(150, 20)))
 		RedTrainer::setMoney(moneyValue);
 	ImGui::SameLine();
-	ImGui::InputScalar("      ", ImGuiDataType_S32, &moneyValue);
+	ImGui::InputScalar("  ", ImGuiDataType_S32, &moneyValue);
+
+	if (ImGui::Button("GET ITEM", ImVec2(150, 20)))
+		RedTrainer::setNewItem(cItemId);
+	ImGui::SameLine();
+	if (ImGui::BeginCombo("a", cNewItemType[cItemId], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cNewItemType); i++) {
+			bool is_selected = (cItemId == i);
+			if (ImGui::Selectable(cNewItemType[i], is_selected)) {
+				cItemId = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
 
 	ImGui::End();
 	renderStyle(0);
@@ -578,11 +635,40 @@ void RtGui::movementWindow()
 	if (ImGui::Button("GAME SPEED", ImVec2(150, 20)))
 		RedTrainer::setSpeed(speedValue);
 	ImGui::SameLine();
-	ImGui::InputScalar("      ", ImGuiDataType_Float, &speedValue);
+	ImGui::InputScalar(" ", ImGuiDataType_Float, &speedValue);
 
 	if (ImGui::Button("FLY HACK", ImVec2(150, 20)))
 		bFly = !bFly;
 	RedTrainer::setText(bFly);
+
+	if (ImGui::Button("ANIMATION", ImVec2(150, 20)))
+		RedTrainer::setPlayerAnimation(animationIdSelectable, 0, 0, 0, 1);
+	ImGui::SameLine();
+	if (ImGui::BeginCombo("  ", cAnimationTypesRaiden[animationIdSelectable], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cAnimationTypesRaiden); i++) {
+			bool is_selected = (animationIdSelectable == i);
+			if (ImGui::Selectable(cAnimationTypesRaiden[i], is_selected)) {
+				animationIdSelectable = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	///FOR TEST
+	/*
+	if (ImGui::Button("ANIMATION TEST", ImVec2(150, 20)))
+		RedTrainer::setPlayerAnimation(animationId, animationTime, animationIdOld, animationTimeOld, 0);
+	ImGui::InputScalar("  ", ImGuiDataType_U32, &animationId);
+	ImGui::SameLine();
+	ImGui::InputScalar("    ", ImGuiDataType_U32, &animationTime);
+	ImGui::InputScalar("   ", ImGuiDataType_U32, &animationIdOld);
+	ImGui::SameLine();
+	ImGui::InputScalar("     ", ImGuiDataType_U32, &animationTimeOld);
+	*/
 
 	ImGui::End();
 	renderStyle(0);
@@ -835,16 +921,18 @@ void RtGui::renderStyle(bool isPush)
 	{
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
 		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
+		//ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
+		ImGui::PushStyleColor(ImGuiCol_NavHighlight, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 	}
 	else
 	{
-		ImGui::PopStyleColor(6);
+		ImGui::PopStyleColor(7);
 		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
 	}
