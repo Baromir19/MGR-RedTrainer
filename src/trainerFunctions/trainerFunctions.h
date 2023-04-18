@@ -9,6 +9,10 @@ namespace RedTrainer {
 
 	void playSound(int soundPtr);
 
+	void setBgm(int bgmPtr);
+
+	void setBgm(char bgmText[]);
+
 	///STATS
 
 	void setInvincibility(bool &Invincibility);
@@ -51,6 +55,8 @@ namespace RedTrainer {
 
 	void setPlayerHair(int playerHairId);
 
+	void setInvisibility(bool &bInvisible);
+
 	///MOVEMENT
 
 	void setSpeed(float speedValue);
@@ -58,6 +64,8 @@ namespace RedTrainer {
 	void setFly();
 
 	void setPlayerAnimation(int animId, int animType, int animIdOld, int animTypeOld, bool isSelectable);
+
+	void setWithoutSword(bool &isActive);
 
 	///MISSION
 
@@ -94,6 +102,8 @@ namespace RedTrainer {
 	void setFilter(float filterValue, char filterOffset);
 
 	void setMenuType(char menuType);
+
+	void printMessage(unsigned int messageId, int messageNum, int messagePrint, int messagePosition, char messageChar[]);
 
 	///ENEMY
 

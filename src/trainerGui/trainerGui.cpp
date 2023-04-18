@@ -3,15 +3,20 @@
 #include "trainerGui.h"
 #include "trainerFunctions/trainerFunctions.h"
 
-bool bInvicibility   = false,
-	 bEnergy		 = false,
-	 bNoDamage		 = false,
-	 bNoKilled		 = false,
-	 bNoAlert		 = false,
-	 bInfAddWeapon   = false,
-	 RtGui::bFly	 = false;
+bool bInvicibility = false,
+bEnergy = false,
+bNoDamage = false,
+bNoKilled = false,
+bNoAlert = false,
+bInfAddWeapon = false,
+isHasSword = false,
+RtGui::bFly = false,
+RtGui::bTestWindow = false,
+bInvisible = false;
 
 char missionName[0x20] = "Subphase",
+	 messageChar[0xFF] = { 0 },
+	 bgmChar[0x40] = "bgm_Paused_Exit",
 	 difficultyValue = 0,
 	 cRaidenType = 0,
 	 cMenuType = 0,
@@ -48,13 +53,18 @@ int healthValue	= 1600,
 	animationId = 0, ///FOR TEST
 	animationTime = 0,
 	animationIdOld = 0,
-	animationTimeOld = 0;
+	animationTimeOld = 0,
+	messageNum = 0,
+	messagePrint = 0,
+	messagePosition = 0;
 
 unsigned int enemyId = 0x00020140,
 			 enemyTypeId = 0x00000000,
 			 enemySetTypeId = 0x00000000,
 			 enemyFlagId = 0x00000000,
-			 renderType = 0x00000000;
+			 renderType = 0x00000000,
+			 messageId = 0,
+			 bgmPtr = 0x0;
 
 float speedValue  = 0.0f,
 	  battleTimer = 0.0f,
@@ -172,13 +182,6 @@ void RtGui::mainWindow()
 		Base::Data::ShowMenu6 = !Base::Data::ShowMenu6;
 	}
 
-	if (ImGui::Button("RAIDEN FLAGS", ImVec2(150, 20)))
-	{
-		RedTrainer::playSound(0x12570E8);
-		RtGui::hideSecondWindow();
-		Base::Data::ShowMenu7 = !Base::Data::ShowMenu7;
-	}
-
 	if (ImGui::Button("OTHER", ImVec2(150, 20)))
 	{
 		RedTrainer::playSound(0x12570E8);
@@ -191,6 +194,15 @@ void RtGui::mainWindow()
 		RedTrainer::playSound(0x12570E8);
 		RtGui::hideSecondWindow();
 		Base::Data::ShowMenu9 = !Base::Data::ShowMenu9;
+	}
+
+	if (bTestWindow) {
+		if (ImGui::Button("TEST WINDOW", ImVec2(150, 20)))
+		{
+			RedTrainer::playSound(0x12570E8);
+			RtGui::hideSecondWindow();
+			Base::Data::ShowMenu7 = !Base::Data::ShowMenu7;
+		}
 	}
 
 	ImGui::End();
@@ -581,6 +593,9 @@ void RtGui::customizationWindow()
 		}
 		ImGui::EndCombo();
 	}
+	ImGui::SameLine();
+	if (ImGui::Button(" ", ImVec2(150, 20)))
+		bTestWindow = !bTestWindow;
 
 	if (ImGui::Button("PLAYER BODY", ImVec2(150, 20)))
 		RedTrainer::setPlayerBody(bodyType);
@@ -615,6 +630,10 @@ void RtGui::customizationWindow()
 		}
 		ImGui::EndCombo();
 	}
+
+	if (ImGui::Button("INVISIBLE", ImVec2(150, 20)))
+		RedTrainer::setInvisibility(bInvisible);
+	RedTrainer::setText(bInvisible);
 
 	ImGui::End();
 	renderStyle(0);
@@ -658,17 +677,9 @@ void RtGui::movementWindow()
 		ImGui::EndCombo();
 	}
 
-	///FOR TEST
-	/*
-	if (ImGui::Button("ANIMATION TEST", ImVec2(150, 20)))
-		RedTrainer::setPlayerAnimation(animationId, animationTime, animationIdOld, animationTimeOld, 0);
-	ImGui::InputScalar("  ", ImGuiDataType_U32, &animationId);
-	ImGui::SameLine();
-	ImGui::InputScalar("    ", ImGuiDataType_U32, &animationTime);
-	ImGui::InputScalar("   ", ImGuiDataType_U32, &animationIdOld);
-	ImGui::SameLine();
-	ImGui::InputScalar("     ", ImGuiDataType_U32, &animationTimeOld);
-	*/
+	if (ImGui::Button("LOST SWORD", ImVec2(150, 20)))
+		RedTrainer::setWithoutSword(isHasSword);
+	//RedTrainer::setText(isHasSword);
 
 	ImGui::End();
 	renderStyle(0);
@@ -752,7 +763,7 @@ void RtGui::missionWindow()
 	renderStyle(0);
 }
 
-void RtGui::raidenFlagsWindow()
+void RtGui::testWindow() ///FOR TEST
 {
 	renderStyle(1);
 
@@ -762,29 +773,49 @@ void RtGui::raidenFlagsWindow()
 		ImGuiWindowFlags_AlwaysAutoResize);
 	//ImGui::GetStyle().WindowRounding = 0.0f;
 
-	ImGui::Text("RAIDEN FLAGS");
+	ImGui::Text("TEST");
 
-	if (ImGui::Button("SET FLAG", ImVec2(150, 20)))
-		RedTrainer::setFlag(cRaidenType);
+	if (ImGui::Button("ANIMATION TEST", ImVec2(150, 20)))
+		RedTrainer::setPlayerAnimation(animationId, animationTime, animationIdOld, animationTimeOld, 0);
+	ImGui::InputScalar(" ", ImGuiDataType_U32, &animationId);
 	ImGui::SameLine();
-	if (ImGui::BeginCombo(" ", cRaidenFlags[cRaidenType], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
-	{
-		for (int i = 0; i < IM_ARRAYSIZE(cRaidenFlags); i++) {
-			bool is_selected = (cRaidenType == i);
-			if (ImGui::Selectable(cRaidenFlags[i], is_selected)) {
-				cRaidenType = i;
-			}
-			if (is_selected) {
-				ImGui::SetItemDefaultFocus();
-			}
-		}
-		ImGui::EndCombo();
-	}
+	ImGui::Indent(155);
+	ImGui::InputScalar("  ", ImGuiDataType_U32, &animationTime);
+	ImGui::Unindent(155);
 
-	if (ImGui::Button("RENDER", ImVec2(150, 20)))
-		RedTrainer::setRender(renderType);
+	ImGui::InputScalar("   ", ImGuiDataType_U32, &animationIdOld);
 	ImGui::SameLine();
-	ImGui::InputScalar("  ", ImGuiDataType_U32, &renderType, NULL, NULL, "%X");
+	ImGui::Indent(155);
+	ImGui::InputScalar("    ", ImGuiDataType_U32, &animationTimeOld);
+	ImGui::Unindent(155);
+
+	if (ImGui::Button("PRINT TEST", ImVec2(150, 20)))
+		RedTrainer::printMessage(messageId, messageNum, messagePrint, messagePosition, messageChar);
+	ImGui::InputScalar("     ", ImGuiDataType_U32, &messageId);
+	ImGui::SameLine();
+	ImGui::Indent(155);
+	ImGui::InputScalar("      ", ImGuiDataType_S32, &messageNum); /// MSG Display Time
+	ImGui::Unindent(155);
+
+	ImGui::InputScalar("       ", ImGuiDataType_S32, &messagePrint);
+	ImGui::SameLine();
+	ImGui::Indent(155);
+	ImGui::InputScalar("        ", ImGuiDataType_S32, &messagePosition);
+	ImGui::Unindent(155);
+
+	if (ImGui::Button("SET BGM", ImVec2(150, 20)))
+		RedTrainer::setBgm(bgmPtr);
+	ImGui::SameLine();
+	ImGui::Indent(155);
+	ImGui::InputScalar("         ", ImGuiDataType_U32, &bgmPtr, NULL, NULL, "%X");
+	ImGui::Unindent(155);
+
+	if (ImGui::Button("SET BGM STRING", ImVec2(150, 20)))
+		RedTrainer::setBgm(bgmChar);
+	ImGui::SameLine();
+	ImGui::Indent(155);
+	ImGui::InputText("          ", bgmChar, sizeof(bgmChar)); //Mission name
+	ImGui::Unindent(155);
 
 	ImGui::End();
 	renderStyle(0);
@@ -851,6 +882,28 @@ void RtGui::otherWindow()
 		}
 		ImGui::EndCombo();
 	}
+
+	if (ImGui::Button("SET FLAG", ImVec2(150, 20)))
+		RedTrainer::setFlag(cRaidenType);
+	ImGui::SameLine();
+	if (ImGui::BeginCombo("        ", cRaidenFlags[cRaidenType], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cRaidenFlags); i++) {
+			bool is_selected = (cRaidenType == i);
+			if (ImGui::Selectable(cRaidenFlags[i], is_selected)) {
+				cRaidenType = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+	if (ImGui::Button("RENDER", ImVec2(150, 20)))
+		RedTrainer::setRender(renderType);
+	ImGui::SameLine();
+	ImGui::InputScalar("         ", ImGuiDataType_U32, &renderType, NULL, NULL, "%X");
 
 	ImGui::End();
 	renderStyle(0);

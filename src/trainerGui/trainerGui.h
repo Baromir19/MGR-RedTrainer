@@ -1,6 +1,7 @@
 namespace RtGui {
 
-	extern bool bFly;
+	extern bool bFly,
+	bTestWindow;
 
 	void mainWindow();
 
@@ -14,7 +15,7 @@ namespace RtGui {
 
 	void missionWindow();
 
-	void raidenFlagsWindow();
+	void testWindow();
 
 	void otherWindow();
 

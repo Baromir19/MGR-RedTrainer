@@ -112,7 +112,7 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 
 	if (Data::ShowMenu7)
 	{
-		RtGui::raidenFlagsWindow();
+		RtGui::testWindow();
 	}
 
 	if (Data::ShowMenu8)

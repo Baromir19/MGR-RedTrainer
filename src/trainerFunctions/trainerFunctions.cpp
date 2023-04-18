@@ -12,7 +12,10 @@ uintptr_t RedTrainer::moduleBase = 0;
 
 int(*playAnimation)(unsigned int, int, int, int, int); ///playerPtr, animId, animType, aId2, aType2
 int(*getItem)(unsigned int);
+unsigned int(*setLessSword)(unsigned int, int);
 int(*setSound)(int, int);
+int(*setBgmFunc)(int);
+int(*setMessagePrint)(unsigned int, int, unsigned int, int, int, int, int, int, int);
 
 void RedTrainer::setText (bool bActive) 
 {
@@ -52,6 +55,30 @@ void RedTrainer::playSound(int soundPtr)
 		push soundPtr
 		call setSound
 		add esp, 8
+	}
+}
+
+void RedTrainer::setBgm(int bgmPtr)
+{
+	bgmPtr += moduleBase; //0x123CFD8 bgm sam
+	int bgmFuncAddr = moduleBase + 0xA5E1B0;
+	setBgmFunc = (int(__cdecl*)(int))bgmFuncAddr;
+
+	__asm {
+		push bgmPtr
+		call setBgmFunc
+		add esp, 4
+	}
+}
+void RedTrainer::setBgm(char bgmText[])
+{
+	int bgmFuncAddr = moduleBase + 0xA5E1B0;
+	setBgmFunc = (int(__cdecl*)(int))bgmFuncAddr;
+
+	__asm {
+		push [bgmText]
+		call setBgmFunc
+		add esp, 4
 	}
 }
 
@@ -367,6 +394,22 @@ void RedTrainer::setPlayerHair(int playerHairId)
 	{
 		mem::in::write((BYTE*)(moduleBase + 0x5C7CAC), (BYTE*)"\x75\x1C\xB9\x40\x91\xFE\x01", 7);
 	}
+}
+
+void RedTrainer::setInvisibility(bool &bInvisible)
+{
+	uintptr_t invisibleAddress;
+	memcpy(&invisibleAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(invisibleAddress));
+	if (invisibleAddress == NULL)
+	{
+		playSound(0x12581AC);
+		return;
+	}
+	bInvisible = !bInvisible;
+	int invisibleVar = bInvisible;
+	playSound(0x1257100);
+	invisibleAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x18C });
+	mem::in::write((BYTE*)invisibleAddress, (BYTE*)&invisibleVar, sizeof(invisibleVar));
 }
 
 ///MOVEMENT
@@ -861,6 +904,31 @@ void RedTrainer::setPlayerAnimation(int animId, int animType, int animIdOld, int
 	}
 }
 
+void RedTrainer::setWithoutSword(bool &isActive)
+{
+	int playerPtr = 0;
+	memcpy(&playerPtr, (BYTE*)(moduleBase + 0x19C1490), sizeof(playerPtr));
+
+	if (playerPtr == NULL)
+	{
+		playSound(0x12581AC);
+		return;
+	}
+
+	isActive = !isActive;
+
+	playSound(0x1257100);
+	int playerSwordType = 1;
+	int setLessSwordAddr = moduleBase + 0x77E210;
+	setLessSword = (unsigned int(*)(unsigned int, int))setLessSwordAddr;
+
+	__asm {
+		push playerSwordType
+		mov ecx, playerPtr
+		call setLessSword
+	}
+}
+
 ///MISSION
 
 void RedTrainer::setMission(short missionId, char missionName[]) 
@@ -1059,6 +1127,29 @@ void RedTrainer::setMenuType(char menuType)
 		}
 	}
 	mem::in::write((BYTE*)(moduleBase + 0x17E9F9C), (BYTE*)&menuType, sizeof(menuType));
+}
+
+void RedTrainer::printMessage(unsigned int messageId, int messageNum, int messagePrint, int messagePosition, char messageChar[])
+{
+	int setPtrChkMsg = moduleBase + 0x19C3D08;
+	int setMsgFuncAddr = moduleBase + 0x8E2DB0;
+	playSound(0x1257100);
+	//mem::in::read((BYTE*)(moduleBase + 0x19C3D08), (BYTE*)&setPtrChkMsg, sizeof(setPtrChkMsg));
+	
+	setMessagePrint = (int(*)(unsigned int, int, unsigned int, int, int, int, int, int, int))setMsgFuncAddr;
+	
+	__asm {
+		push messagePosition
+		push 1
+		push 0
+		push 0
+		push messageNum
+		push messagePrint
+		push messageId
+		push 0
+		mov ecx, setPtrChkMsg
+		call setMessagePrint
+	}
 }
 
 ///ENEMY
