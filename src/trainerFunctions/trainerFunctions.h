@@ -8,9 +8,9 @@ namespace RedTrainer {
 	unsigned int reverseBytes(unsigned int value);
 
 	void playSound(int soundPtr);
+	void playSound(char soundText[], int secondVar = 0);
 
 	void setBgm(int bgmPtr);
-
 	void setBgm(char bgmText[]);
 
 	///STATS

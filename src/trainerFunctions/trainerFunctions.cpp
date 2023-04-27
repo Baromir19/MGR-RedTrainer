@@ -11,6 +11,8 @@ int arrayEnemyInfo[70] = { 0 };
 bool RedTrainer::isFirstFly = true;
 uintptr_t RedTrainer::moduleBase = 0;
 
+///GAME FUNCTIONS
+
 int(*playAnimation)(unsigned int, int, int, int, int); ///playerPtr, animId, animType, aId2, aType2
 int(*getItem)(unsigned int);
 unsigned int(*setLessSword)(unsigned int, int);
@@ -19,6 +21,8 @@ int(*setBgmFunc)(int);
 int(*setMessagePrint)(unsigned int, int, unsigned int, int, int, int, int, int, int);
 void(*spawnEnemyFunc)(unsigned int, unsigned int);
 int*(*setCorpsFunc)(unsigned int, int);
+
+///ADDITIONAL FUNCTIONS
 
 void RedTrainer::setText (bool bActive) 
 {
@@ -36,7 +40,8 @@ void RedTrainer::setText (bool bActive)
 	ImGui::PopStyleColor();
 }
 
-unsigned int  RedTrainer::reverseBytes(unsigned int reverseValue) {
+unsigned int  RedTrainer::reverseBytes(unsigned int reverseValue) //trash
+{
 	unsigned int result = 0;
 
 	result |= ((reverseValue & 0x000000FF) << 24);
@@ -47,7 +52,7 @@ unsigned int  RedTrainer::reverseBytes(unsigned int reverseValue) {
 	return result;
 }
 
-void RedTrainer::playSound(int soundPtr)
+void RedTrainer::playSound(int soundPtr) ///For PTR
 {
 	soundPtr += moduleBase; 
 	int setSeSoundFunc = moduleBase + 0xA5E050;
@@ -56,6 +61,18 @@ void RedTrainer::playSound(int soundPtr)
 	__asm {
 		push 0
 		push soundPtr
+		call setSound
+		add esp, 8
+	}
+} 
+void RedTrainer::playSound(char soundText[], int secondVar = 0) ///For string
+{
+	int setSeSoundFunc = moduleBase + 0xA5E050;
+	setSound = (int(__cdecl*)(int, int))setSeSoundFunc; ///Play button click
+
+	__asm {
+		push 0
+		push [soundText]
 		call setSound
 		add esp, 8
 	}
