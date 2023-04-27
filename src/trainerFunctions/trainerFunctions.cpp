@@ -6,6 +6,7 @@
 
 int currentMissionCheck = 0;
 float posX = 0.0f, posY = 0.0f, posZ = 0.0f;
+int arrayEnemyInfo[70] = { 0 };
 
 bool RedTrainer::isFirstFly = true;
 uintptr_t RedTrainer::moduleBase = 0;
@@ -16,6 +17,8 @@ unsigned int(*setLessSword)(unsigned int, int);
 int(*setSound)(int, int);
 int(*setBgmFunc)(int);
 int(*setMessagePrint)(unsigned int, int, unsigned int, int, int, int, int, int, int);
+void(*spawnEnemyFunc)(unsigned int, unsigned int);
+int*(*setCorpsFunc)(unsigned int, int);
 
 void RedTrainer::setText (bool bActive) 
 {
@@ -1154,10 +1157,10 @@ void RedTrainer::printMessage(unsigned int messageId, int messageNum, int messag
 
 ///ENEMY
 
-void RedTrainer::setAllEnemies(bool bEnemyActive, unsigned int enemyId, unsigned int enemyType, unsigned int enemySetType, unsigned int enemyFlag)
+void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsigned int enemyType, unsigned int enemySetType, unsigned int enemyFlag)
 {
 	playSound(0x1257100);
-	if (bEnemyActive) //delete write functions
+	if (typeEnemyActive && 0x1) //delete write functions
 	{
 		//enemyId = reverseBytes(enemyId);
 		//enemyType = reverseBytes(enemyType);
@@ -1172,20 +1175,123 @@ void RedTrainer::setAllEnemies(bool bEnemyActive, unsigned int enemyId, unsigned
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A4D), (BYTE*)"\xC7\x46\x44", 3);
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A50), (BYTE*)&enemyType, 4);
 
-		mem::in::set_nop((BYTE*)(moduleBase + 0x8A1A75), 0x11); //SetType to nop
-		mem::in::write((BYTE*)(moduleBase + 0x8A1A75), (BYTE*)"\xC7\x46\x48", 3);
-		mem::in::write((BYTE*)(moduleBase + 0x8A1A78), (BYTE*)&enemySetType, 4);
-
 		mem::in::set_nop((BYTE*)(moduleBase + 0x8A1AC5), 0x11); //Flag to nop
 		mem::in::write((BYTE*)(moduleBase + 0x8A1AC5), (BYTE*)"\xC7\x46\x50", 3);
 		mem::in::write((BYTE*)(moduleBase + 0x8A1AC8), (BYTE*)&enemyFlag, 4);
 	}
-	else //reset
+
+	if (typeEnemyActive && 0x2) //SetType to nop
+	{
+		mem::in::set_nop((BYTE*)(moduleBase + 0x8A1A75), 0x11); 
+		mem::in::write((BYTE*)(moduleBase + 0x8A1A75), (BYTE*)"\xC7\x46\x48", 3);
+		mem::in::write((BYTE*)(moduleBase + 0x8A1A78), (BYTE*)&enemySetType, 4);
+	}
+
+	if (typeEnemyActive && 0x4) //Set enemy to player pos
+	{
+		memcpy(&posX, (BYTE*)(moduleBase + 0x19C1490), sizeof(posX));
+
+		if (posX == NULL)
+		{
+			playSound(0x12581AC);
+			return;
+		}
+
+		uintptr_t posAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x50 });
+		memcpy(&posX, (BYTE*)posAddress, sizeof(posX));
+		memcpy(&posY, (BYTE*)posAddress + 4, sizeof(posY));
+		memcpy(&posZ, (BYTE*)posAddress + 8, sizeof(posZ));
+
+		mem::in::set_nop((BYTE*)(moduleBase + 0x8A1999), 0x25);
+		mem::in::write((BYTE*)(moduleBase + 0x8A1999), (BYTE*)"\xC7\x46\x1C", 3);
+		mem::in::write((BYTE*)(moduleBase + 0x8A199C), (BYTE*)&posX, 4);
+		mem::in::write((BYTE*)(moduleBase + 0x8A19A0), (BYTE*)"\xC7\x46\x20", 3);
+		mem::in::write((BYTE*)(moduleBase + 0x8A19A3), (BYTE*)&posY, 4);
+		mem::in::write((BYTE*)(moduleBase + 0x8A19A7), (BYTE*)"\xC7\x46\x24", 3);
+		mem::in::write((BYTE*)(moduleBase + 0x8A19AA), (BYTE*)&posZ, 4);
+	}
+	
+	if (!typeEnemyActive) //reset
 	{
 		mem::in::write((BYTE*)(moduleBase + 0x8A1960), (BYTE*)"\x8B\x17\x8D\x4E\x0C\x51\x50\x8B\x82\xE8\x00\x00\x00\x8B\xCF\xFF\xD0", 0x11); //reset id
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A4D), (BYTE*)"\x8B\x17\x8D\x4E\x44\x51\x50\x8B\x82\xD8\x00\x00\x00\x8B\xCF\xFF\xD0", 0x11); //reset type
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A75), (BYTE*)"\x8B\x17\x8D\x4E\x48\x51\x50\x8B\x82\xD8\x00\x00\x00\x8B\xCF\xFF\xD0", 0x11); //reset setType
 		mem::in::write((BYTE*)(moduleBase + 0x8A1AC5), (BYTE*)"\x8B\x17\x8D\x4E\x50\x51\x50\x8B\x82\xE8\x00\x00\x00\x8B\xCF\xFF\xD0", 0x11); //reset flag
+		mem::in::write((BYTE*)(moduleBase + 0x8A1999), (BYTE*)"\x8B\x17\x8B\x82\x9C\x00\x00\x00\x68\xD0\xFC\x09\x02\x53\x8B\xCF\xFF\xD0\x83\xF8\xFF\x74\x0E\x8B\x17\x55\x50\x8B\x82\xC4\x00\x00\x00\x8B\xCF\xFF\xD0", 0x25); //reset pos
+	}
+}
+
+///TEST
+
+void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsigned int enemyFlag)
+{
+	int setCorpsFuncAddr = moduleBase + 0x8A4360;
+	int criticalSectPtr = moduleBase + 0x1878CB0;
+
+	memcpy(&posX, (BYTE*)(moduleBase + 0x19C1490), sizeof(posX));
+
+	if (posX == NULL)
+	{
+		playSound(0x12581AC);
+		return;
+	}
+
+	uintptr_t posAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x50 });
+	memcpy(&posX, (BYTE*)posAddress, sizeof(posX));
+	memcpy(&posY, (BYTE*)posAddress + 4, sizeof(posY));
+	memcpy(&posZ, (BYTE*)posAddress + 8, sizeof(posZ));
+
+	arrayEnemyInfo[0] = 1;
+	arrayEnemyInfo[1] = 0xFFFFFFFF;
+	arrayEnemyInfo[3] = enemyId;
+	memcpy(&arrayEnemyInfo[7], &posX, sizeof(posX));
+	memcpy(&arrayEnemyInfo[8], &posY, sizeof(posY));
+	memcpy(&arrayEnemyInfo[9], &posZ, sizeof(posZ));
+//	memcpy(&arrayEnemyInfo[13], &posX, sizeof(posX));
+//	memcpy(&arrayEnemyInfo[14], &posY, sizeof(posY));
+//	memcpy(&arrayEnemyInfo[15], &posZ, sizeof(posZ));
+	arrayEnemyInfo[17] = enemyType;
+	//arrayEnemyInfo[18] = 0;
+	arrayEnemyInfo[20] = enemyFlag;
+	arrayEnemyInfo[22] = -1;
+	arrayEnemyInfo[23] = -1;
+	arrayEnemyInfo[25] = -1;
+	arrayEnemyInfo[26] = -1;
+	arrayEnemyInfo[29] = -1;
+	arrayEnemyInfo[30] = -1;
+	arrayEnemyInfo[31] = -1;
+//	memcpy(&arrayEnemyInfo[55], &posX, sizeof(posX));
+//	memcpy(&arrayEnemyInfo[56], &posY, sizeof(posY));
+//	memcpy(&arrayEnemyInfo[57], &posZ, sizeof(posZ));
+	arrayEnemyInfo[59] = 1;
+	arrayEnemyInfo[62] = 0xFF * 0x1000000 + 0x00 * 0x10000 + 0x00 * 0x100 + 0xFF;
+
+	setCorpsFunc = (int*(*)(unsigned int, int))setCorpsFuncAddr;
+
+	mem::in::write((BYTE*)(moduleBase + 0x8A45B4), (BYTE*)"\xEB\x2C", 2);
+
+	__asm
+	{
+		lea eax, [arrayEnemyInfo]
+		push eax
+		mov ecx, criticalSectPtr
+		call setCorpsFunc//spfunc
+	}
+
+	mem::in::write((BYTE*)(moduleBase + 0x8A45B4), (BYTE*)"\x75\x2C", 2);
+}
+
+void(*playerImplementFunc)(int);
+void RedTrainer::playerImplement(int plId) //trash
+{
+	int plImplAddr = moduleBase + 0x841040;//0x840850;
+	int plImplement = moduleBase + 0x12A6BDC;
+	playerImplementFunc = (void(*)(int))plImplAddr;
+
+	__asm
+	{
+		lea ecx, plImplement
+		call playerImplementFunc//spfunc
 	}
 }
 
@@ -1328,4 +1434,24 @@ void RedTrainer::spawnEnemy(int enemyId, int setType, int type, int flag)
 	//setCorpsFunc((unsigned int*)criticalSectPtr, xmmReg, arrayEnemyInfo[0]);
 
 	emSetCorpsCrEnemyPtr((unsigned int*)criticalSectPtr, xmmReg, (int)pArrayEnemyInfo);
+}*/
+
+/*void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsigned int enemyFlag)
+{
+	setAllEnemies(0x5, enemyId, enemyType, 0, enemyFlag);
+
+	int spawnFuncAddr = moduleBase + 0x8A6F70;
+	int criticalSectPtr = moduleBase + 0x1878CB0;
+
+	//spawnFunc?
+
+
+	__asm
+	{
+		push 0
+		mov ecx, criticalSectPtr
+		call spawnEnemyFunc//spfunc
+	}
+
+	setAllEnemies(0);
 }*/

@@ -817,6 +817,12 @@ void RtGui::testWindow() ///FOR TEST
 	ImGui::InputText("          ", bgmChar, sizeof(bgmChar)); //Mission name
 	ImGui::Unindent(155);
 
+	if (ImGui::Button("SP TEST", ImVec2(200, 20)))
+		RedTrainer::spawnEnemy(enemyId, enemyTypeId, enemyFlagId);
+
+//	if (ImGui::Button("TEST FUNC", ImVec2(200, 20)))
+//		RedTrainer::playerImplement(0);
+
 	ImGui::End();
 	renderStyle(0);
 }
@@ -921,7 +927,7 @@ void RtGui::enemyWindow()
 	ImGui::Text("ENEMY");
 
 	if (ImGui::Button("SET ALL ENEMIES", ImVec2(200, 20)))
-		RedTrainer::setAllEnemies(1, enemyId, enemyTypeId, enemySetTypeId, enemyFlagId);
+		RedTrainer::setAllEnemies(0x1, enemyId, enemyTypeId, enemySetTypeId, enemyFlagId);
 
 	ImGui::Text("ENEMY ID");
 	ImGui::SameLine();

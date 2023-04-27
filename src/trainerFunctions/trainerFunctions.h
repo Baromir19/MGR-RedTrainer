@@ -107,7 +107,13 @@ namespace RedTrainer {
 
 	///ENEMY
 
-	void setAllEnemies(bool bEnemyActive, unsigned int enemyId = 0, unsigned int enemyType = 0, unsigned int enemySetType = 0, unsigned int enemyFlag = 0);
+	void setAllEnemies(int typeEnemyActive, unsigned int enemyId = 0, unsigned int enemyType = 0, unsigned int enemySetType = 0, unsigned int enemyFlag = 0);
+
+	///TEST
+
+	void spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsigned int enemyFlag);
+
+	void playerImplement(int plId);
 
 	//void spawnEnemy(int enemyId, int setType, int type, int flag);
 }
