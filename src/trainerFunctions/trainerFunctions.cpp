@@ -1238,6 +1238,14 @@ void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsign
 	}
 }
 
+void RedTrainer::enemyDamageTo(int damageType) {
+
+	playSound(0x1257100);
+	
+	//Enemy startup change
+	mem::in::write((BYTE*)(moduleBase + 0x6C7C80), (BYTE*)&damageType, sizeof(damageType));
+}
+
 ///TEST
 
 void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsigned int enemyFlag)
