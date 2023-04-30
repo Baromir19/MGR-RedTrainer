@@ -109,7 +109,7 @@ namespace RedTrainer {
 
 	void setAllEnemies(int typeEnemyActive, unsigned int enemyId = 0, unsigned int enemyType = 0, unsigned int enemySetType = 0, unsigned int enemyFlag = 0);
 	
-	void enemyDamageTo(int damageType);
+	void enemyNoDamageTo(int damageType);
 
 	///TEST
 
