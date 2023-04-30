@@ -1238,7 +1238,7 @@ void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsign
 	}
 }
 
-void RedTrainer::enemyDamageTo(int damageType) {
+void RedTrainer::enemyNoDamageTo(int damageType) {
 
 	playSound(0x1257100);
 	
