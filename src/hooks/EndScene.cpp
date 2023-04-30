@@ -35,6 +35,17 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	ImGui::NewFrame();
 	//ImGui::SetNextWindowPos(ImVec2(0, 0));
 
+	if (RtGui::toSpawn && 
+		((RtGui::previousEnemyId == RtGui::enemyId && RtGui::previousTypeId == RtGui::enemyTypeId) ||
+		(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - RtGui::spawnTimer).count() >= 200))
+		)
+	{
+		RtGui::toSpawn = !RtGui::toSpawn;
+		RedTrainer::spawnEnemy(RtGui::enemyId, RtGui::enemyTypeId, RtGui::enemyFlagId);
+		RtGui::previousEnemyId = RtGui::enemyId;
+		RtGui::previousTypeId = RtGui::enemyTypeId;
+	}
+
 	if ((GetAsyncKeyState(VK_ADD) || GetAsyncKeyState(VK_F1)) && 0x8000)
 	{
 		isKeyPressed = true;

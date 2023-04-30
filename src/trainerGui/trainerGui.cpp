@@ -12,7 +12,8 @@ bInfAddWeapon = false,
 isHasSword = false,
 RtGui::bFly = false,
 RtGui::bTestWindow = false,
-bInvisible = false;
+bInvisible = false,
+RtGui::toSpawn = false;
 
 char missionName[0x20] = "Subphase",
 	 messageChar[0xFF] = { 0 },
@@ -58,13 +59,15 @@ int healthValue	= 1600,
 	messagePrint = 0,
 	messagePosition = 0;
 
-unsigned int enemyId = 0x00020140,
-			 enemyTypeId = 0x00000000,
-			 enemySetTypeId = 0x00000000,
-			 enemyFlagId = 0x00000000,
+unsigned int RtGui::enemyId = 0x00000000,
+			 RtGui::enemyTypeId = 0x00000000,
+			 RtGui::enemySetTypeId = 0x00000000,
+			 RtGui::enemyFlagId = 0x00000000,
 			 renderType = 0x00000000,
 			 messageId = 0,
-			 bgmPtr = 0x0;
+			 bgmPtr = 0x0,
+			 RtGui::previousEnemyId = 0x1,
+			 RtGui::previousTypeId = 0xBEC001;
 
 float speedValue  = 0.0f,
 	  battleTimer = 0.0f,
@@ -74,6 +77,8 @@ float speedValue  = 0.0f,
 	  xSize		  = 1.0f,
 	  ySize		  = 1.0f, 
 	  zSize		  = 1.0f;
+
+std::chrono::steady_clock::time_point RtGui::spawnTimer;
 
 const char* cNewItemType[] = { "Max life", "Max fuel", "Spine" };
 const char* cPlayerTypes[] = { "Raiden", "First Raiden", "Camera mode", "Sam", "BladeWolf", "Disabled" };
@@ -817,8 +822,23 @@ void RtGui::testWindow() ///FOR TEST
 	ImGui::InputText("          ", bgmChar, sizeof(bgmChar)); //Mission name
 	ImGui::Unindent(155);
 
-	if (ImGui::Button("SP TEST", ImVec2(200, 20)))
+//	if (ImGui::Button("SP TEST", ImVec2(200, 20)))
+//		RedTrainer::spawnEnemyA(enemyId, enemyTypeId, enemyFlagId);
+
+	if (ImGui::Button("SP TEST W", ImVec2(200, 20)))
 		RedTrainer::spawnEnemy(enemyId, enemyTypeId, enemyFlagId);
+
+	if (ImGui::Button("SET STRUCT", ImVec2(200, 20)))
+		RedTrainer::setEnemyIdToStruct(enemyId, enemyTypeId);
+
+//	if (ImGui::Button("SET STRUCT2", ImVec2(200, 20)))
+//		RedTrainer::setEnemyIdToStruct(enemyId, 0xA9EB50);
+
+	ImGui::Text("ENEMY ID");
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar("           ", ImGuiDataType_U32, &enemyId, NULL, NULL, "%X");
+	ImGui::Unindent(150);
 
 //	if (ImGui::Button("TEST FUNC", ImVec2(200, 20)))
 //		RedTrainer::playerImplement(0);
@@ -928,6 +948,17 @@ void RtGui::enemyWindow()
 
 	if (ImGui::Button("SET ALL ENEMIES", ImVec2(200, 20)))
 		RedTrainer::setAllEnemies(0x1, enemyId, enemyTypeId, enemySetTypeId, enemyFlagId);
+
+	if (ImGui::Button("SPAWN", ImVec2(200, 20)))
+	{
+		if ((enemyId != previousEnemyId || enemyTypeId != previousTypeId) && !toSpawn)
+		{
+			RedTrainer::setEnemyIdToStruct(enemyId, enemyTypeId);
+			RtGui::spawnTimer = std::chrono::high_resolution_clock::now();
+		}
+
+		RtGui::toSpawn = true;
+	}
 
 	ImGui::Text("ENEMY ID");
 	ImGui::SameLine();

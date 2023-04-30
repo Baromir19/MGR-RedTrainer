@@ -20,7 +20,7 @@ int(*setSound)(int, int);
 int(*setBgmFunc)(int);
 int(*setMessagePrint)(unsigned int, int, unsigned int, int, int, int, int, int, int);
 void(*spawnEnemyFunc)(unsigned int, unsigned int);
-int*(*setCorpsFunc)(unsigned int, int);
+unsigned int*(*setCorpsFunc)(unsigned int, int);
 
 ///ADDITIONAL FUNCTIONS
 
@@ -65,7 +65,7 @@ void RedTrainer::playSound(int soundPtr) ///For PTR
 		add esp, 8
 	}
 } 
-void RedTrainer::playSound(char soundText[], int secondVar = 0) ///For string
+void RedTrainer::playSound(char soundText[], int secondVar) ///For string
 {
 	int setSeSoundFunc = moduleBase + 0xA5E050;
 	setSound = (int(__cdecl*)(int, int))setSeSoundFunc; ///Play button click
@@ -101,6 +101,27 @@ void RedTrainer::setBgm(char bgmText[])
 		add esp, 4
 	}
 }
+
+void RedTrainer::setEnemyIdToStruct(unsigned int enemyId, unsigned int enemyType) //caller: 0xA9EEB0, callee: 0xA9EB50
+{
+	int setIdFuncAddress = moduleBase + 0x600A60;
+	__asm
+	{
+		push enemyType
+		push enemyId
+		call setIdFuncAddress
+	}
+}
+/*void RedTrainer::setEnemyIdToStruct(unsigned int enemyId, int funcNum) //caller: 0xA9EEB0, callee: 0xA9EB50
+{
+	int setIdFuncAddress = moduleBase + funcNum;
+	__asm
+	{
+		push enemyId
+		call setIdFuncAddress
+		add esp, 4
+	}
+}*/
 
 ///STATS
 
@@ -1203,7 +1224,7 @@ void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsign
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A75), (BYTE*)"\xC7\x46\x48", 3);
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A78), (BYTE*)&enemySetType, 4);
 	}
-
+	/*
 	if (typeEnemyActive && 0x4) //Set enemy to player pos
 	{
 		memcpy(&posX, (BYTE*)(moduleBase + 0x19C1490), sizeof(posX));
@@ -1226,7 +1247,7 @@ void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsign
 		mem::in::write((BYTE*)(moduleBase + 0x8A19A3), (BYTE*)&posY, 4);
 		mem::in::write((BYTE*)(moduleBase + 0x8A19A7), (BYTE*)"\xC7\x46\x24", 3);
 		mem::in::write((BYTE*)(moduleBase + 0x8A19AA), (BYTE*)&posZ, 4);
-	}
+	}*/
 	
 	if (!typeEnemyActive) //reset
 	{
@@ -1234,7 +1255,7 @@ void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsign
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A4D), (BYTE*)"\x8B\x17\x8D\x4E\x44\x51\x50\x8B\x82\xD8\x00\x00\x00\x8B\xCF\xFF\xD0", 0x11); //reset type
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A75), (BYTE*)"\x8B\x17\x8D\x4E\x48\x51\x50\x8B\x82\xD8\x00\x00\x00\x8B\xCF\xFF\xD0", 0x11); //reset setType
 		mem::in::write((BYTE*)(moduleBase + 0x8A1AC5), (BYTE*)"\x8B\x17\x8D\x4E\x50\x51\x50\x8B\x82\xE8\x00\x00\x00\x8B\xCF\xFF\xD0", 0x11); //reset flag
-		mem::in::write((BYTE*)(moduleBase + 0x8A1999), (BYTE*)"\x8B\x17\x8B\x82\x9C\x00\x00\x00\x68\xD0\xFC\x09\x02\x53\x8B\xCF\xFF\xD0\x83\xF8\xFF\x74\x0E\x8B\x17\x55\x50\x8B\x82\xC4\x00\x00\x00\x8B\xCF\xFF\xD0", 0x25); //reset pos
+		//mem::in::write((BYTE*)(moduleBase + 0x8A1999), (BYTE*)"\x8B\x17\x8B\x82\x9C\x00\x00\x00\x68\xD0\xFC\x09\x02\x53\x8B\xCF\xFF\xD0\x83\xF8\xFF\x74\x0E\x8B\x17\x55\x50\x8B\x82\xC4\x00\x00\x00\x8B\xCF\xFF\xD0", 0x25); //reset pos
 	}
 }
 
@@ -1243,7 +1264,14 @@ void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsign
 void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsigned int enemyFlag)
 {
 	int setCorpsFuncAddr = moduleBase + 0x8A4360;
-	int criticalSectPtr = moduleBase + 0x1878CB0;
+	int criticalSectPtr = moduleBase + 0x1878CD0; //Get ptr from func
+	//int binXmlPtr = moduleBase + 0x123E684;
+	//int setArrayXmlFunc = moduleBase + 0x8A1790;
+	//int someFuncAddr = moduleBase + 0x681330;
+	//int lockFunc = moduleBase + 0x67C950;
+	//int setFunc = moduleBase + 0x67C960;
+
+	///CHECK FOR CREATION
 
 	memcpy(&posX, (BYTE*)(moduleBase + 0x19C1490), sizeof(posX));
 
@@ -1258,8 +1286,30 @@ void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsign
 	memcpy(&posY, (BYTE*)posAddress + 4, sizeof(posY));
 	memcpy(&posZ, (BYTE*)posAddress + 8, sizeof(posZ));
 
+	///CALL BINXML FUNC
+	/*
+	RedTrainer::setAllEnemies(0x1, enemyId, enemyType, 0, enemyFlag);
+
+	__asm
+	{
+		push 0xA1
+		lea eax, [binXmlPtr]
+		push eax
+		lea eax, [arrayEnemyInfo]
+		push eax
+		push 0xE60000
+		push 0
+		mov ecx, criticalSectPtr
+		call setArrayXmlFunc
+	}
+
+	RedTrainer::setAllEnemies(0);
+	*/
+
+	///SET ARRAY
+
 	arrayEnemyInfo[0] = 1;
-	arrayEnemyInfo[1] = 0xFFFFFFFF;
+	//arrayEnemyInfo[1] = 0xFFFFFFFF;
 	arrayEnemyInfo[3] = enemyId;
 	memcpy(&arrayEnemyInfo[7], &posX, sizeof(posX));
 	memcpy(&arrayEnemyInfo[8], &posY, sizeof(posY));
@@ -1281,21 +1331,78 @@ void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsign
 //	memcpy(&arrayEnemyInfo[56], &posY, sizeof(posY));
 //	memcpy(&arrayEnemyInfo[57], &posZ, sizeof(posZ));
 	arrayEnemyInfo[59] = 1;
+	arrayEnemyInfo[60] = -1;
 	arrayEnemyInfo[62] = 0xFF * 0x1000000 + 0x00 * 0x10000 + 0x00 * 0x100 + 0xFF;
 
-	setCorpsFunc = (int*(*)(unsigned int, int))setCorpsFuncAddr;
+	setCorpsFunc = (unsigned int*(*)(unsigned int, int))setCorpsFuncAddr;
 
-	mem::in::write((BYTE*)(moduleBase + 0x8A45B4), (BYTE*)"\xEB\x2C", 2);
+	///CALL SPAWN FUNC
 
 	__asm
 	{
+		push eax
+		push ebx
+		push ecx
+		push edx
+		push edi
+		push esi
+
+		mov edi, criticalSectPtr
+		//add edi, 20h
+		lea esi, [edi+50h]
+
 		lea eax, [arrayEnemyInfo]
 		push eax
 		mov ecx, criticalSectPtr
 		call setCorpsFunc//spfunc
-	}
 
-	mem::in::write((BYTE*)(moduleBase + 0x8A45B4), (BYTE*)"\x75\x2C", 2);
+		/*add code
+		mov ebx, eax
+		mov ecx, ebx
+		mov eax, [ecx+48h]
+		mov edi, eax
+		mov ecx, 0
+		mov edx, [edi]
+		mov edx, [edx+264h]
+		lea eax, [arrayEnemyInfo]
+		mov [edi+80Ch], ecx
+		push eax
+		mov ecx, edi
+		call edx
+
+		mov ecx, [edi+83Ch]
+		mov eax, 1
+		shl eax, 6
+		mov [eax+esi+24h], ecx
+		mov edx, 1
+		shl edx, 6
+		lea eax, [edx+esi-10h]
+		xor ecx, ecx
+		mov [eax+64h], ecx
+		lea edi, [eax+30h]
+		mov eax, 1
+		shl eax, 6
+		mov [eax+esi+2Ch], ecx
+		mov ecx, edi
+		call someFuncAddr
+
+		mov  ecx, edi
+		call lockFunc
+		mov ecx, ebx
+		lea eax, [ecx+2Ch]
+		push eax
+		mov ecx, edi
+		call setFunc
+		inc dword ptr[esi+4]
+		inc dword ptr[esi]
+		*/
+		pop esi
+		pop edi
+		pop edx
+		pop ecx
+		pop ebx
+		pop eax
+	}
 }
 
 void(*playerImplementFunc)(int);
@@ -1318,7 +1425,20 @@ void RedTrainer::playerImplement(int plId) //trash
 //itemGetFunc = moduleBase + 0x1EA950;
 //itemGetFunc = moduleBase + 0x54C2F0;
 
-/*typedef int(__cdecl *pSetCorpsFunc)(unsigned int*, __m128, int);
+/*
+METAL GEAR RISING REVENGEANCE.exe+8A703E - 8B 46 08              - mov eax,[esi+08]
+METAL GEAR RISING REVENGEANCE.exe+8A7041 - 40                    - inc eax
+METAL GEAR RISING REVENGEANCE.exe+8A7042 - 90                    - nop
+METAL GEAR RISING REVENGEANCE.exe+8A7043 - 90                    - nop
+METAL GEAR RISING REVENGEANCE.exe+8A7044 - 90                    - nop
+METAL GEAR RISING REVENGEANCE.exe+8A7045 - 90                    - nop
+METAL GEAR RISING REVENGEANCE.exe+8A7046 - 90                    - nop
+METAL GEAR RISING REVENGEANCE.exe+8A7047 - 90                    - nop
+METAL GEAR RISING REVENGEANCE.exe+8A7048 - 89 44 24 24           - mov [esp+24],eax
+METAL GEAR RISING REVENGEANCE.exe+8A704C - 3B 46 08              - cmp eax,[esi+08]
+
+
+typedef int(__cdecl *pSetCorpsFunc)(unsigned int*, __m128, int);
 pSetCorpsFunc setCorpsFunc = (pSetCorpsFunc)(0x8A4360 + RedTrainer::moduleBase);
 
 unsigned int corpsAddr = 0x8A4360 + RedTrainer::moduleBase;
@@ -1452,13 +1572,13 @@ void RedTrainer::spawnEnemy(int enemyId, int setType, int type, int flag)
 
 	emSetCorpsCrEnemyPtr((unsigned int*)criticalSectPtr, xmmReg, (int)pArrayEnemyInfo);
 }*/
-
-/*void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsigned int enemyFlag)
+/*
+void RedTrainer::spawnEnemyA(unsigned int enemyId, unsigned int enemyType, unsigned int enemyFlag)
 {
 	setAllEnemies(0x5, enemyId, enemyType, 0, enemyFlag);
 
-	int spawnFuncAddr = moduleBase + 0x8A6F70;
-	int criticalSectPtr = moduleBase + 0x1878CB0;
+	int spawnFuncAddr = moduleBase + 0x8A6F70;//0x8A5F90;
+	int criticalSectPtr = moduleBase + 0x1878CD0;
 
 	//spawnFunc?
 
@@ -1467,7 +1587,7 @@ void RedTrainer::spawnEnemy(int enemyId, int setType, int type, int flag)
 	{
 		push 0
 		mov ecx, criticalSectPtr
-		call spawnEnemyFunc//spfunc
+		call spawnFuncAddr//spfunc
 	}
 
 	setAllEnemies(0);

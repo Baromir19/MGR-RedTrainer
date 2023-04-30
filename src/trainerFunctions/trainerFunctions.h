@@ -13,6 +13,8 @@ namespace RedTrainer {
 	void setBgm(int bgmPtr);
 	void setBgm(char bgmText[]);
 
+	void setEnemyIdToStruct(unsigned int enemyId, unsigned int enemyType);
+
 	///STATS
 
 	void setInvincibility(bool &Invincibility);
@@ -114,6 +116,4 @@ namespace RedTrainer {
 	void spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsigned int enemyFlag);
 
 	void playerImplement(int plId);
-
-	//void spawnEnemy(int enemyId, int setType, int type, int flag);
 }
