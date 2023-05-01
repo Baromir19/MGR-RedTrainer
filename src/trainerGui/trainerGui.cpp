@@ -978,13 +978,13 @@ void RtGui::enemyWindow()
 
 	ImGui::Text("ENEMY");
 
-	if (ImGui::Button("SET ALL ENEMIES", ImVec2(200, 20)))
-		RedTrainer::setAllEnemies(0x1, enemyId, enemyTypeId, enemySetTypeId, enemyFlagId);
-	
 	if (ImGui::Button("NO DAMAGE TYPE", ImVec2(150, 20)))
 		RedTrainer::enemyNoDamageTo(enemyDamageType);
 	ImGui::SameLine();
 	ImGui::InputScalar("      ", ImGuiDataType_S32, &enemyDamageType);
+
+	if (ImGui::Button("SET ALL ENEMIES", ImVec2(200, 20)))
+		RedTrainer::setAllEnemies(0x1, enemyId, enemyTypeId, enemySetTypeId, enemyFlagId);
 
 	if (ImGui::Button("SPAWN", ImVec2(200, 20)))
 	{
