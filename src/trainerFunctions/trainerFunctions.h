@@ -60,6 +60,8 @@ namespace RedTrainer {
 	///MOVEMENT
 
 	void setSpeed(float speedValue);
+	
+	void setAnimFromAnimMapRaiden(int animID);
 
 	void setFly();
 
