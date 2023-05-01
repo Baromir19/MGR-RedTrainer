@@ -461,6 +461,11 @@ void RedTrainer::setSpeed(float speedValue)
 	mem::in::write((BYTE*)(moduleBase + 0x17E93EC), (BYTE*)&speedValue, sizeof(speedValue));
 }
 
+void RedTrainer::setAnimFromAnimMapRaiden (int animID) {
+	playSound(0x1257100);
+	mem::in::write((BYTE*)(moduleBase + 0x7982F1), (BYTE*)&animID, sizeof(animID));
+}
+
 void RedTrainer::setFly() ///NOT OPTIMIZED!!!
 {
 	memcpy(&posX, (BYTE*)(moduleBase + 0x19C1490), sizeof(posX));
