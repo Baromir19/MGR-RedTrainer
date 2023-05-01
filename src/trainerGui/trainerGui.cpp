@@ -660,6 +660,13 @@ void RtGui::movementWindow()
 		RedTrainer::setSpeed(speedValue);
 	ImGui::SameLine();
 	ImGui::InputScalar(" ", ImGuiDataType_Float, &speedValue);
+	
+	
+	if (ImGui::Button("SET RAIDEN STRONG ATTACK ID", ImVec2(150, 20)))
+		RedTrainer::setAnimFromAnimMapRaiden(animationID);
+	ImGui::SameLine();
+	ImGui::InputScalar("AnimMap", ImGuiDataType_S32, &animationID);
+
 
 	if (ImGui::Button("FLY HACK", ImVec2(150, 20)))
 		bFly = !bFly;
