@@ -82,6 +82,7 @@ std::chrono::steady_clock::time_point RtGui::spawnTimer;
 
 const char* cNewItemType[] = { "Max life", "Max fuel", "Spine" };
 const char* cPlayerTypes[] = { "Raiden", "First Raiden", "Camera mode", "Sam", "BladeWolf", "Disabled" };
+const char* cAttackTypes[] = { "Raiden", "Sam", "Boss Sam", "Armstrong" };
 const char* cSwordTypes[]  = { "HF Blade", "Stun Blade", "Armor Breaker", "Long Sword", "Wooden Sword", "Murasama",
 							  "Fox Blade", "HF Machete", "First Blade", "Sam's Murasama", "Chainsaw", "Invisible", "Disabled" };
 const char* cUniqueWeaponsTypes[] = { "Default", "Pole-Arm", "Sai", "Pincer Blades", "Disabled" };
@@ -581,6 +582,26 @@ void RtGui::customizationWindow()
 		}
 		ImGui::EndCombo();
 	}
+	
+	
+	if (ImGui::Button("ATTACK TYPE", ImVec2(150, 20)))
+		RedTrainer::setAttackType(attackType);
+	ImGui::SameLine();
+	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	if (ImGui::BeginCombo("1", cAttackTypes[attackType], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cAttackTypes); i++) {
+			bool is_selected = (attackType == i);
+			if (ImGui::Selectable(cAttackTypes[i], is_selected)) {
+				attackType = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	
 
 	if (ImGui::Button("PLAYER SWORD", ImVec2(150, 20)))
 		RedTrainer::setPlayerSword(swordType);
