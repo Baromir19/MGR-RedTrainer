@@ -57,7 +57,9 @@ int healthValue	= 1600,
 	animationTimeOld = 0,
 	messageNum = 0,
 	messagePrint = 0,
-	messagePosition = 0;
+	messagePosition = 0,
+	animationID = 392,
+	enemyDamageType = 2;
 
 unsigned int RtGui::enemyId = 0x00000000,
 			 RtGui::enemyTypeId = 0x00000000,
