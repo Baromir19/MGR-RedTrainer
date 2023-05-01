@@ -67,7 +67,8 @@ unsigned int RtGui::enemyId = 0x00000000,
 			 messageId = 0,
 			 bgmPtr = 0x0,
 			 RtGui::previousEnemyId = 0x1,
-			 RtGui::previousTypeId = 0xBEC001;
+			 RtGui::previousTypeId = 0xBEC001,
+			 enemyDamageType = 0;
 
 float speedValue  = 0.0f,
 	  battleTimer = 0.0f,
@@ -949,10 +950,10 @@ void RtGui::enemyWindow()
 	if (ImGui::Button("SET ALL ENEMIES", ImVec2(200, 20)))
 		RedTrainer::setAllEnemies(0x1, enemyId, enemyTypeId, enemySetTypeId, enemyFlagId);
 	
-	if (ImGui::Button("ENEMY NO DAMAGE TYPE", ImVec2(150, 20)))
+	if (ImGui::Button("NO DAMAGE TYPE", ImVec2(150, 20)))
 		RedTrainer::enemyNoDamageTo(enemyDamageType);
 	ImGui::SameLine();
-	ImGui::InputScalar("enemyDamageType", ImGuiDataType_S32, &enemyDamageType);
+	ImGui::InputScalar("      ", ImGuiDataType_S32, &enemyDamageType);
 
 	if (ImGui::Button("SPAWN", ImVec2(200, 20)))
 	{

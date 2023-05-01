@@ -9,7 +9,53 @@ bool isKeyPressed = false,
 	 isKeyPressed2 = false,
 	 isKeyPressed3 = false,
 	 isFly = false;
+
 int currentButtonIndex = 0;
+
+int timeToSpawnMil() ///Time to first spawn enemy
+{
+	if ((RtGui::enemyId & 0xF0000) == 0x20000)
+	{
+		switch (RtGui::enemyId & 0x00FF0)
+		{
+		case 0x10:
+		case 0x20:
+		case 0x40:
+		case 0x90:
+		case 0xa0:
+		case 0x120:
+		case 0x140:
+		case 0x160:
+		case 0x1a0:
+		case 0x330:
+		case 0x400:
+		case 0x410:
+			return 200;
+		case 0x30:
+		case 0x60:
+		case 0x70:
+		case 0x80:
+		case 0x100: 
+		case 0x130:
+		case 0x150:
+		case 0x170:
+		case 0x310:
+			return 500;
+		case 0x190:
+			return 1000;
+		case 0x600:
+			return 1500;
+		case 0x180:
+		case 0x200:
+		case 0x700:
+			return 2000;
+		default:
+			return 2500;
+		}
+	}
+
+	return 200;
+}
 
 HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 {
@@ -37,8 +83,8 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 
 	if (RtGui::toSpawn && 
 		((RtGui::previousEnemyId == RtGui::enemyId && RtGui::previousTypeId == RtGui::enemyTypeId) ||
-		(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - RtGui::spawnTimer).count() >= 200))
-		)
+		(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - RtGui::spawnTimer).count() >= timeToSpawnMil()))
+	   )
 	{
 		RtGui::toSpawn = !RtGui::toSpawn;
 		RedTrainer::spawnEnemy(RtGui::enemyId, RtGui::enemyTypeId, RtGui::enemyFlagId);
