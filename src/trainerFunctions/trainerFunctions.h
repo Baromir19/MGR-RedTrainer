@@ -48,6 +48,8 @@ namespace RedTrainer {
 	///CUSTOMIZATION
 
 	void setPlayerType(int playerTypeId);
+	
+	void setAttackType(int attackType);
 
 	void setPlayerSword(int playerSwordId);
 
