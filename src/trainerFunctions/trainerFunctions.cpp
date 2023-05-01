@@ -377,6 +377,34 @@ void RedTrainer::setPlayerType(int playerTypeId)
 	}
 }
 
+
+void RedTrainer::setAttackType(int attackType) {
+
+	playSound(0x1257100);
+
+	switch (attackType)
+	{
+	//RAIDEN
+	case 0:
+		mem::in::write((BYTE*)(moduleBase + 0x129CA1C), (BYTE*)moduleBase + 0x7E6E90);
+		break;
+	//SAM
+	case 1:
+		mem::in::write((BYTE*)(moduleBase + 0x129CA1C), (BYTE*)moduleBase + 0x46BC60);
+		break;
+	//BOSS SAM
+	case 2:
+		mem::in::write((BYTE*)(moduleBase + 0x129CA1C), (BYTE*)moduleBase + 0x1EE70);
+		break;
+	//ARMSTRONG
+	case 3:
+		mem::in::write((BYTE*)(moduleBase + 0x129CA1C), (BYTE*)moduleBase + 0x1B3060);
+		break;
+	default:
+		break;
+	}
+}
+
 void RedTrainer::setPlayerSword(int playerSwordId)
 {
 	bool bPlayerSword = true;
@@ -459,6 +487,11 @@ void RedTrainer::setSpeed(float speedValue)
 {
 	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x17E93EC), (BYTE*)&speedValue, sizeof(speedValue));
+}
+
+void RedTrainer::setAnimFromAnimMapRaiden (int animID) {
+	playSound(0x1257100);
+	mem::in::write((BYTE*)(moduleBase + 0x7982F1), (BYTE*)&animID, sizeof(animID));
 }
 
 void RedTrainer::setFly() ///NOT OPTIMIZED!!!

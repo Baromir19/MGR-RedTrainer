@@ -50,6 +50,8 @@ namespace RedTrainer {
 	///CUSTOMIZATION
 
 	void setPlayerType(int playerTypeId);
+	
+	void setAttackType(int attackType);
 
 	void setPlayerSword(int playerSwordId);
 
@@ -62,6 +64,8 @@ namespace RedTrainer {
 	///MOVEMENT
 
 	void setSpeed(float speedValue);
+	
+	void setAnimFromAnimMapRaiden(int animID);
 
 	void setFly();
 

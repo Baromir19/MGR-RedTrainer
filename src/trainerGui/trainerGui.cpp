@@ -42,6 +42,7 @@ int healthValue	= 1600,
 	lifeFuelTypeShop = 0,
 	skillTypeShop = 0,
 	playerType = 5,
+	attackType = 0,
 	swordType = 12,
 	bodyType = 16,
 	hairType = 4,
@@ -57,7 +58,9 @@ int healthValue	= 1600,
 	animationTimeOld = 0,
 	messageNum = 0,
 	messagePrint = 0,
-	messagePosition = 0;
+	messagePosition = 0,
+	animationID = 392,
+	enemyDamageType = 2;
 
 unsigned int RtGui::enemyId = 0x00000000,
 			 RtGui::enemyTypeId = 0x00000000,
@@ -83,6 +86,7 @@ std::chrono::steady_clock::time_point RtGui::spawnTimer;
 
 const char* cNewItemType[] = { "Max life", "Max fuel", "Spine" };
 const char* cPlayerTypes[] = { "Raiden", "First Raiden", "Camera mode", "Sam", "BladeWolf", "Disabled" };
+const char* cAttackTypes[] = { "Raiden", "Sam", "Boss Sam", "Armstrong" };
 const char* cSwordTypes[]  = { "HF Blade", "Stun Blade", "Armor Breaker", "Long Sword", "Wooden Sword", "Murasama",
 							  "Fox Blade", "HF Machete", "First Blade", "Sam's Murasama", "Chainsaw", "Invisible", "Disabled" };
 const char* cUniqueWeaponsTypes[] = { "Default", "Pole-Arm", "Sai", "Pincer Blades", "Disabled" };
@@ -582,6 +586,26 @@ void RtGui::customizationWindow()
 		}
 		ImGui::EndCombo();
 	}
+	
+	
+	if (ImGui::Button("ATTACK TYPE", ImVec2(150, 20)))
+		RedTrainer::setAttackType(attackType);
+	ImGui::SameLine();
+	//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+	if (ImGui::BeginCombo("1", cAttackTypes[attackType], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(cAttackTypes); i++) {
+			bool is_selected = (attackType == i);
+			if (ImGui::Selectable(cAttackTypes[i], is_selected)) {
+				attackType = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	
 
 	if (ImGui::Button("PLAYER SWORD", ImVec2(150, 20)))
 		RedTrainer::setPlayerSword(swordType);
@@ -661,6 +685,13 @@ void RtGui::movementWindow()
 		RedTrainer::setSpeed(speedValue);
 	ImGui::SameLine();
 	ImGui::InputScalar(" ", ImGuiDataType_Float, &speedValue);
+	
+	
+	if (ImGui::Button("SET RAIDEN STRONG ATTACK ID", ImVec2(150, 20)))
+		RedTrainer::setAnimFromAnimMapRaiden(animationID);
+	ImGui::SameLine();
+	ImGui::InputScalar("AnimMap", ImGuiDataType_S32, &animationID);
+
 
 	if (ImGui::Button("FLY HACK", ImVec2(150, 20)))
 		bFly = !bFly;
