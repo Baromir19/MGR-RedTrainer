@@ -7,6 +7,8 @@ namespace RedTrainer {
 
 	unsigned int reverseBytes(unsigned int value);
 
+	unsigned int getCurrentAnimation();
+
 	void playSound(int soundPtr);
 	void playSound(char soundText[], int secondVar = 0);
 

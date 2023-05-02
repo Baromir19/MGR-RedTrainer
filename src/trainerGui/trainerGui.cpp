@@ -71,7 +71,7 @@ unsigned int RtGui::enemyId = 0x00000000,
 			 bgmPtr = 0x0,
 			 RtGui::previousEnemyId = 0x1,
 			 RtGui::previousTypeId = 0xBEC001,
-			 enemyDamageType = 0;
+			 RtGui::playerAnimationValue = 0x0;
 
 float speedValue  = 0.0f,
 	  battleTimer = 0.0f,
@@ -687,7 +687,7 @@ void RtGui::movementWindow()
 	ImGui::InputScalar(" ", ImGuiDataType_Float, &speedValue);
 	
 	
-	if (ImGui::Button("SET RAIDEN STRONG ATTACK ID", ImVec2(150, 20)))
+	if (ImGui::Button("SET STRONG ATTACK", ImVec2(150, 20)))
 		RedTrainer::setAnimFromAnimMapRaiden(animationID);
 	ImGui::SameLine();
 	ImGui::InputScalar("AnimMap", ImGuiDataType_S32, &animationID);
@@ -717,6 +717,10 @@ void RtGui::movementWindow()
 	if (ImGui::Button("LOST SWORD", ImVec2(150, 20)))
 		RedTrainer::setWithoutSword(isHasSword);
 	//RedTrainer::setText(isHasSword);
+
+	ImGui::Text("ANIMATION");
+	ImGui::SameLine();
+	ImGui::Text("%d", playerAnimationValue); //%x to hex
 
 	ImGui::End();
 	renderStyle(0);

@@ -81,6 +81,8 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	ImGui::NewFrame();
 	//ImGui::SetNextWindowPos(ImVec2(0, 0));
 
+	RtGui::playerAnimationValue = RedTrainer::getCurrentAnimation();
+
 	if (RtGui::toSpawn && 
 		((RtGui::previousEnemyId == RtGui::enemyId && RtGui::previousTypeId == RtGui::enemyTypeId) ||
 		(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - RtGui::spawnTimer).count() >= timeToSpawnMil()))

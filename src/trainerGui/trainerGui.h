@@ -1,15 +1,16 @@
 namespace RtGui {
 
 	extern bool bFly,
-	bTestWindow,
-	toSpawn;
+		bTestWindow,
+		toSpawn;
 
 	extern unsigned int enemyId,
-	enemyTypeId,
-	enemySetTypeId,
-	enemyFlagId,
-	previousEnemyId,
-	previousTypeId;
+		enemyTypeId,
+		enemySetTypeId,
+		enemyFlagId,
+		previousEnemyId,
+		previousTypeId,
+		playerAnimationValue;
 
 	extern std::chrono::steady_clock::time_point spawnTimer;
 

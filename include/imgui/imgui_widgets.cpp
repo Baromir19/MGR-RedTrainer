@@ -3481,7 +3481,7 @@ bool ImGui::InputScalar(const char* label, ImGuiDataType data_type, void* p_data
         }
         if (flags & ImGuiInputTextFlags_ReadOnly)
             EndDisabled();
-
+		
         const char* label_end = FindRenderedTextEnd(label);
         if (label != label_end)
         {
