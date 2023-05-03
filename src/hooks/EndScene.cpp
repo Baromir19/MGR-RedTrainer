@@ -80,6 +80,12 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	//ImGui::SetNextWindowPos(ImVec2(0, 0));
+	/*
+	if (ImGui::IsKeyPressed(ImGuiKey_DownArrow) || ImGui::IsKeyPressed(ImGuiKey_UpArrow) || 
+		ImGui::IsKeyPressed(ImGuiKey_LeftArrow) || ImGui::IsKeyPressed(ImGuiKey_RightArrow))
+	{
+		RedTrainer::playSound("core_se_sys_cursor", 0);
+	}*/
 
 	RtGui::playerAnimationValue = RedTrainer::getCurrentAnimation();
 

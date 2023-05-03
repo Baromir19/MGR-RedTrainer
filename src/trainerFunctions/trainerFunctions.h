@@ -10,7 +10,7 @@ namespace RedTrainer {
 	unsigned int getCurrentAnimation();
 
 	void playSound(int soundPtr);
-	void playSound(char soundText[], int secondVar = 0);
+	void playSound(const char soundText[], int secondVar = 0);
 
 	void setBgm(int bgmPtr);
 	void setBgm(char bgmText[]);

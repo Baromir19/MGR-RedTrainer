@@ -80,7 +80,7 @@ void RedTrainer::playSound(int soundPtr) ///For PTR
 		add esp, 8
 	}
 } 
-void RedTrainer::playSound(char soundText[], int secondVar) ///For string
+void RedTrainer::playSound(const char soundText[], int secondVar) ///For string
 {
 	int setSeSoundFunc = moduleBase + 0xA5E050;
 	setSound = (int(__cdecl*)(int, int))setSeSoundFunc; ///Play button click
@@ -1488,26 +1488,31 @@ void RedTrainer::callGameFunction(int funcAddress, char functionType, char numOf
 		{
 			push arg6
 		}
+
 	case 5:
 		__asm
 		{
 			push arg5
 		}
+
 	case 4:
 		__asm
 		{
 			push arg4
 		}
+
 	case 3:
 		__asm
 		{
 			push arg3
 		}
+
 	case 2:
 		__asm
 		{
 			push arg2
 		}
+
 	case 1:
 		if (functionType != 1) //funcType is not thiscall?
 		{
@@ -1523,6 +1528,7 @@ void RedTrainer::callGameFunction(int funcAddress, char functionType, char numOf
 				mov ecx, arg1
 			}
 		}
+
 	default:
 		break;
 	}
