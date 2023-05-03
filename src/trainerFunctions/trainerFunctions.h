@@ -125,5 +125,7 @@ namespace RedTrainer {
 
 	void playerImplement(int plId);
 
+	void callGameFunction(int funcAddress, char functionType, char numOfArgs, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6);
+
 	//void spawnEnemy(int enemyId, int setType, int type, int flag);
 }

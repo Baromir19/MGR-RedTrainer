@@ -23,7 +23,9 @@ char missionName[0x20] = "Subphase",
 	 cMenuType = 0,
 	 addWeaponCount = 0,
 	 addWeaponNum = 0,
-	 cItemId = 0;
+	 cItemId = 0,
+	 funcType = 0,
+	 numberOfFunctionArgs = 0;
 
 short missionId	= 0x1d,
 	  cBodyShop	= 0,
@@ -60,7 +62,14 @@ int healthValue	= 1600,
 	messagePrint = 0,
 	messagePosition = 0,
 	animationID = 392,
-	enemyDamageType = 2;
+	enemyDamageType = 2,
+	callFunctionAddress = 0,
+	functionArgumentA = 0,
+	functionArgumentB = 0,
+	functionArgumentC = 0,
+	functionArgumentD = 0,
+	functionArgumentE = 0,
+	functionArgumentF = 0;
 
 unsigned int RtGui::enemyId = 0x00000000,
 			 RtGui::enemyTypeId = 0x00000000,
@@ -142,6 +151,7 @@ const char* cAnimationTypesRaiden[] = {
 "Red eyes", "Get sword", "Lost sword", "Joke", "Wasd", "Monsoon kill", //189, 196, 321, 251, 288, 319
 "MG Ray", "Spying" //67, 61
 };
+const char* cFunctionTypes[] = { "cdecl", "thiscall", "stdcall", "fastcall" };
 
 void RtGui::mainWindow() 
 {
@@ -844,12 +854,12 @@ void RtGui::testWindow() ///FOR TEST
 	ImGui::InputScalar("        ", ImGuiDataType_S32, &messagePosition);
 	ImGui::Unindent(155);
 
-	if (ImGui::Button("SET BGM", ImVec2(150, 20)))
+	/*if (ImGui::Button("SET BGM", ImVec2(150, 20)))
 		RedTrainer::setBgm(bgmPtr);
 	ImGui::SameLine();
 	ImGui::Indent(155);
 	ImGui::InputScalar("         ", ImGuiDataType_U32, &bgmPtr, NULL, NULL, "%X");
-	ImGui::Unindent(155);
+	ImGui::Unindent(155);*/
 
 	if (ImGui::Button("SET BGM STRING", ImVec2(150, 20)))
 		RedTrainer::setBgm(bgmChar);
@@ -874,6 +884,49 @@ void RtGui::testWindow() ///FOR TEST
 	ImGui::SameLine();
 	ImGui::Indent(150);
 	ImGui::InputScalar("           ", ImGuiDataType_U32, &enemyId, NULL, NULL, "%X");
+	ImGui::Unindent(150);
+
+	if (ImGui::Button("CALL FUNCTION", ImVec2(150, 20)))
+		RedTrainer::callGameFunction(callFunctionAddress, funcType, numberOfFunctionArgs, functionArgumentA, functionArgumentB, functionArgumentC, functionArgumentD, functionArgumentE, functionArgumentF);
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar("funcAddress", ImGuiDataType_U32, &callFunctionAddress, NULL, NULL, "%X");
+	ImGui::Unindent(150);
+
+	if (ImGui::BeginCombo("FuncType", cFunctionTypes[funcType], ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular))
+	{
+		for (char i = 0; i < IM_ARRAYSIZE(cFunctionTypes); i++) {
+			bool is_selected = (funcType == i);
+			if (ImGui::Selectable(cFunctionTypes[i], is_selected)) {
+				funcType = i;
+			}
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar("numberOfArgs", ImGuiDataType_U8, &numberOfFunctionArgs, NULL, NULL, "%X");
+	ImGui::Unindent(150);
+
+	ImGui::InputScalar("arg1", ImGuiDataType_U32, &functionArgumentA, NULL, NULL, "%X");
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar("arg2", ImGuiDataType_U32, &functionArgumentB, NULL, NULL, "%X");
+	ImGui::Unindent(150);
+
+	ImGui::InputScalar("arg3", ImGuiDataType_U32, &functionArgumentC, NULL, NULL, "%X");
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar("arg4", ImGuiDataType_U32, &functionArgumentD, NULL, NULL, "%X");
+	ImGui::Unindent(150);
+
+	ImGui::InputScalar("arg5", ImGuiDataType_U32, &functionArgumentE, NULL, NULL, "%X");
+	ImGui::SameLine();
+	ImGui::Indent(150);
+	ImGui::InputScalar("arg6", ImGuiDataType_U32, &functionArgumentF, NULL, NULL, "%X");
 	ImGui::Unindent(150);
 
 //	if (ImGui::Button("TEST FUNC", ImVec2(200, 20)))

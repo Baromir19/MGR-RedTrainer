@@ -86,7 +86,7 @@ void RedTrainer::playSound(char soundText[], int secondVar) ///For string
 	setSound = (int(__cdecl*)(int, int))setSeSoundFunc; ///Play button click
 
 	__asm {
-		push 0
+		push secondVar
 		push [soundText]
 		call setSound
 		add esp, 8
@@ -176,7 +176,7 @@ void RedTrainer::setHealth(int healthValue)
 	memcpy(&healthAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(healthAddress));
 	if (healthAddress == NULL)
 	{
-		playSound(0x12581AC);
+		playSound(0x1257100);
 		return;
 	}
 	playSound(0x1257100);
@@ -391,7 +391,6 @@ void RedTrainer::setPlayerType(int playerTypeId)
 		mem::in::write((BYTE*)(moduleBase + 0x823EC1), (BYTE*)"\xE8\x1A\xFF\xFE\xFF", 5);
 	}
 }
-
 
 void RedTrainer::setAttackType(int attackType) {
 
@@ -1472,6 +1471,74 @@ void RedTrainer::playerImplement(int plId) //trash
 	{
 		lea ecx, plImplement
 		call playerImplementFunc//spfunc
+	}
+}
+
+//0 - cdecl, 1 - thiscall, 2 - stdcall, 3 - fastcall. Args = 0~6
+void RedTrainer::callGameFunction(int funcAddress, char functionType, char numOfArgs, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+{
+	funcAddress += moduleBase;
+	
+	///TODO: for() pushing args from stack. Fastcall?
+
+	switch (numOfArgs)
+	{
+	case 6:
+		__asm
+		{
+			push arg6
+		}
+	case 5:
+		__asm
+		{
+			push arg5
+		}
+	case 4:
+		__asm
+		{
+			push arg4
+		}
+	case 3:
+		__asm
+		{
+			push arg3
+		}
+	case 2:
+		__asm
+		{
+			push arg2
+		}
+	case 1:
+		if (functionType != 1) //funcType is not thiscall?
+		{
+			__asm
+			{
+				push arg1
+			}
+		}
+		else
+		{
+			__asm
+			{
+				mov ecx, arg1
+			}
+		}
+	default:
+		break;
+	}
+
+	__asm
+	{
+		call funcAddress
+	}
+
+	if (!functionType) //is funcType cdecl?
+	{
+		int addEsp = numOfArgs * 4;
+		__asm
+		{
+			add esp, addEsp
+		}
 	}
 }
 
