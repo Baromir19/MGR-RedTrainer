@@ -3455,7 +3455,7 @@ bool ImGui::InputScalar(const char* label, ImGuiDataType data_type, void* p_data
         const float button_size = GetFrameHeight();
 
         BeginGroup(); // The only purpose of the group here is to allow the caller to query item data e.g. IsItemActive()
-        PushID(label);
+	    PushID(label);
         SetNextItemWidth(ImMax(1.0f, CalcItemWidth() - (button_size + style.ItemInnerSpacing.x) * 2));
         if (InputText("", buf, IM_ARRAYSIZE(buf), flags)) // PushId(label) + "" gives us the expected ID from outside point of view
             value_changed = DataTypeApplyFromText(buf, data_type, p_data, format);
@@ -3485,8 +3485,8 @@ bool ImGui::InputScalar(const char* label, ImGuiDataType data_type, void* p_data
         const char* label_end = FindRenderedTextEnd(label);
         if (label != label_end)
         {
-            SameLine(0, style.ItemInnerSpacing.x);
-            TextEx(label, label_end);
+			SameLine(0, style.ItemInnerSpacing.x);
+			TextEx(label, label_end);
         }
         style.FramePadding = backup_frame_padding;
 
@@ -4913,8 +4913,8 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         LogRenderedText(&draw_pos, buf_display, buf_display_end);
     }
 
-    if (label_size.x > 0)
-        RenderText(ImVec2(frame_bb.Max.x + style.ItemInnerSpacing.x, frame_bb.Min.y + style.FramePadding.y), label);
+//    if (label_size.x > 0)
+//        RenderText(ImVec2(frame_bb.Max.x + style.ItemInnerSpacing.x, frame_bb.Min.y + style.FramePadding.y), label);
 
     if (value_changed && !(flags & ImGuiInputTextFlags_NoMarkEdited))
         MarkItemEdited(id);
