@@ -13,6 +13,7 @@ isHasSword = false,
 RtGui::bFly = false,
 RtGui::bTestWindow = false,
 bInvisible = false,
+bSamRipper = false,
 RtGui::toSpawn = false;
 
 char missionName[0x20] = "Subphase",
@@ -674,6 +675,10 @@ void RtGui::customizationWindow()
 	if (ImGui::Button("INVISIBLE", ImVec2(150, 20)))
 		RedTrainer::setInvisibility(bInvisible);
 	RedTrainer::setText(bInvisible);
+	
+	if (ImGui::Button("SAM RIPPER", ImVec2(150, 20)))
+		RedTrainer::samRipper(bSamRipper);
+	RedTrainer::setText(bSamRipper);
 
 	ImGui::End();
 	renderStyle(0);
