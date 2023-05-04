@@ -395,24 +395,35 @@ void RedTrainer::setPlayerType(int playerTypeId)
 void RedTrainer::setAttackType(int attackType) {
 
 	playSound(0x1257100);
+	
+	unsigned int playerType;
+	uintptr_t playerTypeAddr = 0;
+	uintptr_t playerAttackTypeAddr;
+
+	playerTypeAddr = mem::in::find_DMA(moduleBase + 0x17EA030, {});
+	mem::in::read((BYTE*)playerTypeAddr, (BYTE*)&playerType, sizeof(playerType));
+
+	if (playerType == 8) playerAttackTypeAddr = moduleBase + 0x129EBB4;
+	
+	if (playerType != 8 && playerType!=9) playerAttackTypeAddr = moduleBase + 0x129CA1C;
 
 	switch (attackType)
 	{
 	//RAIDEN
 	case 0:
-		mem::in::write((BYTE*)(moduleBase + 0x129CA1C), (BYTE*)moduleBase + 0x7E6E90);
+		mem::in::write((BYTE*)(playerAttackTypeAddr), (BYTE*)moduleBase + 0x7E6E90);
 		break;
 	//SAM
 	case 1:
-		mem::in::write((BYTE*)(moduleBase + 0x129CA1C), (BYTE*)moduleBase + 0x46BC60);
+		mem::in::write((BYTE*)(playerAttackTypeAddr), (BYTE*)moduleBase + 0x46BC60);
 		break;
 	//BOSS SAM
 	case 2:
-		mem::in::write((BYTE*)(moduleBase + 0x129CA1C), (BYTE*)moduleBase + 0x1EE70);
+		mem::in::write((BYTE*)(playerAttackTypeAddr), (BYTE*)moduleBase + 0x1EE70);
 		break;
 	//ARMSTRONG
 	case 3:
-		mem::in::write((BYTE*)(moduleBase + 0x129CA1C), (BYTE*)moduleBase + 0x1B3060);
+		mem::in::write((BYTE*)(playerAttackTypeAddr), (BYTE*)moduleBase + 0x1B3060);
 		break;
 	default:
 		break;
