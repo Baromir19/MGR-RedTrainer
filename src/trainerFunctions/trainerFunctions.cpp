@@ -67,6 +67,21 @@ unsigned int RedTrainer::getCurrentAnimation()
 	return animValue;
 }
 
+unsigned int RedTrainer::getFirstEnemyCurrentAnimation()
+{
+	unsigned int animValue = 0;
+	uintptr_t animAddress = 0;
+	memcpy(&animAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(animAddress));
+
+	if (animAddress == NULL) {
+		return animValue;
+	}
+
+	animAddress = mem::in::find_DMA(moduleBase + 0x014A5024, { 0x0, 0x774, 0x14 });
+	mem::in::read((BYTE*)animAddress, (BYTE*)&animValue, sizeof(animValue));
+	return animValue;
+}
+
 void RedTrainer::playSound(int soundPtr) ///For PTR
 {
 	soundPtr += moduleBase; 
