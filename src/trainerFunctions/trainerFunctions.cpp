@@ -506,6 +506,38 @@ void RedTrainer::setInvisibility(bool &bInvisible)
 	mem::in::write((BYTE*)invisibleAddress, (BYTE*)&invisibleVar, sizeof(invisibleVar));
 }
 
+
+void RedTrainer::samRipper(bool &samRipperEnabled) 
+{
+
+	playSound(0x1257100);
+
+	samRipperEnabled = !samRipperEnabled;
+
+	if (samRipperEnabled) {
+
+		//Attack effects from Raiden
+		mem::in::write((BYTE*)(moduleBase + 0x129EBB4), (BYTE*)moduleBase + 0x7E6E90);
+
+		//Red ripper gauge and button (not works in Sam DLC, don't touch)
+		mem::in::write((BYTE*)(moduleBase + 0x129EDC8), (BYTE*)moduleBase + 0x7C3370);
+		
+		//Raiden ripper activation button (Raiden update)
+		mem::in::write((BYTE*)(moduleBase + 0x129EAE4), (BYTE*)moduleBase + 0x8104B0);
+
+	}
+	else {
+		//Attack effects
+		mem::in::write((BYTE*)(moduleBase + 0x129EBB4), (BYTE*)moduleBase + 0x46BC60);
+
+		//Red ripper gauge and button (not works in Sam DLC, don't touch)
+		mem::in::write((BYTE*)(moduleBase + 0x129EDC8), (BYTE*)moduleBase + 0x6C3700);
+
+		//Raiden ripper activation button (Raiden update)
+		mem::in::write((BYTE*)(moduleBase + 0x129EAE4), (BYTE*)moduleBase + 0x69D3D0);
+	}
+}
+
 ///MOVEMENT
 
 void RedTrainer::setSpeed(float speedValue)
