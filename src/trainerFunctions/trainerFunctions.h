@@ -62,6 +62,8 @@ namespace RedTrainer {
 	void setPlayerHair(int playerHairId);
 
 	void setInvisibility(bool &bInvisible);
+	
+	void samRipper(bool &samRipperEnabled);
 
 	///MOVEMENT
 
