@@ -79,16 +79,10 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-	//ImGui::SetNextWindowPos(ImVec2(0, 0));
-	/*
-	if (ImGui::IsKeyPressed(ImGuiKey_DownArrow) || ImGui::IsKeyPressed(ImGuiKey_UpArrow) || 
-		ImGui::IsKeyPressed(ImGuiKey_LeftArrow) || ImGui::IsKeyPressed(ImGuiKey_RightArrow))
-	{
-		RedTrainer::playSound("core_se_sys_cursor", 0);
-	}*/
 
 	RtGui::playerAnimationValue = RedTrainer::getCurrentAnimation();
 
+	///TIMER PART
 	if (RtGui::toSpawn && 
 		((RtGui::previousEnemyId == RtGui::enemyId && RtGui::previousTypeId == RtGui::enemyTypeId) ||
 		(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - RtGui::spawnTimer).count() >= timeToSpawnMil()))
@@ -100,6 +94,14 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 		RtGui::previousTypeId = RtGui::enemyTypeId;
 	}
 
+	if (RtGui::toSetWeaponById && 
+		(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - RtGui::customizationTimer).count() >= 100))
+	{
+		RtGui::toSetWeaponById = !RtGui::toSetWeaponById;
+		RedTrainer::setDynamicWeapon(0, 0);
+	}
+
+	///VIRTUAL KEY PART
 	if ((GetAsyncKeyState(VK_ADD) || GetAsyncKeyState(VK_F1)) && 0x8000)
 	{
 		isKeyPressed = true;
@@ -142,6 +144,7 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 		RedTrainer::isFirstFly = true;
 	}
 
+	///MENU PART
 	if (Data::ShowMenu)
 	{
 		RtGui::mainWindow();

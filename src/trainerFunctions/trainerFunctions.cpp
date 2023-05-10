@@ -1372,8 +1372,6 @@ void RedTrainer::enemyNoDamageTo(int damageType) {
 	mem::in::write((BYTE*)(moduleBase + 0x6C7C80), (BYTE*)&damageType, sizeof(damageType));
 }
 
-///TEST
-
 void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsigned int enemyFlag)
 {
 	int setCorpsFuncAddr = moduleBase + 0x8A4360;
@@ -1518,6 +1516,8 @@ void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsign
 	}
 }
 
+///TEST
+
 void(*playerImplementFunc)(int);
 void RedTrainer::playerImplement(int plId) //trash
 {
@@ -1606,7 +1606,96 @@ void RedTrainer::callGameFunction(int funcAddress, char functionType, char numOf
 	}
 }
 
+//0 = pauseBg
+void RedTrainer::setBackground(char bgType, bool enabled)
+{
+	int resultVar = 0;
+
+	if (bgType == 0 && enabled)
+	{
+		//unsigned int bgPointerVariable = 0x17EA138 + moduleBase;
+		unsigned int pauseMenuBgFunc = 0x594370 + moduleBase;
+
+		__asm
+		{
+			call pauseMenuBgFunc
+			mov resultVar, eax
+		}
+
+		mem::in::write((BYTE*)(0x17EA138 + moduleBase), (BYTE*)&resultVar, sizeof(resultVar));
+
+		return;
+	}
+}
+
+void RedTrainer::setDynamicWeapon(bool isEnabled, unsigned int weaponId)
+{
+	if (isEnabled) //перепроверить на правильность записи + добавить замену по айди
+	{
+		///Changed weapon type
+		mem::in::write((BYTE*)(moduleBase + 0x7885C0), (BYTE*)"\xBF", 1);
+		mem::in::write((BYTE*)(moduleBase + 0x7885C1), (BYTE*)&weaponId, sizeof(weaponId));
+
+		///Disabling verification func 
+		mem::in::set_nop((BYTE*)(moduleBase + 0x592DE9), 2);
+
+		///WeaponMenuType 2 -> 4
+		//mem::in::read((BYTE*)(moduleBase + 0x8294B5), (BYTE*)&buffer, sizeof(buffer));
+		mem::in::write((BYTE*)(moduleBase + 0x8294AD), (BYTE*)"\x83\x05", 2);
+		mem::in::write((BYTE*)(moduleBase + 0x8294B3), (BYTE*)"\x02", 1);
+		mem::in::set_nop((BYTE*)(moduleBase + 0x8294B4), 5);
+
+		///Change weaponMenuType moduleBase + 17EA124 to 2 (write pointer to object in global var)
+		mem::in::write((BYTE*)(moduleBase + 0x17EA124), (BYTE*)"\x02", 1);
+
+		///Set menu to weapon menu setMenuType(7)
+		setMenuType(7);
+	}
+
+	if (!isEnabled)
+	{
+		unsigned int funcAddr = moduleBase + 0x19C2D78;
+		///Change bytes to bytes before call
+		//weapon menu type
+		mem::in::write((BYTE*)(moduleBase + 0x8294AD), (BYTE*)"\x01\x1D", 2);
+		mem::in::write((BYTE*)(moduleBase + 0x8294B5), (BYTE*)&funcAddr, sizeof(funcAddr));
+		mem::in::write((BYTE*)(moduleBase + 0x8294B3), (BYTE*)"\x89\x1D", 2);
+
+		//jne
+		mem::in::write((BYTE*)(moduleBase + 0x592DE9), (BYTE*)"\x75\x07", 2);
+
+		//weapon id
+		mem::in::write((BYTE*)(moduleBase + 0x7885C0), (BYTE*)"\x75\x05\x83\xCF\xFF", 5);
+	}
+
+	/*
+	int resultVar = 0;
+
+	//unsigned int bgPointerVariable = 0x17EA138 + moduleBase;
+	unsigned int weaponSelectMenuFunc = 0x5926A0 + moduleBase;
+
+	__asm
+	{
+		call weaponSelectMenuFunc
+		mov resultVar, eax
+	}
+
+	mem::in::write((BYTE*)(0x17EA14C + moduleBase), (BYTE*)&resultVar, sizeof(resultVar));
+	*/
+}
+
 ///TRASH
+
+	//moduleBase + 0x7885C0 = \x75\x05\x83\xCF\xFF //+5 byte
+	//to "\xBF" + var weaponId //\x00\x04\x03\x00"
+	//moduleBase + 0x592DE9 = \x75\x07
+	//to NOP 2 bytes
+	//moduleBase + 0x8294AD = \x01\x1D //write
+	//to \x83\x05
+	//moduleBase + 0x8294B3 = \x89\x1D + copy next 4 bytes
+	//to \x02 + 5 NOP bytes
+	//01 1D + 24 A1 07 02 
+	//89 1D + 78 2D 25 02
 
 //itemGetFunc = moduleBase + 0x54ABB0;
 //itemGetFunc = moduleBase + 0x1EA950;

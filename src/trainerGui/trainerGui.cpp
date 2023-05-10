@@ -14,7 +14,9 @@ RtGui::bFly = false,
 RtGui::bTestWindow = false,
 bInvisible = false,
 bSamRipper = false,
-RtGui::toSpawn = false;
+RtGui::toSpawn = false,
+isBgModeEnabled = true,
+RtGui::toSetWeaponById = false;
 
 char missionName[0x20] = "Subphase",
 	 messageChar[0xFF] = { 0 },
@@ -26,7 +28,8 @@ char missionName[0x20] = "Subphase",
 	 addWeaponNum = 0,
 	 cItemId = 0,
 	 funcType = 0,
-	 numberOfFunctionArgs = 0;
+	 numberOfFunctionArgs = 0,
+	 backgroundType = 0;
 
 short missionId	= 0x1d,
 	  cBodyShop	= 0,
@@ -79,6 +82,7 @@ unsigned int RtGui::enemyId = 0x00000000,
 			 renderType = 0x00000000,
 			 messageId = 0,
 			 bgmPtr = 0x0,
+			 dynamicWeaponId = 0,
 			 RtGui::previousEnemyId = 0x1,
 			 RtGui::previousTypeId = 0xBEC001,
 			 RtGui::playerAnimationValue = 0x0;
@@ -93,6 +97,7 @@ float speedValue  = 0.0f,
 	  zSize		  = 1.0f;
 
 std::chrono::steady_clock::time_point RtGui::spawnTimer;
+std::chrono::steady_clock::time_point RtGui::customizationTimer;
 
 const char* cNewItemType[] = { "Max life", "Max fuel", "Spine" };
 const char* cPlayerTypes[] = { "Raiden", "First Raiden", "Camera mode", "Sam", "BladeWolf", "Disabled" };
@@ -701,12 +706,10 @@ void RtGui::movementWindow()
 	ImGui::SameLine();
 	ImGui::InputScalar(" ", ImGuiDataType_Float, &speedValue);
 	
-	
-	if (ImGui::Button("SET STRONG ATTACK", ImVec2(150, 20)))
+	if (ImGui::Button("STRONG ATTACK", ImVec2(150, 20)))
 		RedTrainer::setAnimFromAnimMapRaiden(animationID);
 	ImGui::SameLine();
 	ImGui::InputScalar("AnimMap", ImGuiDataType_S32, &animationID);
-
 
 	if (ImGui::Button("FLY HACK", ImVec2(150, 20)))
 		bFly = !bFly;
@@ -871,6 +874,25 @@ void RtGui::testWindow() ///FOR TEST
 	ImGui::SameLine();
 	ImGui::Indent(155);
 	ImGui::InputText("          ", bgmChar, sizeof(bgmChar)); //Mission name
+	ImGui::Unindent(155);
+
+	if (ImGui::Button("SET BG", ImVec2(150, 20)))
+		RedTrainer::setBackground(backgroundType, isBgModeEnabled);
+
+	if (ImGui::Button("SET WEAPON", ImVec2(150, 20)))
+	{
+		if (!toSetWeaponById)
+		{
+			RedTrainer::setMenuType(10);
+			RedTrainer::setDynamicWeapon(1, dynamicWeaponId);
+			RtGui::customizationTimer = std::chrono::high_resolution_clock::now();
+		}
+
+		RtGui::toSetWeaponById = true;
+	}
+	ImGui::SameLine();
+	ImGui::Indent(155);
+	ImGui::InputScalar("weaponId", ImGuiDataType_U32, &dynamicWeaponId, NULL, NULL, "%X");
 	ImGui::Unindent(155);
 
 //	if (ImGui::Button("SP TEST", ImVec2(200, 20)))
