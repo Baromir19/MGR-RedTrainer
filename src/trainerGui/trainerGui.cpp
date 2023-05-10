@@ -85,7 +85,8 @@ unsigned int RtGui::enemyId = 0x00000000,
 			 dynamicWeaponId = 0,
 			 RtGui::previousEnemyId = 0x1,
 			 RtGui::previousTypeId = 0xBEC001,
-			 RtGui::playerAnimationValue = 0x0;
+			 RtGui::playerAnimationValue = 0x0,
+			 RtGui::firstEnemyAnimationValue = 0x0;
 
 float speedValue  = 0.0f,
 	  battleTimer = 0.0f,
@@ -739,6 +740,10 @@ void RtGui::movementWindow()
 	ImGui::Text("ANIMATION");
 	ImGui::SameLine();
 	ImGui::Text("%d", playerAnimationValue); //%x to hex
+	
+	ImGui::Text("ENEMY/BOSS ANIMATION");
+	ImGui::SameLine();
+	ImGui::Text("%d", firstEnemyAnimationValue); //%x to hex
 
 	ImGui::End();
 	renderStyle(0);

@@ -81,6 +81,7 @@ HRESULT __stdcall Base::Hooks::EndScene(LPDIRECT3DDEVICE9 pDevice)
 	ImGui::NewFrame();
 
 	RtGui::playerAnimationValue = RedTrainer::getCurrentAnimation();
+	RtGui::firstEnemyAnimationValue = RedTrainer::getFirstEnemyCurrentAnimation();
 
 	///TIMER PART
 	if (RtGui::toSpawn && 
