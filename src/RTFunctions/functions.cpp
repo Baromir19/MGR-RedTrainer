@@ -1,8 +1,11 @@
-#include "pch.h"
-#include "base.h"
-#include <emmintrin.h>
-#include "trainerFunctions.h"
-#include "trainerGui/trainerGui.h"
+#include "functions.h"
+#include "gui/gui.h"
+#include "imgui/imgui.h"
+#include <cGameUIManager.h>
+#include <PlayerManagerImplement.h>
+#include <common.h>
+#include <injector/injector.hpp>
+#include <cItemPossessionBase.h>
 
 int currentMissionCheck = 0;
 float posX = 0.0f, posY = 0.0f, posZ = 0.0f;
@@ -20,11 +23,11 @@ int(*setSound)(int, int);
 int(*setBgmFunc)(int);
 int(*setMessagePrint)(unsigned int, int, unsigned int, int, int, int, int, int, int);
 void(*spawnEnemyFunc)(unsigned int, unsigned int);
-unsigned int*(*setCorpsFunc)(unsigned int, int);
+unsigned int* (*setCorpsFunc)(unsigned int, int);
 
 ///ADDITIONAL FUNCTIONS
 
-void RedTrainer::setText (bool bActive) 
+void RedTrainer::setText(bool bActive)
 {
 	ImGui::SameLine();
 	if (bActive)
@@ -40,7 +43,7 @@ void RedTrainer::setText (bool bActive)
 	ImGui::PopStyleColor();
 }
 
-unsigned int  RedTrainer::reverseBytes(unsigned int reverseValue) //trash
+unsigned int RedTrainer::reverseBytes(unsigned int reverseValue) //trash
 {
 	unsigned int result = 0;
 
@@ -54,94 +57,31 @@ unsigned int  RedTrainer::reverseBytes(unsigned int reverseValue) //trash
 
 unsigned int RedTrainer::getCurrentAnimation()
 {
-	unsigned int animValue = 0;
-	uintptr_t animAddress = 0;
-	memcpy(&animAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(animAddress));
+	auto player = cGameUIManager::Instance.m_pPlayer;
+	if (!player)
+		return NULL;
 
-	if (animAddress == NULL) {
-		return animValue;
-	}
-
-	animAddress = mem::in::find_DMA(moduleBase + 0x19C14C8, { 0x774, 0x14 });
-	mem::in::read((BYTE*)animAddress, (BYTE*)&animValue, sizeof(animValue));
-	return animValue;
+	return player->m_pAnimationSlots->m_pArrayStart[0].field_4;
 }
 
 unsigned int RedTrainer::getFirstEnemyCurrentAnimation()
 {
-	unsigned int animValue = 0;
-	uintptr_t animAddress = 0;
-	memcpy(&animAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(animAddress));
+	if (!cGameUIManager::Instance.m_pPlayer) 
+		return NULL;
 
-	if (animAddress == NULL) {
-		return animValue;
-	}
+	Behavior* enemy = (Behavior*)(shared::base + 0x14A5024);
+	if (!enemy)
+		return NULL;
 
-	animAddress = mem::in::find_DMA(moduleBase + 0x014A5024, { 0x0, 0x774, 0x14 });
-	mem::in::read((BYTE*)animAddress, (BYTE*)&animValue, sizeof(animValue));
-	return animValue;
-}
-
-void RedTrainer::playSound(int soundPtr) ///For PTR
-{
-	soundPtr += moduleBase; 
-	int setSeSoundFunc = moduleBase + 0xA5E050;
-	setSound = (int(__cdecl*)(int, int))setSeSoundFunc; ///Play button click
-
-	__asm {
-		push 0
-		push soundPtr
-		call setSound
-		add esp, 8
-	}
-} 
-void RedTrainer::playSound(const char soundText[], int secondVar) ///For string
-{
-	int setSeSoundFunc = moduleBase + 0xA5E050;
-	setSound = (int(__cdecl*)(int, int))setSeSoundFunc; ///Play button click
-
-	__asm {
-		push secondVar
-		push [soundText]
-		call setSound
-		add esp, 8
-	}
-}
-
-void RedTrainer::setBgm(int bgmPtr)
-{
-	bgmPtr += moduleBase; //0x123CFD8 bgm sam
-	int bgmFuncAddr = moduleBase + 0xA5E1B0;
-	setBgmFunc = (int(__cdecl*)(int))bgmFuncAddr;
-
-	__asm {
-		push bgmPtr
-		call setBgmFunc
-		add esp, 4
-	}
-}
-void RedTrainer::setBgm(char bgmText[])
-{
-	int bgmFuncAddr = moduleBase + 0xA5E1B0;
-	setBgmFunc = (int(__cdecl*)(int))bgmFuncAddr;
-
-	__asm {
-		push [bgmText]
-		call setBgmFunc
-		add esp, 4
-	}
+	return enemy->m_pAnimationSlots->m_pArrayStart[0].field_4;
 }
 
 void RedTrainer::setEnemyIdToStruct(unsigned int enemyId, unsigned int enemyType) //caller: 0xA9EEB0, callee: 0xA9EB50
 {
-	int setIdFuncAddress = moduleBase + 0x600A60;
-	__asm
-	{
-		push enemyType
-		push enemyId
-		call setIdFuncAddress
-	}
+	int cObjReadManager = shared::base + 0x177B364;
+	((void(__thiscall*)(void*, eObjID, unsigned int))(shared::base + 0x600A60))(&cObjReadManager, (eObjID)enemyId, enemyType);
 }
+
 /*void RedTrainer::setEnemyIdToStruct(unsigned int enemyId, int funcNum) //caller: 0xA9EEB0, callee: 0xA9EB50
 {
 	int setIdFuncAddress = moduleBase + funcNum;
@@ -155,119 +95,97 @@ void RedTrainer::setEnemyIdToStruct(unsigned int enemyId, unsigned int enemyType
 
 ///STATS
 
-void RedTrainer::setInvincibility(bool &bInvincibility)
+void RedTrainer::setInvincibility(bool& bInvincibility)
 {
-	bInvincibility = !bInvincibility;
-	//playSound(0x1256F24); /// change pos
-	//playSound(0x12568D0); /// select item sound...
-	playSound(0x1257100);
+	bInvincibility ^= true;
+	Core_PlaySound("core_se_sys_decide_s", 0);
 	if (bInvincibility)
-	{
-		mem::in::write((BYTE*)(moduleBase + 0x787847), (BYTE*)"\xEB\x56", 2);
-	}
+		injector::WriteMemoryRaw(shared::base + 0x787847, (void*)"\xEB\x56", 2, true);
 	else
-	{
-		mem::in::write((BYTE*)(moduleBase + 0x787847), (BYTE*)"\x74\x56", 2);
-	}
+		injector::WriteMemoryRaw(shared::base + 0x787847, (void*)"\x74\x56", 2, true);
 }
 
-void RedTrainer::setInfinityEnergy(bool &bEnergy)
+void RedTrainer::setInfinityEnergy(bool& bEnergy)
 {
-	playSound(0x1257100);
-	bEnergy = !bEnergy;
+	Core_PlaySound("core_se_sys_decide_s", 0);
+	bEnergy ^= true;
 	if (bEnergy)
-	{
-		mem::in::write((BYTE*)(moduleBase + 0x7C30BE), (BYTE*)"\x90\x90\x90", 3);
-	}
+		injector::MakeNOP(shared::base + 0x7C30BE, 3, true);
 	else
-	{
-		mem::in::write((BYTE*)(moduleBase + 0x7C30BE), (BYTE*)"\xD9\x52\x04", 3);
-	}
+		injector::WriteMemoryRaw(shared::base + 0x7C30BE, (void*)"\xD9\x52\x04", 3, true);
 }
 
 void RedTrainer::setHealth(int healthValue)
 {
-	uintptr_t healthAddress;
-	memcpy(&healthAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(healthAddress));
-	if (healthAddress == NULL)
+	auto player = cGameUIManager::Instance.m_pPlayer;
+	if (!player)
 	{
-		playSound(0x1257100);
+		Core_PlaySound("core_se_sys_menu_out", 0);
 		return;
 	}
-	playSound(0x1257100);
-	healthAddress = mem::in::find_DMA(moduleBase + 0x19C1490, { 0x870 });
-	mem::in::write((BYTE*)healthAddress, (BYTE*)&healthValue, sizeof(healthValue));
+	Core_PlaySound("core_se_sys_decide_s", 0);
+	player->m_nHealth = healthValue;
 }
 
 void RedTrainer::setMoney(int moneyValue)
 {
-	uintptr_t moneyAddress;
-	memcpy(&moneyAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(moneyAddress));
-	if (moneyAddress == NULL)
+	auto manager = PlayerManagerImplement::Get();
+	if (!manager)
 	{
-		playSound(0x12581AC);
+		Core_PlaySound("core_se_sys_menu_out", 0);
 		return;
 	}
-	playSound(0x1257100);
-	moneyAddress = mem::in::find_DMA(moduleBase + 0x17EA100, { 0xDC });
-	mem::in::write((BYTE*)moneyAddress, (BYTE*)&moneyValue, sizeof(moneyValue));
+	Core_PlaySound("core_se_sys_decide_s", 0);
+	manager->m_nBattlePoints = moneyValue;
 }
 
 void RedTrainer::setNewItem(char itemId)
 {
-	int playerPtr = 0, itemGetFunc = 0;
-	memcpy(&playerPtr, (BYTE*)(moduleBase + 0x19C1490), sizeof(playerPtr));
+	auto player = cGameUIManager::Instance.m_pPlayer;
 
-	if (playerPtr == NULL)
+	if (!player)
 	{
-		playSound(0x12581AC);
+		Core_PlaySound("core_se_sys_menu_out", 0);
 		return;
 	}
-	playSound(0x1257100);
+	Core_PlaySound("core_se_sys_decide_s", 0);
 	switch (itemId)
 	{
 	case 0:
-		itemGetFunc = moduleBase + 0x77CA60; ///ADD MAX HEALTH
+		((void(__thiscall*)(Pl0000*))(shared::base + 0x77CA60))(player);
 		break;
 	case 1:
-		itemGetFunc = moduleBase + 0x7D9F60; ///ADD MAX FUELS
+		((void(__thiscall*)(Pl0000*))(shared::base + 0x7D9F60))(player);
 		break;
-	case 2:
+	/*case 2: // not even player function xd
 		itemGetFunc = moduleBase + 0x1E9110; ///SPINE
-		break;
+		break;*/
 	default:
 		return;
-	}
-
-	getItem = (int(*)(unsigned int))itemGetFunc;
-
-	__asm {
-		mov ecx, playerPtr
-		call getItem
 	}
 }
 
 ///ITEMS
 
-void RedTrainer::setInfinityAddWeapons(bool &bInfAddWeapon)
+void RedTrainer::setInfinityAddWeapons(bool& bInfAddWeapon)
 {
-	playSound(0x1257100);
-	bInfAddWeapon = !bInfAddWeapon;
+	Core_PlaySound("core_se_sys_decide_s", 0);
+	bInfAddWeapon ^= true;
 	if (bInfAddWeapon)
 	{
-		mem::in::write((BYTE*)(moduleBase + 0x54D8D0), (BYTE*)"\x90\x90\x90", 3);
-		mem::in::write((BYTE*)(moduleBase + 0x5499F6), (BYTE*)"\x90\x90\x90", 3);
+		injector::MakeNOP(shared::base + 0x54D8D0, 3, true);
+		injector::MakeNOP(shared::base + 0x5499F6, 3, true);
 	}
 	else
 	{
-		mem::in::write((BYTE*)(moduleBase + 0x54D8D0), (BYTE*)"\xFF\x49\x54", 3);
-		mem::in::write((BYTE*)(moduleBase + 0x5499F6), (BYTE*)"\x89\x51\x5C", 3);
+		injector::WriteMemoryRaw(shared::base + 0x54D8D0, (void*)"\xFF\x49\x54", 3, true);
+		injector::WriteMemoryRaw(shared::base + 0x5499F6, (void*)"\x89\x51\x5C", 3, true);
 	}
 }
 
 void RedTrainer::setBodyShop(int bodyShopId, short bodyShopType)
 {
-	playSound(0x1257100);
+	Core_PlaySound("core_se_sys_decide_s", 0);
 	switch (bodyShopId)
 	{
 	case 1:
@@ -280,16 +198,15 @@ void RedTrainer::setBodyShop(int bodyShopId, short bodyShopType)
 		break;
 	}
 
-	if (bodyShopType == 4) {
+	if (bodyShopType == 4) 
 		bodyShopType = 0x103;
-	}
 
-	mem::in::write((BYTE*)(moduleBase + 0x1773860 + bodyShopId * 0x20), (BYTE*)&bodyShopType, sizeof(bodyShopType));
+	injector::WriteMemory(shared::base + 0x1773860 + bodyShopId * 0x20, bodyShopType); // .data section
 }
 
 void RedTrainer::setSwordShop(int swordShopId, short swordShopType)
 {
-	playSound(0x1257100);
+	Core_PlaySound("core_se_sys_decide_s", 0);
 	switch (swordShopId)
 	{
 	case 6:
@@ -302,85 +219,70 @@ void RedTrainer::setSwordShop(int swordShopId, short swordShopType)
 		break;
 	}
 
-	if (swordShopType == 4) {
+	if (swordShopType == 4)
 		swordShopType = 0x103;
-	}
 
-	mem::in::write((BYTE*)(moduleBase + 0x1773A00 + swordShopId * 0x20), (BYTE*)&swordShopType, sizeof(swordShopType));
+	injector::WriteMemory(moduleBase + 0x1773A00 + swordShopId * 0x20, swordShopType); // .data section, we don't need some virtual protection to change ability to write in protected memory
 
 }
 
 void RedTrainer::setUniqueShop(int uniqueShopId, short uniqueShopType)
 {
-	playSound(0x1257100);
-	if (uniqueShopType == 4) {
+	Core_PlaySound("core_se_sys_decide_s", 0);
+	if (uniqueShopType == 4)
 		uniqueShopType = 0x103;
-	}
 
 	uniqueShopId--;
 
-	mem::in::write((BYTE*)(moduleBase + 0x1773B20 + uniqueShopId * 0x20), (BYTE*)&uniqueShopType, sizeof(uniqueShopType));
+	injector::WriteMemory(moduleBase + 0x1773B20 + uniqueShopId * 0x20, uniqueShopType);
 }
 
 void RedTrainer::setWigShop(int wigShopId, short wigShopType)
 {
-	playSound(0x1257100);
-	if (wigShopType == 4) {
+	Core_PlaySound("core_se_sys_decide_s", 0);
+	if (wigShopType == 4)
 		wigShopType = 0x103;
-	}
 
 	wigShopId--;
 
-	mem::in::write((BYTE*)(moduleBase + 0x1773B80 + wigShopId * 0x20), (BYTE*)&wigShopType, sizeof(wigShopType));
+	injector::WriteMemory(moduleBase + 0x1773B80 + wigShopId * 0x20, wigShopType);
 }
 
 void RedTrainer::setLifeFuelShop(int lfShopId, short lfShopType)
 {
-	playSound(0x1257100);
-	if (lfShopType == 4) {
+	Core_PlaySound("core_se_sys_decide_s", 0);
+	if (lfShopType == 4)
 		lfShopType = 0x103;
-	}
 
-	mem::in::write((BYTE*)(moduleBase + 0x1773BE0 + lfShopId * 0x20), (BYTE*)&lfShopType, sizeof(lfShopType));
+	injector::WriteMemory(moduleBase + 0x1773BE0 + lfShopId * 0x20, lfShopType);
 }
 
 void RedTrainer::setSkillsShop(int skillShopId, short skillShopType)
 {
-	playSound(0x1257100);
-	if (skillShopType == 4) {
+	Core_PlaySound("core_se_sys_decide_s", 0);
+	if (skillShopType == 4)
 		skillShopType = 0x103;
-	}
 
-	mem::in::write((BYTE*)(moduleBase + 0x1773D00 + skillShopId * 0x20), (BYTE*)&skillShopType, sizeof(skillShopType));
+	injector::WriteMemory(moduleBase + 0x1773D00 + skillShopId * 0x20, skillShopType);
 }
 
-void RedTrainer::getWeaponsCount(char &weaponCount)
+void RedTrainer::getWeaponsCount(char& weaponCount)
 {
 	//playSound(0x1257100);
-	mem::in::read((BYTE*)(moduleBase + 0x1486EA8), (BYTE*)&weaponCount, sizeof(weaponCount));
+	weaponCount = (*(lib::StaticArray<cItemPossessionBase*, 64>*)(shared::base + 0x1486EA0)).m_nSize;
 }
 
-void RedTrainer::setAddWeapons(char weaponNum, int weaponValue, char weaponCount)
+void RedTrainer::setAddWeapons(char weaponNum, int weaponValue)
 {
-	uintptr_t weaponAddress;
-	memcpy(&weaponAddress, (BYTE*)(moduleBase + 0x1486EB0 + weaponNum * 4), sizeof(weaponAddress));
-	if (weaponAddress == NULL)
+	lib::StaticArray<cItemPossessionBase*, 64> items = *(lib::StaticArray<cItemPossessionBase*, 64>*)(shared::base + 0x1486EA0);
+	if (!&items)
 	{
-		playSound(0x12581AC);
+		Core_PlaySound("core_se_sys_decide_s", 0);
+		Core_PlaySound("core_se_sys_menu_out", 0);
 		return;
 	}
-	playSound(0x1257100);
-	if ((weaponCount == 9 || weaponCount == 11) && (weaponNum == 0 || weaponNum == 1))
-	{
-		weaponAddress = mem::in::find_DMA(moduleBase + 0x1486EB0 + weaponNum * 4, { 0x5C }); ///Rocket launchers
-	}
-	else
-	{
-		weaponAddress = mem::in::find_DMA(moduleBase + 0x1486EB0 + weaponNum * 4, { 0x6 }); ///ItemBlocker
-		mem::in::write((BYTE*)weaponAddress, (BYTE*)"\x00", sizeof("\x00"));
-		weaponAddress += 0x4E; ///Items
-	}
-	mem::in::write((BYTE*)weaponAddress, (BYTE*)&weaponValue, sizeof(weaponValue));
+	Core_PlaySound("core_se_sys_decide_s", 0);
+	items.m_pArrayStart[weaponNum]->Set(weaponValue);
 }
 
 ///CUSTOMIZATION
@@ -388,7 +290,7 @@ void RedTrainer::setAddWeapons(char weaponNum, int weaponValue, char weaponCount
 void RedTrainer::setPlayerType(int playerTypeId)
 {
 	bool bPlayerType = true;
-	playSound(0x1257100);
+	Core_PlaySound("core_se_sys_decide_s", 0);
 
 	if (playerTypeId > 2)
 		playerTypeId += 5;
@@ -398,47 +300,46 @@ void RedTrainer::setPlayerType(int playerTypeId)
 
 	if (bPlayerType)
 	{
-		mem::in::write((BYTE*)(moduleBase + 0x823EC1), (BYTE*)"\xB8\x00\x00\x00\x00", 5);
-		mem::in::write((BYTE*)(moduleBase + 0x823EC2), (BYTE*)&playerTypeId, 1);
+		injector::WriteMemoryRaw(shared::base + 0x823EC1, (void*)"\xB8\x00\x00\x00\x00", 5, true);
+		injector::WriteMemoryRaw(shared::base + 0x823EC2, (void*)playerTypeId, 4, true);
 	}
 	else
 	{
-		mem::in::write((BYTE*)(moduleBase + 0x823EC1), (BYTE*)"\xE8\x1A\xFF\xFE\xFF", 5);
+		injector::WriteMemoryRaw(shared::base + 0x823EC1, (void*)"\xE8\x1A\xFF\xFE\xFF", 5, true);
 	}
 }
 
 void RedTrainer::setAttackType(int attackType) {
 
-	playSound(0x1257100);
-	
-	unsigned int playerType;
-	uintptr_t playerTypeAddr = 0;
-	uintptr_t playerAttackTypeAddr;
+	Core_PlaySound("core_se_sys_decide_s", 0);
 
-	playerTypeAddr = mem::in::find_DMA(moduleBase + 0x17EA030, {});
-	mem::in::read((BYTE*)playerTypeAddr, (BYTE*)&playerType, sizeof(playerType));
+	unsigned int playerAttackTypeAddr;
 
-	if (playerType == 8) playerAttackTypeAddr = moduleBase + 0x129EBB4;
-	
-	if (playerType != 8 && playerType!=9) playerAttackTypeAddr = moduleBase + 0x129CA1C;
+	int playerType = *(int*)(shared::base + 0x17EA030);
+
+	if (playerType == 8) 
+		playerAttackTypeAddr = shared::base + 0x129EBB4;
+
+	if (playerType != 8 && playerType != 9) 
+		playerAttackTypeAddr = shared::base + 0x129CA1C;
 
 	switch (attackType)
 	{
-	//RAIDEN
+		//RAIDEN
 	case 0:
-		mem::in::write((BYTE*)(playerAttackTypeAddr), (BYTE*)moduleBase + 0x7E6E90);
+		injector::WriteMemory(playerAttackTypeAddr, shared::base + 0x7E6E90, true);
 		break;
-	//SAM
+		//SAM
 	case 1:
-		mem::in::write((BYTE*)(playerAttackTypeAddr), (BYTE*)moduleBase + 0x46BC60);
+		injector::WriteMemory(playerAttackTypeAddr, shared::base + 0x46BC60, true);
 		break;
-	//BOSS SAM
+		//BOSS SAM
 	case 2:
-		mem::in::write((BYTE*)(playerAttackTypeAddr), (BYTE*)moduleBase + 0x1EE70);
+		injector::WriteMemory(playerAttackTypeAddr, shared::base + 0x1EE70, true);
 		break;
-	//ARMSTRONG
+		//ARMSTRONG
 	case 3:
-		mem::in::write((BYTE*)(playerAttackTypeAddr), (BYTE*)moduleBase + 0x1B3060);
+		injector::WriteMemory(playerAttackTypeAddr, shared::base + 0x1B3060, true);
 		break;
 	default:
 		break;
@@ -505,7 +406,7 @@ void RedTrainer::setPlayerHair(int playerHairId)
 	}
 }
 
-void RedTrainer::setInvisibility(bool &bInvisible)
+void RedTrainer::setInvisibility(bool& bInvisible)
 {
 	uintptr_t invisibleAddress;
 	memcpy(&invisibleAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(invisibleAddress));
@@ -522,7 +423,7 @@ void RedTrainer::setInvisibility(bool &bInvisible)
 }
 
 
-void RedTrainer::samRipper(bool &samRipperEnabled) 
+void RedTrainer::samRipper(bool& samRipperEnabled)
 {
 
 	playSound(0x1257100);
@@ -536,7 +437,7 @@ void RedTrainer::samRipper(bool &samRipperEnabled)
 
 		//Red ripper gauge and button (not works in Sam DLC, don't touch)
 		mem::in::write((BYTE*)(moduleBase + 0x129EDC8), (BYTE*)moduleBase + 0x7C3370);
-		
+
 		//Raiden ripper activation button (Raiden update)
 		mem::in::write((BYTE*)(moduleBase + 0x129EAE4), (BYTE*)moduleBase + 0x8104B0);
 
@@ -561,7 +462,7 @@ void RedTrainer::setSpeed(float speedValue)
 	mem::in::write((BYTE*)(moduleBase + 0x17E93EC), (BYTE*)&speedValue, sizeof(speedValue));
 }
 
-void RedTrainer::setAnimFromAnimMapRaiden (int animID) {
+void RedTrainer::setAnimFromAnimMapRaiden(int animID) {
 	playSound(0x1257100);
 	mem::in::write((BYTE*)(moduleBase + 0x7982F1), (BYTE*)&animID, sizeof(animID));
 }
@@ -576,7 +477,7 @@ void RedTrainer::setFly() ///NOT OPTIMIZED!!!
 		playSound(0x12581AC);
 		return;
 	}
-	
+
 	if (isFirstFly) {
 		playSound(0x1257100);
 		setSpeed(0.0f);
@@ -1050,7 +951,7 @@ void RedTrainer::setPlayerAnimation(int animId, int animType, int animIdOld, int
 	}
 }
 
-void RedTrainer::setWithoutSword(bool &isActive)
+void RedTrainer::setWithoutSword(bool& isActive)
 {
 	int playerPtr = 0;
 	memcpy(&playerPtr, (BYTE*)(moduleBase + 0x19C1490), sizeof(playerPtr));
@@ -1077,7 +978,7 @@ void RedTrainer::setWithoutSword(bool &isActive)
 
 ///MISSION
 
-void RedTrainer::setMission(short missionId, char missionName[]) 
+void RedTrainer::setMission(short missionId, char missionName[])
 {
 	if (missionName == NULL)
 		return;
@@ -1086,7 +987,7 @@ void RedTrainer::setMission(short missionId, char missionName[])
 
 	mem::in::read((BYTE*)(moduleBase + 0x1764670), (BYTE*)&currentMissionCheck, sizeof(currentMissionCheck));
 
-	if (currentMissionCheck) 
+	if (currentMissionCheck)
 	{
 		mem::in::write((BYTE*)(moduleBase + 0x1764670), (BYTE*)&missionId, sizeof(missionId));
 		mem::in::write((BYTE*)(moduleBase + 0x1764674), (BYTE*)&missionName[0], 0x20);
@@ -1106,7 +1007,7 @@ void RedTrainer::setDifficulty(char difficultyValue)
 	mem::in::write((BYTE*)(moduleBase + 0x1764430), (BYTE*)&difficultyValue, sizeof(difficultyValue));
 }
 
-void RedTrainer::setNoDamage(bool &bNoDamage)
+void RedTrainer::setNoDamage(bool& bNoDamage)
 {
 	playSound(0x1257100);
 	bNoDamage = !bNoDamage;
@@ -1121,7 +1022,7 @@ void RedTrainer::setNoDamage(bool &bNoDamage)
 	}
 }
 
-void RedTrainer::setNoKilled(bool &bNoKilled) //doesnt work
+void RedTrainer::setNoKilled(bool& bNoKilled) //doesnt work
 {
 	playSound(0x1257100);
 	bNoKilled = !bNoKilled;
@@ -1136,7 +1037,7 @@ void RedTrainer::setNoKilled(bool &bNoKilled) //doesnt work
 	}
 }
 
-void RedTrainer::setNoAlert(bool &bNoAlert) //doesnt work
+void RedTrainer::setNoAlert(bool& bNoAlert) //doesnt work
 {
 	playSound(0x1257100);
 	bNoAlert = !bNoAlert;
@@ -1246,7 +1147,7 @@ void RedTrainer::setSize(float sizeValue, char sizeOffset)
 {
 	uintptr_t sizeAddress;
 	memcpy(&sizeAddress, (BYTE*)(moduleBase + 0x19C1490), sizeof(sizeAddress));
-	
+
 	if (sizeAddress == NULL)
 	{
 		playSound(0x12581AC);
@@ -1281,9 +1182,9 @@ void RedTrainer::printMessage(unsigned int messageId, int messageNum, int messag
 	int setMsgFuncAddr = moduleBase + 0x8E2DB0;
 	playSound(0x1257100);
 	//mem::in::read((BYTE*)(moduleBase + 0x19C3D08), (BYTE*)&setPtrChkMsg, sizeof(setPtrChkMsg));
-	
+
 	setMessagePrint = (int(*)(unsigned int, int, unsigned int, int, int, int, int, int, int))setMsgFuncAddr;
-	
+
 	__asm {
 		push messagePosition
 		push 1
@@ -1325,7 +1226,7 @@ void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsign
 
 	if (typeEnemyActive && 0x2) //SetType to nop
 	{
-		mem::in::set_nop((BYTE*)(moduleBase + 0x8A1A75), 0x11); 
+		mem::in::set_nop((BYTE*)(moduleBase + 0x8A1A75), 0x11);
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A75), (BYTE*)"\xC7\x46\x48", 3);
 		mem::in::write((BYTE*)(moduleBase + 0x8A1A78), (BYTE*)&enemySetType, 4);
 	}
@@ -1353,7 +1254,7 @@ void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsign
 		mem::in::write((BYTE*)(moduleBase + 0x8A19A7), (BYTE*)"\xC7\x46\x24", 3);
 		mem::in::write((BYTE*)(moduleBase + 0x8A19AA), (BYTE*)&posZ, 4);
 	}*/
-	
+
 	if (!typeEnemyActive) //reset
 	{
 		mem::in::write((BYTE*)(moduleBase + 0x8A1960), (BYTE*)"\x8B\x17\x8D\x4E\x0C\x51\x50\x8B\x82\xE8\x00\x00\x00\x8B\xCF\xFF\xD0", 0x11); //reset id
@@ -1367,7 +1268,7 @@ void RedTrainer::setAllEnemies(int typeEnemyActive, unsigned int enemyId, unsign
 void RedTrainer::enemyNoDamageTo(int damageType) {
 
 	playSound(0x1257100);
-	
+
 	//Enemy startup change
 	mem::in::write((BYTE*)(moduleBase + 0x6C7C80), (BYTE*)&damageType, sizeof(damageType));
 }
@@ -1425,9 +1326,9 @@ void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsign
 	memcpy(&arrayEnemyInfo[7], &posX, sizeof(posX));
 	memcpy(&arrayEnemyInfo[8], &posY, sizeof(posY));
 	memcpy(&arrayEnemyInfo[9], &posZ, sizeof(posZ));
-//	memcpy(&arrayEnemyInfo[13], &posX, sizeof(posX));
-//	memcpy(&arrayEnemyInfo[14], &posY, sizeof(posY));
-//	memcpy(&arrayEnemyInfo[15], &posZ, sizeof(posZ));
+	//	memcpy(&arrayEnemyInfo[13], &posX, sizeof(posX));
+	//	memcpy(&arrayEnemyInfo[14], &posY, sizeof(posY));
+	//	memcpy(&arrayEnemyInfo[15], &posZ, sizeof(posZ));
 	arrayEnemyInfo[17] = enemyType;
 	//arrayEnemyInfo[18] = 0;
 	arrayEnemyInfo[20] = enemyFlag;
@@ -1438,14 +1339,14 @@ void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsign
 	arrayEnemyInfo[29] = -1;
 	arrayEnemyInfo[30] = -1;
 	arrayEnemyInfo[31] = -1;
-//	memcpy(&arrayEnemyInfo[55], &posX, sizeof(posX));
-//	memcpy(&arrayEnemyInfo[56], &posY, sizeof(posY));
-//	memcpy(&arrayEnemyInfo[57], &posZ, sizeof(posZ));
+	//	memcpy(&arrayEnemyInfo[55], &posX, sizeof(posX));
+	//	memcpy(&arrayEnemyInfo[56], &posY, sizeof(posY));
+	//	memcpy(&arrayEnemyInfo[57], &posZ, sizeof(posZ));
 	arrayEnemyInfo[59] = 1;
 	arrayEnemyInfo[60] = -1;
 	arrayEnemyInfo[62] = 0xFF * 0x1000000 + 0x00 * 0x10000 + 0x00 * 0x100 + 0xFF;
 
-	setCorpsFunc = (unsigned int*(*)(unsigned int, int))setCorpsFuncAddr;
+	setCorpsFunc = (unsigned int* (*)(unsigned int, int))setCorpsFuncAddr;
 
 	///CALL SPAWN FUNC
 
@@ -1460,7 +1361,7 @@ void RedTrainer::spawnEnemy(unsigned int enemyId, unsigned int enemyType, unsign
 
 		mov edi, criticalSectPtr
 		//add edi, 20h
-		lea esi, [edi+50h]
+		lea esi, [edi + 50h]
 
 		lea eax, [arrayEnemyInfo]
 		push eax
@@ -1536,7 +1437,7 @@ void RedTrainer::playerImplement(int plId) //trash
 void RedTrainer::callGameFunction(int funcAddress, char functionType, char numOfArgs, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 {
 	funcAddress += moduleBase;
-	
+
 	///TODO: for() pushing args from stack. Fastcall?
 
 	switch (numOfArgs)
@@ -1630,7 +1531,7 @@ void RedTrainer::setBackground(char bgType, bool enabled)
 
 void RedTrainer::setDynamicWeapon(bool isEnabled, unsigned int weaponId)
 {
-	if (isEnabled) //перепроверить на правильность записи + добавить замену по айди
+	if (isEnabled) //????????????? ?? ???????????? ?????? + ???????? ?????? ?? ????
 	{
 		///Changed weapon type
 		mem::in::write((BYTE*)(moduleBase + 0x7885C0), (BYTE*)"\xBF", 1);
@@ -1833,7 +1734,7 @@ void RedTrainer::spawnEnemy(int enemyId, int setType, int type, int flag)
 	*(float *)(arrayEnemyInfo + 57) = posZ;    // initialPosZ
 	*(DWORD *)(arrayEnemyInfo + 59) = 1;		//firstArg
 	*(DWORD *)(arrayEnemyInfo + 61) = 0;
-	*(DWORD *)(arrayEnemyInfo + 62) = 0xFF * 0x1000000 + 0x00 * 0x10000 + 0x00 * 0x100 + 0xFF;		//free0 //DropItemNormal //dropItemStealth //VisceraYableNo	 
+	*(DWORD *)(arrayEnemyInfo + 62) = 0xFF * 0x1000000 + 0x00 * 0x10000 + 0x00 * 0x100 + 0xFF;		//free0 //DropItemNormal //dropItemStealth //VisceraYableNo
 	//*(float *)(arrayEnemyInfo + 63) = 0.0;    // ReflexViewAngY
 	//*(float *)(arrayEnemyInfo + 64) = 0.0;   // ReflexViewAngX
 	//*(float *)(arrayEnemyInfo + 65) = 0.0;   // ReflexDist

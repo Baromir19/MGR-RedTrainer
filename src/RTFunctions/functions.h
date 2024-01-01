@@ -1,3 +1,6 @@
+#pragma once
+#include <Windows.h>
+
 namespace RedTrainer {
 
 	extern uintptr_t moduleBase;
@@ -8,22 +11,22 @@ namespace RedTrainer {
 	unsigned int reverseBytes(unsigned int value);
 
 	unsigned int getCurrentAnimation();
-	
+
 	unsigned int getFirstEnemyCurrentAnimation();
 
-	void playSound(int soundPtr);
+	/*void playSound(int soundPtr);
 	void playSound(const char soundText[], int secondVar = 0);
 
 	void setBgm(int bgmPtr);
-	void setBgm(char bgmText[]);
+	void setBgm(char bgmText[]);*/
 
 	void setEnemyIdToStruct(unsigned int enemyId, unsigned int enemyType);
 
 	///STATS
 
-	void setInvincibility(bool &Invincibility);
+	void setInvincibility(bool& Invincibility);
 
-	void setInfinityEnergy(bool &bEnergy);
+	void setInfinityEnergy(bool& bEnergy);
 
 	void setHealth(int healthValue);
 
@@ -33,7 +36,7 @@ namespace RedTrainer {
 
 	///ITEMS
 
-	void setInfinityAddWeapons(bool &bInfAddWeapon);
+	void setInfinityAddWeapons(bool& bInfAddWeapon);
 
 	void setBodyShop(int bodyShopId, short bodyShopType);
 
@@ -47,14 +50,14 @@ namespace RedTrainer {
 
 	void setSkillsShop(int skillShopId, short skillShopType);
 
-	void getWeaponsCount(char &weaponCount);
+	void getWeaponsCount(char& weaponCount);
 
-	void setAddWeapons(char weaponNum, int weaponValue, char weaponCount);
+	void setAddWeapons(char weaponNum, int weaponValue);
 
 	///CUSTOMIZATION
 
 	void setPlayerType(int playerTypeId);
-	
+
 	void setAttackType(int attackType);
 
 	void setPlayerSword(int playerSwordId);
@@ -63,21 +66,21 @@ namespace RedTrainer {
 
 	void setPlayerHair(int playerHairId);
 
-	void setInvisibility(bool &bInvisible);
-	
-	void samRipper(bool &samRipperEnabled);
+	void setInvisibility(bool& bInvisible);
+
+	void samRipper(bool& samRipperEnabled);
 
 	///MOVEMENT
 
 	void setSpeed(float speedValue);
-	
+
 	void setAnimFromAnimMapRaiden(int animID);
 
 	void setFly();
 
 	void setPlayerAnimation(int animId, int animType, int animIdOld, int animTypeOld, bool isSelectable);
 
-	void setWithoutSword(bool &isActive);
+	void setWithoutSword(bool& isActive);
 
 	///MISSION
 
@@ -85,11 +88,11 @@ namespace RedTrainer {
 
 	void setDifficulty(char difficultyValue);
 
-	void setNoDamage(bool &bNoDamage);
+	void setNoDamage(bool& bNoDamage);
 
-	void setNoKilled(bool &bNoKilled);
+	void setNoKilled(bool& bNoKilled);
 
-	void setNoAlert(bool &bNoAlert);
+	void setNoAlert(bool& bNoAlert);
 
 	void setBattleTimer(float timerValue);
 
@@ -120,7 +123,7 @@ namespace RedTrainer {
 	///ENEMY
 
 	void setAllEnemies(int typeEnemyActive, unsigned int enemyId = 0, unsigned int enemyType = 0, unsigned int enemySetType = 0, unsigned int enemyFlag = 0);
-	
+
 	void enemyNoDamageTo(int damageType);
 
 	///TEST
