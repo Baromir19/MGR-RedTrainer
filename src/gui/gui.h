@@ -1,16 +1,22 @@
 #pragma once
 #include <Windows.h>
 
-namespace gui
+class gui
 {
-	inline bool bInit = false;
-	inline bool bDetached = false;
-	inline bool bShowMain = false;
-	inline WNDPROC oWindProc = NULL;
-	inline bool bShowWindows[8] = { false, false, false, false, false, false, false, false };
+public:
+	static inline bool bInit = false;
+	static inline bool bDetached = false;
+	static inline bool bShowMain = false;
+	static inline WNDPROC oWindProc = NULL;
+	static inline bool bShowWindows[8] = { false, false, false, false, false, false, false, false };
 
-	void Init();
-	void RenderWindow();
-	void OnEndScene();
-	void Shutdown();
+	static inline void Init();
+	static inline void RenderWindow();
+	static inline void OnEndScene();
+	static inline void Shutdown();
+
+	gui()
+	{
+		Init();
+	}
 }

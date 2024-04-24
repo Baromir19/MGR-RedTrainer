@@ -5,6 +5,7 @@ namespace RedTrainer {
 
 	extern uintptr_t moduleBase;
 	extern bool isFirstFly;
+	inline bool bFly = false;
 
 	void setText(bool bActive);
 

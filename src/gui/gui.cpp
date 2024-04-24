@@ -4,8 +4,7 @@
 #include "imgui/imgui_impl_win32.h"
 #include <Hw.h>
 #include <common.h>
-
-static WNDPROC oWndProc = NULL;
+#include <Events.h>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -18,37 +17,42 @@ LRESULT CALLBACK hkWindowProc(
 {
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam) > 0)
 		return 1L;
-	return ::CallWindowProcA(oWndProc, hwnd, uMsg, wParam, lParam);
+	return ::CallWindowProcA(gui::oWindProc, hwnd, uMsg, wParam, lParam);
 }
 
 void gui::Init()
 {
-	if (!bInit)
-	{
-		oWndProc = (WNDPROC)::SetWindowLongPtr((HWND)Hw::OSWindow, GWLP_WNDPROC, (LONG)hkWindowProc);
-		oWindProc = oWndProc;
+	Events::OnGameStartupEvent += []()
+		{
+			if (!bInit)
+			{
+				oWindProc = (WNDPROC)::SetWindowLongPtr((HWND)Hw::OSWindow, GWLP_WNDPROC, (LONG)hkWindowProc);
 
-		ImGui::CreateContext();
-		ImGui_ImplWin32_Init(Hw::OSWindow);
-		ImGui_ImplDX9_Init(Hw::GraphicDevice);
+				ImGui::CreateContext();
+				ImGui_ImplWin32_Init(Hw::OSWindow);
+				ImGui_ImplDX9_Init(Hw::GraphicDevice);
 
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
-		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
-		//ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
-		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
-		ImGui::PushStyleColor(ImGuiCol_NavHighlight, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+				ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+				ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.5f));
+				//ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.5f, 0.90f, 1.0f, 0.4f));
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 1.0f, 1.0f, 1.0f));
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.5f, 0.83f, 1.0f, 0.3f));
+				ImGui::PushStyleColor(ImGuiCol_NavHighlight, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 
-		bInit = true;
-	}
+				bInit = true;
+			}
+		};
+	
+	Events::OnEndScene += OnEndScene;
 }
 
 void gui::RenderWindow()
 {
+
 	if (bShowMain)
 	{
 		ImGui::Begin("RedTrainer", NULL, ImGuiWindowFlags_NoResize |
