@@ -316,4 +316,79 @@ void gui::setGUIWindows()
 
 			ImGui::End();
 		} });
+	windows.push_back({ [](bWindowStruct* window)
+		{
+			ImGui::Begin("CustWindow", NULL, ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_AlwaysAutoResize);
+			//ImGui::GetStyle().WindowRounding = 0.0f;
+
+			ImGui::SetWindowPos(ImVec2(window->vecWindowPos.x, window->vecWindowPos.y), ImGuiCond_Always);
+
+			ImGui::Text("CUSTOMIZATION");
+
+			{
+				static int playerType = 0;
+
+				if (ImGui::Button("PLAYER TYPE", ImVec2(150, 20)))
+					RedTrainer::setPlayerType(playerType);
+				ImGui::SameLine();
+				//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+				ImGui::Combo("##PlayerTypeCombo", &playerType, "Raiden\000First Raiden\000Camera mode\000Sam\000BladeWolf\000Disabled\000");
+			}
+
+
+			{
+				static int attackType = 0;
+
+				if (ImGui::Button("ATTACK TYPE", ImVec2(150, 20)))
+					RedTrainer::setAttackType(attackType);
+				ImGui::SameLine();
+				//ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(500, 20));
+				ImGui::Combo("##AttackTypeCombo", &attackType, "Raiden\000Sam\000Boss Sam\000Armstrong\000");
+			}
+
+
+			{
+				static int swordType = 0;
+
+				if (ImGui::Button("PLAYER SWORD", ImVec2(150, 20)))
+					RedTrainer::setPlayerSword(swordType);
+				ImGui::SameLine();
+				ImGui::Combo("##PlayerSwordCombo", &swordType, "HF Blade\000Stun Blade\000Armor Breaker\000Long Sword\000Wooden Sword\000Murasama\000Fox Blade\000HF Machete\000First Blade\000Sam's Murasama\000Chainsaw\000Invisible\000");
+			}
+
+			ImGui::SameLine();
+			if (ImGui::Button(" ", ImVec2(150, 20)))
+				bTestWindow = !bTestWindow;
+
+			{
+				static int bodyType = 0;
+
+				if (ImGui::Button("PLAYER BODY", ImVec2(150, 20)))
+					RedTrainer::setPlayerBody(bodyType);
+				ImGui::SameLine();
+				ImGui::Combo("##PlayerBodyCombo", &bodyType, "Default\000Blue Body\000Red Body\000Yellow Body\000Desperado\000Suit\000Mariachi\000Original Body\000MGS4\000Gray Fox\000White Armor\000Inferno Armor\000Commando Armor\000Raiden\000First Body\000Sam :)\000");
+			}
+
+			{
+				static int hairType = 0;
+
+				if (ImGui::Button("PLAYER HAIR", ImVec2(150, 20)))
+					RedTrainer::setPlayerHair(hairType);
+				ImGui::SameLine();
+				ImGui::Combo("##PlayerHairCombo", &hairType, "Default\000Wig A\000Wig B\000Wig C\000");
+			}
+
+			if (ImGui::Button("INVISIBLE", ImVec2(150, 20)))
+				RedTrainer::setInvisibility(RedTrainer::bInvisible);
+			RedTrainer::setText(RedTrainer::bInvisible);
+
+			if (ImGui::Button("SAM RIPPER", ImVec2(150, 20)))
+				RedTrainer::samRipper(RedTrainer::bSamRipper);
+			RedTrainer::setText(RedTrainer::bSamRipper);
+
+			ImGui::End();
+			} });
 }

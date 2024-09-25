@@ -67,7 +67,8 @@ void gui::RenderWindow()
 		if (ImGui::Button("CUSTOMIZATION", ImVec2(150, 20)))
 		{
 			menuClick();
-			HideAllWindows();
+			HideAllWindows(&windows[2]);
+			windows[2].vecWindowPos = { ImGui::GetWindowWidth() + mainPos.x, ImGui::GetMousePos().y };
 			windows[2].bShow ^= true;
 		}
 
