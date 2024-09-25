@@ -6,6 +6,8 @@ namespace RedTrainer {
 	inline bool bInvincibility = false;
 	inline bool bEnergy = false;
 	inline bool bInfAddWeapon = false;
+	inline bool bInvisible = false;
+	inline bool bSamRipper = false;
 
 	extern uintptr_t moduleBase;
 	extern bool isFirstFly;
