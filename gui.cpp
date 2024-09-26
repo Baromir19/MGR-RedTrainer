@@ -7,6 +7,7 @@
 #include <Hw.h>
 #include <cItemPossessionBase.h>
 #include <cItemPossessionWeaponGun.h>
+#include <cGameUIManager.h>
 
 #include "assets/fonts.h"
 
@@ -391,4 +392,66 @@ void gui::setGUIWindows()
 
 			ImGui::End();
 			} });
+	windows.push_back({ [](bWindowStruct* window)
+		{
+			ImGui::Begin("MoveWindow", NULL, ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_AlwaysAutoResize);
+					//ImGui::GetStyle().WindowRounding = 0.0f;
+
+			ImGui::SetWindowPos({ window->vecWindowPos.x, window->vecWindowPos.y }, ImGuiCond_Always);
+
+			ImGui::Text("MOVEMENT");
+
+			{
+				static float speedValue = 1.f;
+
+				if (ImGui::Button("GAME SPEED", ImVec2(150, 20)))
+					RedTrainer::setSpeed(speedValue);
+				ImGui::SameLine();
+				ImGui::InputScalar(" ", ImGuiDataType_Float, &speedValue);
+			}
+
+			{
+				static int animationID = 0;
+
+				if (ImGui::Button("STRONG ATTACK", ImVec2(150, 20)))
+					RedTrainer::setAnimFromAnimMapRaiden(animationID);
+				ImGui::SameLine();
+				ImGui::InputScalar("AnimMap", ImGuiDataType_S32, &animationID);
+			}
+
+			if (ImGui::Button("FLY HACK", ImVec2(150, 20)))
+				RedTrainer::bFly ^= true;
+			RedTrainer::setText(RedTrainer::bFly);
+
+			{
+				static int animationIdSelectable = 0;
+
+				if (ImGui::Button("ANIMATION", ImVec2(150, 20)))
+					RedTrainer::setPlayerAnimation(animationIdSelectable, 0, 0, 0, 1);
+				ImGui::SameLine();
+				ImGui::Combo("##AnimationSelectionCombo", &animationIdSelectable, "Still1\000Still2\000Still3\000Walk1\000Walk2\000Landing1\000Landing2\000Jump1\000Jump2\000Flip1\000Flip2\000Flip3\000Flip4\000Flip5\000Flip6\000Flip7\000Flip8\000Flip9\000Flip10\000Flip11\000Flip12\000Flip13\000Flip14\000Flip15\000Flip16\000Flip17\000Flip18\000Flip19\000Flip20\000Sprint1\000Sprint2\000Sprint3\000Sprint4\000Sprint5\000Death1\000Death2\000Death3\000Death4\000Death5\000Death6\000Death7\000Death8\000Hit1\000Hit2\000Hit3\000Hit4\000Hit5\000Hit6\000Hit7\000Hit8\000Hit9\000Hit10\000Hit11\000Hit12\000Hit13\000Hit14\000Hit15\000Hit16\000Hit17\000Hit18\000Hand1\000Hand2\000Hand3\000Hand4\000Hand5\000Hand6\000Hand7\000Hand8\000Hand9\000Hand10\000Hand11\000Hand12\000Hand13\000Hand14\000Hand15\000Hand16\000Hand17\000Hand18\000Leg1\000Leg2\000Leg3\000Leg4\000Leg5\000Leg6\000Leg7\000Leg8\000Leg9\000Leg10\000Leg11\000Leg12\000Leg13\000Add weapon1\000Add weapon2\000Add weapon3\000Add weapon4\000Add weapon5\000Add weapon6\000Add weapon7\000Add weapon8\000Block1\000Block2\000Block3\000Block4\000Block5\000Block6\000Block7\000Block8\000Parry1\000Parry2\000Victory1\000Victory2\000Hacking1\000Hacking2\000Hacking3\000Codec1\000Codec2\000Red eyes\000Get sword\000Lost sword\000Joke\000Wasd\000Monsoon kill\000MG Ray\000Spying\000");
+			}
+
+			{
+				static bool setWithoutSword = false;
+
+				if (ImGui::Button("LOST SWORD", ImVec2(150, 20)))
+					RedTrainer::setWithoutSword(setWithoutSword);
+				//RedTrainer::setText(isHasSword);
+			}
+
+				ImGui::Text("ANIMATION");
+				ImGui::SameLine();
+				ImGui::Text("%d", RedTrainer::getCurrentAnimation()); //%x to hex
+
+				ImGui::Text("ENEMY/BOSS ANIMATION");
+				ImGui::SameLine();
+				ImGui::Text("%d", RedTrainer::getFirstEnemyCurrentAnimation()); //%x to hex
+
+				ImGui::End();
+			}
+		});
 }
