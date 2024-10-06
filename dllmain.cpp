@@ -3,6 +3,7 @@
 #include "gui.h"
 #include <Events.h>
 #include <common.h>
+#include "RTFunctions/functions.h"
 
 #include "imgui/imgui.h"
 
@@ -22,6 +23,8 @@ public:
 	Plugin()
 	{
 		InitGUI();
+
+		Events::OnTickEvent += RedTrainer::setFly;
 
 		// and here's your code
 	}
@@ -75,7 +78,8 @@ void gui::RenderWindow()
 		if (ImGui::Button("MOVEMENT", ImVec2(150, 20)))
 		{
 			menuClick();
-			HideAllWindows();
+			HideAllWindows(&windows[3]);
+			windows[3].vecWindowPos = { ImGui::GetWindowWidth() + mainPos.x, ImGui::GetMousePos().y };
 			windows[3].bShow ^= true;
 		}
 
