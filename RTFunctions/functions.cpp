@@ -53,7 +53,7 @@ unsigned int RedTrainer::reverseBytes(unsigned int reverseValue) //trash
 
 unsigned int RedTrainer::getCurrentAnimation()
 {
-	auto player = cGameUIManager::Instance.m_pPlayer;
+	Pl0000* player = cGameUIManager::Instance.m_pPlayer;
 	if (!player)
 		return NULL;
 
@@ -113,7 +113,7 @@ void RedTrainer::setInfinityEnergy(bool& bEnergy)
 
 void RedTrainer::setHealth(int healthValue)
 {
-	auto player = cGameUIManager::Instance.m_pPlayer;
+	Pl0000* player = cGameUIManager::Instance.m_pPlayer;
 	if (!player)
 	{
 		Core_PlaySound("core_se_sys_menu_out", 0);
@@ -125,7 +125,7 @@ void RedTrainer::setHealth(int healthValue)
 
 void RedTrainer::setMoney(int moneyValue)
 {
-	auto manager = PlayerManagerImplement::Get();
+	PlayerManagerImplement* manager = PlayerManagerImplement::Get();
 	if (!manager)
 	{
 		Core_PlaySound("core_se_sys_menu_out", 0);
@@ -137,7 +137,7 @@ void RedTrainer::setMoney(int moneyValue)
 
 void RedTrainer::setNewItem(char itemId)
 {
-	auto player = cGameUIManager::Instance.m_pPlayer;
+	Pl0000* player = cGameUIManager::Instance.m_pPlayer;
 
 	if (!player)
 	{
@@ -523,7 +523,7 @@ void RedTrainer::setFly() ///NOT OPTIMIZED!!!
 
 void RedTrainer::setPlayerAnimation(int animId, int animType, int animIdOld, int animTypeOld, bool isSelectable)
 {
-	auto player = cGameUIManager::Instance.m_pPlayer;
+	Pl0000* player = cGameUIManager::Instance.m_pPlayer;
 
 	if (!player)
 	{
@@ -937,7 +937,7 @@ void RedTrainer::setPlayerAnimation(int animId, int animType, int animIdOld, int
 
 void RedTrainer::setWithoutSword(bool& isActive)
 {
-	auto player = cGameUIManager::Instance.m_pPlayer;
+	Pl0000* player = cGameUIManager::Instance.m_pPlayer;
 
 	if (!player)
 	{
@@ -1080,7 +1080,7 @@ void RedTrainer::setFilter(float filterValue, char filterOffset)
 
 void RedTrainer::setSize(float sizeValue, char sizeOffset)
 {
-	auto player = (int)cGameUIManager::Instance.m_pPlayer;
+	int player = (int)cGameUIManager::Instance.m_pPlayer;
 
 	if (!player)
 	{

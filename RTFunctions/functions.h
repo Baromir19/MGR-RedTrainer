@@ -1,7 +1,8 @@
 #pragma once
 #include <Windows.h>
 
-namespace RedTrainer {
+namespace RedTrainer 
+{
 
 	inline bool bInvincibility = false;
 	inline bool bEnergy = false;

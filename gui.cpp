@@ -150,6 +150,7 @@ void gui::setGUIWindows()
 				RedTrainer::setInfinityAddWeapons(RedTrainer::bInfAddWeapon);
 			RedTrainer::setText(RedTrainer::bInfAddWeapon);
 
+			// The unlock type is byte, the next byte after this marks that item is equipped
 			auto asShopSelector = [](int *type, int* unlockType, const char* label, const char* itemsSeparatedByZeros) -> void
 				{
 					ImGui::PushID(label);
@@ -442,7 +443,8 @@ void gui::setGUIWindows()
 					RedTrainer::setWithoutSword(setWithoutSword);
 				//RedTrainer::setText(isHasSword);
 			}
-
+			
+			{
 				ImGui::Text("ANIMATION");
 				ImGui::SameLine();
 				ImGui::Text("%d", RedTrainer::getCurrentAnimation()); //%x to hex
@@ -453,5 +455,110 @@ void gui::setGUIWindows()
 
 				ImGui::End();
 			}
-		});
+		} });
+
+	windows.push_back({ [](bWindowStruct *window)
+		{
+			ImGui::Begin("MissionWindow", NULL, ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_AlwaysAutoResize);
+			//ImGui::GetStyle().WindowRounding = 0.0f;
+
+			ImGui::SetWindowPos({window->vecWindowPos.x, window->vecWindowPos.y}, ImGuiCond_Always);
+
+			ImGui::Text("MISSIONS");
+
+			{
+				static int missionId = 0;
+				char missionName[32];
+
+				if (ImGui::Button("SET MISSION", ImVec2(150, 20)))
+					RedTrainer::setMission(missionId, missionName);
+				ImGui::InputText(" ", missionName, sizeof(missionName)); //Mission name
+				ImGui::SameLine();
+				ImGui::Indent(150);
+				ImGui::InputScalar("  ", ImGuiDataType_U16, &missionId, NULL, NULL, "%X"); //MissionId
+				ImGui::Unindent(150);
+			}
+			{
+				static int difficultyValue = 0;
+
+				if (ImGui::Button("SET DIFFICULTY", ImVec2(150, 20)))
+					RedTrainer::setDifficulty(difficultyValue);
+				ImGui::SameLine();
+				ImGui::Combo("        ", "Easy\000Normal\000Hard\000Very Hard\000Revengeance\000", ImGuiComboFlags_NoArrowButton | ImGuiComboFlags_HeightRegular);
+			}
+
+			{
+				static bool bNoDamage = false;
+
+				if (ImGui::Button("NO DAMAGE", ImVec2(150, 20)))
+					RedTrainer::setNoDamage(bNoDamage);
+				RedTrainer::setText(bNoDamage);
+			}
+
+			{
+				static bool bNoKilled = false;
+
+				if (ImGui::Button("NO KILLED", ImVec2(150, 20)))
+					RedTrainer::setNoKilled(bNoKilled);
+				RedTrainer::setText(bNoKilled);
+			}
+
+			{
+				static bool bNoAlert = false;
+
+				if (ImGui::Button("NO ALERT", ImVec2(150, 20)))
+					RedTrainer::setNoAlert(bNoAlert);
+				RedTrainer::setText(bNoAlert);
+			}
+
+			{
+				static float battleTimer = 0.f;
+
+				if (ImGui::Button("BATTLE TIMER", ImVec2(150, 20)))
+					RedTrainer::setBattleTimer(battleTimer);
+				ImGui::SameLine();
+				ImGui::InputScalar("   ", ImGuiDataType_Float, &battleTimer);
+			}
+
+			{
+				static int battlePointsValue = 0;
+
+				if (ImGui::Button("BATTLEPOINTS", ImVec2(150, 20)))
+					RedTrainer::setBattlePoints(battlePointsValue);
+				ImGui::SameLine();
+				ImGui::InputScalar("    ", ImGuiDataType_S32, &battlePointsValue);
+			}
+
+			{
+				static int killsValue = 0;
+
+				if (ImGui::Button("KILLS", ImVec2(150, 20)))
+					RedTrainer::setKills(killsValue);
+				ImGui::SameLine();
+				ImGui::InputScalar("     ", ImGuiDataType_S32, &killsValue);
+			}
+
+			{
+				static int zandzutsuKillsValue = 0;
+
+				if (ImGui::Button("ZANDZUTSU", ImVec2(150, 20)))
+					RedTrainer::setZandzutsuKills(zandzutsuKillsValue);
+				ImGui::SameLine();
+				ImGui::InputScalar("      ", ImGuiDataType_S32, &zandzutsuKillsValue);
+			}
+
+			{
+				static int maxComboValue = 0;
+
+				if (ImGui::Button("MAX COMBO", ImVec2(150, 20)))
+					RedTrainer::setMaxCombo(maxComboValue);
+				ImGui::SameLine();
+				ImGui::InputScalar("       ", ImGuiDataType_S32, &maxComboValue);
+
+				ImGui::End();
+			}
+		} });
 }

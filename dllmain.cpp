@@ -47,7 +47,7 @@ void gui::RenderWindow()
 			ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_AlwaysAutoResize);
 
-		auto mainPos = ImGui::GetWindowPos();
+		ImVec2 mainPos = ImGui::GetWindowPos();
 
 		ImGui::Text("MAIN MENU");
 
@@ -86,21 +86,24 @@ void gui::RenderWindow()
 		if (ImGui::Button("MISSION", ImVec2(150, 20)))
 		{
 			menuClick();
-			HideAllWindows();
+			HideAllWindows(&windows[4]);
+			windows[4].vecWindowPos = { ImGui::GetWindowWidth() + mainPos.x, ImGui::GetMousePos().y };
 			windows[4].bShow ^= true;
 		}
 
 		if (ImGui::Button("OTHER", ImVec2(150, 20)))
 		{
 			menuClick();
-			HideAllWindows();
+			HideAllWindows(&windows[5]);
+			windows[5].vecWindowPos = { ImGui::GetWindowWidth() + mainPos.x, ImGui::GetMousePos().y };
 			windows[5].bShow ^= true;
 		}
 
 		if (ImGui::Button("ENEMY", ImVec2(150, 20)))
 		{
 			menuClick();
-			HideAllWindows();
+			HideAllWindows(&windows[6]);
+			windows[6].vecWindowPos = { ImGui::GetWindowWidth() + mainPos.x, ImGui::GetMousePos().y };
 			windows[6].bShow ^= true;
 		}
 
@@ -108,7 +111,8 @@ void gui::RenderWindow()
 			if (ImGui::Button("TEST WINDOW", ImVec2(150, 20)))
 			{
 				menuClick();
-				HideAllWindows();
+				HideAllWindows(&windows[7]);
+				windows[7].vecWindowPos = { ImGui::GetWindowWidth() + mainPos.x, ImGui::GetMousePos().y };
 				windows[7].bShow ^= true;
 			}
 		}
